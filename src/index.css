@@ -11,8 +11,8 @@
   --radius: 22px;
   --radius-lg: 32px;
   --container: 1200px;
-  --font-sans: 'General Sans', system-ui, -apple-system, sans-serif;
-  --font-serif: 'General Sans', system-ui, sans-serif;
+  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-serif: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
