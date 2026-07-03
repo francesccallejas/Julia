@@ -1,0 +1,294 @@
+/* =============================================================
+   Julià Camper — Tòtem fira — estils v2
+   Mateixes pantalles i mateix HTML/JS (highlights, basic, expo).
+   Només look & feel: tipografia, color, espaiat, jerarquia i
+   robustesa visual (fallback si el vídeo no carrega).
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap');
+
+:root{
+  --jc-font: 'Plus Jakarta Sans', Verdana, "Segoe UI", Arial, sans-serif;
+  --jc-orange: #FF8000;
+  --jc-orange-dark: #CC6600;
+  --jc-ink: #1c1f1a;
+  --jc-charcoal: #2c3422;
+  --jc-paper: #faf9f6;
+  --jc-panel: #ffffff;
+  --jc-line: #e4e1d8;
+  --jc-muted: #6b6f63;
+
+  --step--1: clamp(0.9rem, 0.6vw + 0.7rem, 1.05rem);
+  --step-0:  clamp(1.05rem, 0.7vw + 0.85rem, 1.3rem);
+  --step-1:  clamp(1.3rem, 1vw + 1rem, 1.7rem);
+  --step-2:  clamp(1.8rem, 1.6vw + 1.2rem, 2.6rem);
+  --step-3:  clamp(2.6rem, 2.8vw + 1.4rem, 4rem);
+}
+
+html, body{
+  background: var(--jc-paper);
+  font-family: var(--jc-font);
+  color: var(--jc-ink);
+}
+
+/* ---------- Marca / capçalera comuna (basic.htm, expo.htm) ---------- */
+.align-center.fixed-top{
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: clamp(16px, 2vw, 40px) clamp(16px, 3vw, 56px) 60px;
+}
+
+.align-center.fixed-top > div[style*="padding:10px"]{
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2vw, 32px);
+  margin-bottom: clamp(20px, 2.5vw, 36px);
+  border-bottom: 3px solid var(--jc-orange);
+  padding-bottom: clamp(14px, 1.6vw, 22px) !important;
+}
+
+.align-center.fixed-top > div[style*="padding:10px"] img{
+  width: clamp(140px, 14vw, 220px) !important;
+  height: auto;
+  flex: 0 0 auto;
+}
+
+.align-center.fixed-top > div[style*="padding:10px"] h1{
+  font-family: var(--jc-font) !important;
+  font-size: var(--step-3) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.5px;
+  color: var(--jc-charcoal);
+  margin: 0;
+  line-height: 1;
+}
+
+/* ---------- Insígnia de versió (BASIC / EXPOSITION / AUSSTELLUNG...) ---------- */
+.model{
+  display: inline-block;
+  margin: 0 0 clamp(24px, 3vw, 40px) !important;
+  border: none !important;
+  background: linear-gradient(135deg, var(--jc-orange), var(--jc-orange-dark));
+  color: #fff;
+  font-family: var(--jc-font);
+  font-size: var(--step-1) !important;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  width: auto !important;
+  min-width: 260px;
+  padding: 14px 32px !important;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(255,128,0,0.25);
+  text-align: center;
+}
+
+/* ---------- Taula de preus ---------- */
+.preus{
+  float: none !important;
+  width: 100% !important;
+  max-width: 780px;
+  margin: 0 0 32px auto !important;
+  padding: clamp(18px, 2vw, 28px) clamp(20px, 2.4vw, 32px) !important;
+  background: var(--jc-panel);
+  border: 1px solid var(--jc-line);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(28,31,26,0.06);
+  font-size: var(--step-0);
+  font-family: var(--jc-font);
+}
+
+.preus table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.preus table tr{
+  border-bottom: 1px solid var(--jc-line);
+}
+
+.preus table tr:last-child{
+  border-bottom: none;
+}
+
+.preus table td{
+  padding: 10px 6px;
+  font-size: var(--step--1);
+  line-height: 1.4;
+}
+
+.preus table tr td:first-child{
+  color: var(--jc-ink);
+}
+
+/* fila de total intermedi (separa) i final (total) es reconeixen
+   perque funcions.js ja els deixa amb <b> i border-top inline;
+   els reforcem visualment sense dependre'n */
+.preus table tr:has(td[style*="border-top"]){
+  border-top: 2px solid var(--jc-charcoal) !important;
+  margin-top: 6px;
+}
+
+.preus table tr:has(td b){
+  background: rgba(255,128,0,0.06);
+}
+
+.preus table tr:has(td b) td{
+  font-size: var(--step-0);
+  color: var(--jc-charcoal);
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.preus table tr:last-child td{
+  font-size: var(--step-1) !important;
+  color: var(--jc-orange-dark);
+  font-weight: 800;
+}
+
+.titol_taula{
+  font-size: var(--step-0) !important;
+  color: var(--jc-charcoal);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-bottom: 14px !important;
+  border-bottom: 2px solid var(--jc-orange);
+}
+
+/* ---------- Taula de característiques (camper + xassís) ---------- */
+.carac{
+  padding: clamp(18px, 2vw, 28px) !important;
+  font-size: var(--step--1) !important;
+  font-family: var(--jc-font);
+  background: var(--jc-panel);
+  border: 1px solid var(--jc-line);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(28,31,26,0.06);
+  max-width: 1600px;
+}
+
+.carac table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.carac table tr:not(:first-child):nth-child(odd){
+  background: #f5f4ef;
+}
+
+.carac table tr td{
+  padding: 7px 10px;
+  line-height: 1.35;
+  vertical-align: top;
+}
+
+.carac table tr td:nth-child(2),
+.carac table tr td:nth-child(4){
+  white-space: nowrap;
+}
+
+.carac table tr td b{
+  display: inline-block;
+  background: var(--jc-charcoal);
+  color: #fff;
+  font-size: 0.85em;
+  padding: 2px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
+}
+
+/* ---------- Pantalla "highlights" (portada amb vídeo de fons) ---------- */
+#myVideo{
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
+
+/* Escrim permanent perque el text mai depengui nomes del video */
+.mbr-fullscreen > .align-center.fixed-top{
+  width: 100%;
+}
+
+.mbr-fullscreen{
+  background: linear-gradient(180deg, rgba(15,18,13,0.55) 0%, rgba(15,18,13,0.72) 55%, rgba(15,18,13,0.88) 100%),
+              var(--jc-charcoal);
+  /* amb 26+ highlights el contingut sol ser mes alt que la pantalla;
+     centrar verticalment (comportament habitual de mbr-fullscreen) el tallaria
+     per dalt i per baix en un totem sense scroll. L'ancorem a dalt. */
+  align-items: flex-start !important;
+  padding-top: clamp(24px, 4vh, 56px);
+  padding-bottom: clamp(24px, 4vh, 56px);
+}
+
+.mbr-fallback-image{
+  opacity: 0.9;
+}
+
+/* Compte: ".mbr-overlay" tambe s'usa als contenidors del plano i dels
+   highlights, no nomes al vel blanc superior; nomes amaguem aquest ultim
+   (identificat pel seu propi background-color blanc inline). */
+.mbr-overlay[style*="255, 255, 255"]{
+  display: none !important;
+}
+
+.header5 h1{
+  font-family: var(--jc-font) !important;
+  font-size: var(--step-3) !important;
+  color: #fff !important;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.5);
+  letter-spacing: 1px;
+}
+
+.highlights{
+  font-size: var(--step-0) !important;
+  font-family: var(--jc-font);
+  color: #fff !important;
+  text-shadow: none !important;
+  column-width: 340px;
+  column-gap: clamp(24px, 3vw, 48px);
+  column-rule: 1px solid rgba(255,255,255,0.15);
+  display: block;
+  width: 100%;
+}
+
+.highlights table,
+.highlights tbody{
+  display: contents;
+}
+
+.highlights tr{
+  display: block;
+  break-inside: avoid;
+  padding: 9px 0;
+}
+
+.highlights tr:empty,
+.highlights tr:has(td:empty){
+  padding: 0;
+  height: 14px;
+}
+
+.highlights td{
+  display: block;
+  padding-left: 30px;
+  position: relative;
+  line-height: 1.35;
+}
+
+.highlights td:not(:empty)::before{
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--jc-orange);
+  font-weight: 700;
+}
+
+/* imatge del plano, si n'hi ha, amb una mica mes de presencia */
+.mbr-overlay ~ * img[alt="Julia_Camper_logo"]{
+  border-radius: 12px;
+}
