@@ -95,7 +95,7 @@ html, body{
   border: 1px solid var(--jc-line);
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(28,31,26,0.06);
-  font-size: var(--step-0);
+  font-size: 14px;
   font-family: var(--jc-font);
 }
 
@@ -135,20 +135,20 @@ html, body{
 }
 
 .preus table tr:has(td b) td{
-  font-size: var(--step-0);
+  font-size: 14px;
   color: var(--jc-charcoal);
   padding-top: 14px;
   padding-bottom: 14px;
 }
 
 .preus table tr:last-child td{
-  font-size: var(--step-1) !important;
+  font-size: 19px !important;
   color: var(--jc-orange-dark);
   font-weight: 800;
 }
 
 .titol_taula{
-  font-size: var(--step-0) !important;
+  font-size: 15px !important;
   color: var(--jc-charcoal);
   font-weight: 700;
   text-transform: uppercase;
