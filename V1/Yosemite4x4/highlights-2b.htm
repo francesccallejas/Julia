@@ -1,36 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Julia Yosemite 4x4 — Opció 2 (glass)</title>
+  <title>Julia Yosemite 4x4 — Opció 2b (frosted)</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
   <link rel="shortcut icon" href="../Imatges/Julia_Camper_logo.png" type="image/x-icon">
   <link href="../estils.css" rel="stylesheet"/>
   <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
   <style>
-    /* ---- Opció 2 · GLASS ----
-       El plano (layout) NO porta glass. Les 5 prime specs viuen en una
-       pastilla glass amb un carrousel (foto gran + 3 miniatures) integrat. */
-    .opt2 .hl-mid{ align-items:stretch; gap:44px; }
-    .opt2 .hl-plan{ max-width:38%; }
+    /* ---- Opció 2b · FROSTED ----
+       Mateixa estructura que la 2, pero la pastilla es "frosted": vidre
+       gelat mes solid i opac (menys transparent), amb blur fort i un
+       reflex superior. El plano (layout) segueix sense pastilla. */
+    .opt2b .hl-mid{ align-items:stretch; gap:44px; }
+    .opt2b .hl-plan{ max-width:38%; }
 
-    .opt2 .hl-specpod{
+    .opt2b .hl-specpod{
       flex:1; display:flex; flex-direction:column; gap:20px;
-      background:rgba(12,16,11,0.55);
-      border:1px solid rgba(255,255,255,0.14);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 40%),
+        rgba(20,24,17,0.74);
+      border:1px solid rgba(255,255,255,0.22);
       border-radius:22px;
       padding:26px 30px 24px;
-      -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(18px) saturate(1.25); backdrop-filter:blur(18px) saturate(1.25);
+      box-shadow:0 18px 44px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.28);
     }
-    .opt2 .hl-specpod .hl-specs{ gap:16px 32px; }
-    .opt2 .hl-specpod .spec .num{ font-size:44px; }
-    .opt2 .hl-specpod .spec .lbl{ font-size:19px; margin-top:5px; }
-    .opt2 .specpod-sep{ height:1px; background:rgba(255,255,255,0.14); }
+    .opt2b .hl-specpod .hl-specs{ gap:16px 32px; }
+    .opt2b .hl-specpod .spec .num{ font-size:44px; }
+    .opt2b .hl-specpod .spec .lbl{ font-size:19px; margin-top:5px; }
+    .opt2b .specpod-sep{ height:1px; background:rgba(255,255,255,0.14); }
   </style>
   <script language="JavaScript" src="dades.js"></script>
   <script language="JavaScript" src="../funcions.js"></script>
 </head>
-<body class="opt2" onLoad="setTimeout(function(){renderHighlightsFull(dades); mountTotemStage('highlights'); scaleTotemStage(); mountPhotoCarousel('pc2'); fitHighlights();},30);">
+<body class="opt2b" onLoad="setTimeout(function(){renderHighlightsFull(dades); mountTotemStage('highlights'); scaleTotemStage(); mountPhotoCarousel('pc2b'); fitHighlights();},30);">
 
   <video autoplay muted loop playsinline id="myVideo">
     <source src="../Imatges/videos furgo junts.mp4" type="video/mp4">
@@ -59,7 +63,7 @@
             <div class="spec"><div class="num">4 &ndash; 4</div><div class="lbl">Day / Evening places</div></div>
           </div>
           <div class="specpod-sep"></div>
-          <div class="pc" id="pc2">
+          <div class="pc" id="pc2b">
             <div class="pc-stage">
               <img class="pc-slide" src="../Imatges/foto-camper-1.png" alt="">
               <img class="pc-slide" src="../Imatges/foto-camper-2.png" alt="">

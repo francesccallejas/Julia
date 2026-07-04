@@ -309,24 +309,38 @@ function fitHighlights(){
 
 /* =============================================================
    Carrousel de fotos reutilitzable (opcions 2 i 3 del highlights).
-   Rota per crossfade cada 4,5 s. Les <img> ja son a l'HTML dins el
-   contenidor; nomes gestiona quina es visible i pinta els punts.
+   Foto gran per crossfade + tira de miniatures (sempre es veuen les 3)
+   que s'il·luminen segons la foto activa. Rota sola cada 4,5 s i es pot
+   tocar una miniatura per saltar-hi. No toca dades.js.
    ============================================================= */
 function mountPhotoCarousel(containerId){
 	var box = document.getElementById(containerId);
 	if(!box) return;
 	var imgs = box.querySelectorAll('.pc-slide');
-	if(imgs.length < 2){ if(imgs[0]) imgs[0].classList.add('is-on'); return; }
+	var thumbs = box.querySelectorAll('.pc-thumb');
+	if(!imgs.length){ return; }
 	var dots = box.querySelector('.pc-dots');
 	if(dots){
 		dots.innerHTML = '';
 		for(var i=0;i<imgs.length;i++) dots.appendChild(document.createElement('span'));
 	}
-	var cur = 0;
+	var cur = 0, timer = null;
 	function show(k){
+		cur = k;
 		for(var i=0;i<imgs.length;i++) imgs[i].classList.toggle('is-on', i===k);
+		for(var t=0;t<thumbs.length;t++) thumbs[t].classList.toggle('is-active', t===k);
 		if(dots) for(var j=0;j<dots.children.length;j++) dots.children[j].classList.toggle('active', j===k);
 	}
-	show(0);
-	setInterval(function(){ cur = (cur + 1) % imgs.length; show(cur); }, 4500);
+	function start(){
+		if(imgs.length < 2) return;
+		timer = setInterval(function(){ show((cur + 1) % imgs.length); }, 4500);
+	}
+	for(var t=0;t<thumbs.length;t++){
+		(function(idx){
+			thumbs[idx].addEventListener('click', function(){
+				show(idx); if(timer){ clearInterval(timer); } start();
+			});
+		})(t);
+	}
+	show(0); start();
 }
