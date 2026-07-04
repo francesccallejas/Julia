@@ -171,34 +171,90 @@ function fitTotem(){
 	var carac = document.querySelector('.carac');
 	var preus = document.querySelector('.preus');
 	if(!carac) return;
-	function bottomGap(el){ return (window.innerHeight - 6) - el.getBoundingClientRect().bottom; }
-	function shrink(el, fontPx, padPx){
-		el.style.setProperty('font-size', fontPx + 'px', 'important');
+
+	function stageBottom(){
+		var st = document.getElementById('totem-stage');
+		return st ? (st.getBoundingClientRect().top + 1920) : window.innerHeight;
+	}
+	function gap(el){ return (stageBottom() - 16) - el.getBoundingClientRect().bottom; }
+	function shrink(el, f, p){
+		el.style.setProperty('font-size', f + 'px', 'important');
 		var tds = el.querySelectorAll('td');
 		for(var i=0;i<tds.length;i++){
-			tds[i].style.setProperty('padding', padPx + 'px 8px', 'important');
-			tds[i].style.setProperty('line-height', '1.15', 'important');
+			tds[i].style.setProperty('padding', p + 'px 8px', 'important');
+			tds[i].style.setProperty('line-height', '1.2', 'important');
 		}
 	}
-	var f = 13, p = 3;
+
+	// 1) encongir la taula de caracteristiques nomes fins a una mida LLEGIBLE (no menys)
+	var f = 14, p = 4;
 	shrink(carac, f, p);
-	while(bottomGap(carac) < 0 && f > 8){ f -= 0.3; p = Math.max(0.5, p - 0.3); shrink(carac, f, p); }
-	if(bottomGap(carac) < 0 && preus){
-		var pf = 18, pp = 8;
-		while(bottomGap(carac) < 0 && pf > 10){ pf -= 0.5; pp = Math.max(1.5, pp - 0.5); shrink(preus, pf, pp); }
+	while(gap(carac) < 0 && f > 11){ f -= 0.5; p = Math.max(2, p - 0.3); shrink(carac, f, p); }
+
+	// 2) si encara no cap, PAGINAR les files (roten soles) en lloc d'encongir mes
+	if(gap(carac) < 0){ paginateCarac(carac); }
+}
+
+/* Divideix la taula de caracteristiques en pagines que roten soles cada 6s,
+   quan no hi caben totes alhora a mida llegible (cas de l'expo). */
+function paginateCarac(container){
+	var table = container.querySelector('table');
+	if(!table) return;
+	var rows = Array.prototype.slice.call(table.querySelectorAll('tr'));
+	if(rows.length < 2) return;
+	var header = rows[0], data = rows.slice(1);
+	var st = document.getElementById('totem-stage');
+	var stageBottom = (st ? st.getBoundingClientRect().top : 0) + 1920;
+	var avail = (stageBottom - 24) - container.getBoundingClientRect().top - header.getBoundingClientRect().height - 30;
+	var rh = 0;
+	for(var i=0;i<Math.min(6,data.length);i++){ rh = Math.max(rh, data[i].getBoundingClientRect().height); }
+	var per = Math.max(4, Math.floor(avail / rh));
+	var pages = [];
+	for(var i=0;i<data.length;i+=per){ pages.push(data.slice(i, i+per)); }
+	if(pages.length <= 1) return;
+	var dots = document.createElement('div');
+	dots.className = 'carac-pager-dots';
+	for(var i=0;i<pages.length;i++){ dots.appendChild(document.createElement('span')); }
+	container.appendChild(dots);
+	var cur = 0;
+	function show(k){
+		for(var i=0;i<data.length;i++){ data[i].style.display = 'none'; }
+		for(var i=0;i<pages[k].length;i++){ pages[k][i].style.display = ''; }
+		for(var i=0;i<dots.children.length;i++){ dots.children[i].classList.toggle('active', i===k); }
 	}
-	if(bottomGap(carac) < 0){
-		var wrap = document.querySelector('.align-center.fixed-top > div[style*="padding:10px"]');
-		var h1 = wrap ? wrap.querySelector('h1') : null;
-		var img = wrap ? wrap.querySelector('img') : null;
-		var model = document.querySelector('.model');
-		var s = 1;
-		while(bottomGap(carac) < 0 && s > 0.45){
-			s -= 0.08;
-			if(h1) h1.style.setProperty('font-size', (36*s)+'px', 'important');
-			if(img) img.style.setProperty('width', (180*s)+'px', 'important');
-			if(model){ model.style.setProperty('padding', (14*s)+'px '+(32*s)+'px', 'important'); model.style.setProperty('font-size', (18*s)+'px', 'important'); }
-			if(wrap) wrap.style.setProperty('margin-bottom', (12*s)+'px', 'important');
-		}
+	show(0);
+	setInterval(function(){ cur = (cur + 1) % pages.length; show(cur); }, 6000);
+}
+
+/* =============================================================
+   Escenari fix 1080x1920 escalat a la finestra: fa que el totem es
+   vegi IGUAL a qualsevol pantalla (Mac horitzontal, mobil, o el totem
+   vertical real). Al totem real (1080x1920) l'escala es 1 i omple tot.
+   ============================================================= */
+function mountTotemStage(kind){
+	if(document.getElementById('totem-stage')) return;
+	var body = document.body;
+	var stage = document.createElement('div');
+	stage.id = 'totem-stage';
+	if(kind === 'highlights') stage.className = 'is-highlights';
+	var kids = Array.prototype.slice.call(body.childNodes);
+	for(var i=0;i<kids.length;i++){
+		var n = kids[i];
+		if(n.nodeType === 1 && n.tagName === 'SCRIPT') continue;
+		stage.appendChild(n);
 	}
+	body.appendChild(stage);
+	body.classList.add('totem-scaled');
+}
+function scaleTotemStage(){
+	var stage = document.getElementById('totem-stage');
+	if(!stage) return;
+	function apply(){
+		var s = Math.min(window.innerWidth/1080, window.innerHeight/1920);
+		stage.style.transform = 'scale(' + s + ')';
+		stage.style.left = Math.max(0, (window.innerWidth - 1080*s)/2) + 'px';
+		stage.style.top  = Math.max(0, (window.innerHeight - 1920*s)/2) + 'px';
+	}
+	apply();
+	window.addEventListener('resize', apply);
 }

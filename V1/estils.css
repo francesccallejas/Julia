@@ -365,3 +365,38 @@ html, body{
   background-size: 100% 100%, 220% 220% !important;
   animation: jcFakeBg 18s ease-in-out infinite;
 }
+
+/* =============================================================
+   Escenari 1080x1920 escalat (perque es vegi igual a qualsevol pantalla)
+   ============================================================= */
+body.totem-scaled{
+  margin: 0;
+  background: #0a0a0a;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+#totem-stage{
+  position: absolute;
+  top: 0; left: 0;
+  width: 1080px;
+  height: 1920px;
+  overflow: hidden;
+  transform-origin: top left;
+  background: var(--jc-paper);
+}
+#totem-stage.is-highlights{ background: #10160f; }
+/* dins l'escenari, el hero ha de fer 1920px (no 100vh) */
+#totem-stage .header5.mbr-fullscreen{
+  min-height: 1920px !important;
+  height: 1920px !important;
+}
+/* el video de fons omple l'escenari */
+#totem-stage #myVideo{
+  position: absolute !important;
+  top: 0; left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100%; min-height: 100%;
+  object-fit: cover;
+}
