@@ -234,16 +234,18 @@ function paginateCarac(container){
 function mountTotemStage(kind){
 	if(document.getElementById('totem-stage')) return;
 	var body = document.body;
+	var video = document.getElementById('myVideo');
 	var stage = document.createElement('div');
 	stage.id = 'totem-stage';
 	if(kind === 'highlights') stage.className = 'is-highlights';
 	var kids = Array.prototype.slice.call(body.childNodes);
 	for(var i=0;i<kids.length;i++){
 		var n = kids[i];
-		if(n.nodeType === 1 && n.tagName === 'SCRIPT') continue;
+		if(n.nodeType === 1 && (n.tagName === 'SCRIPT' || n === video)) continue;
 		stage.appendChild(n);
 	}
 	body.appendChild(stage);
+	if(video){ body.appendChild(video); body.classList.add('has-bg-video'); }
 	body.classList.add('totem-scaled');
 }
 function scaleTotemStage(){

@@ -484,3 +484,20 @@ body.totem-scaled{
   content:"✓"; position:absolute; left:0; top:9px;
   color:var(--jc-orange); font-weight:800;
 }
+
+/* =============================================================
+   Video de fons "enganxat" a tota la finestra (sense barres negres).
+   El contingut (escenari 1080x1920) queda centrat a sobre; a les vores
+   es veu el mateix video en lloc de negre. Al totem a pantalla completa
+   (1080x1920) l'escala es 1 i omple exacte.
+   ============================================================= */
+body.has-bg-video{ background:#0a0a0a; }
+body.has-bg-video > #myVideo{
+  position:fixed; top:0; left:0;
+  width:100vw; height:100vh;
+  object-fit:cover; z-index:0;
+}
+body.has-bg-video > #totem-stage{ z-index:1; }
+/* escenari del highlights transparent: deixa veure el video de fons */
+#totem-stage.is-highlights{ background:transparent !important; }
+#totem-stage.is-highlights .hl{ background:transparent !important; }
