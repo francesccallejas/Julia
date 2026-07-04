@@ -235,17 +235,20 @@ function mountTotemStage(kind){
 	if(document.getElementById('totem-stage')) return;
 	var body = document.body;
 	var video = document.getElementById('myVideo');
+	var scrim = document.getElementById('bg-scrim');
 	var stage = document.createElement('div');
 	stage.id = 'totem-stage';
 	if(kind === 'highlights') stage.className = 'is-highlights';
 	var kids = Array.prototype.slice.call(body.childNodes);
 	for(var i=0;i<kids.length;i++){
 		var n = kids[i];
-		if(n.nodeType === 1 && (n.tagName === 'SCRIPT' || n === video)) continue;
+		// el video i l'escrim de fons es queden a tota la finestra (no dins l'escenari escalat)
+		if(n.nodeType === 1 && (n.tagName === 'SCRIPT' || n === video || n === scrim)) continue;
 		stage.appendChild(n);
 	}
 	body.appendChild(stage);
 	if(video){ body.appendChild(video); body.classList.add('has-bg-video'); }
+	if(scrim){ body.appendChild(scrim); body.classList.add('has-bg-video'); }
 	body.classList.add('totem-scaled');
 }
 function scaleTotemStage(){
@@ -302,4 +305,28 @@ function fitHighlights(){
 	while(gap()<0 && f>15 && g<80){ f-=0.5; pv=Math.max(4,pv-0.35); apply(); g++; }
 	g=0;
 	while(gap()>80 && f<30 && g<80){ f+=0.5; pv+=0.35; apply(); g++; }
+}
+
+/* =============================================================
+   Carrousel de fotos reutilitzable (opcions 2 i 3 del highlights).
+   Rota per crossfade cada 4,5 s. Les <img> ja son a l'HTML dins el
+   contenidor; nomes gestiona quina es visible i pinta els punts.
+   ============================================================= */
+function mountPhotoCarousel(containerId){
+	var box = document.getElementById(containerId);
+	if(!box) return;
+	var imgs = box.querySelectorAll('.pc-slide');
+	if(imgs.length < 2){ if(imgs[0]) imgs[0].classList.add('is-on'); return; }
+	var dots = box.querySelector('.pc-dots');
+	if(dots){
+		dots.innerHTML = '';
+		for(var i=0;i<imgs.length;i++) dots.appendChild(document.createElement('span'));
+	}
+	var cur = 0;
+	function show(k){
+		for(var i=0;i<imgs.length;i++) imgs[i].classList.toggle('is-on', i===k);
+		if(dots) for(var j=0;j<dots.children.length;j++) dots.children[j].classList.toggle('active', j===k);
+	}
+	show(0);
+	setInterval(function(){ cur = (cur + 1) % imgs.length; show(cur); }, 4500);
 }

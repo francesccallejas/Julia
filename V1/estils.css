@@ -5,7 +5,7 @@
    robustesa visual (fallback si el vídeo no carrega).
    ============================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Bebas+Neue&family=Anton&display=swap');
 
 :root{
   --jc-title: 'New Brilliant', 'Bebas Neue', 'Oswald', var(--jc-font);
@@ -497,7 +497,17 @@ body.has-bg-video > #myVideo{
   width:100vw; height:100vh;
   object-fit:cover; z-index:0;
 }
-body.has-bg-video > #totem-stage{ z-index:1; }
+body.has-bg-video > #totem-stage{ z-index:2; }
+/* Filtre negre "enganxat": es comporta com el video (tota la finestra),
+   no nomes l'escenari 1080x1920. Un unic escrim uniforme a sobre del video. */
+body.has-bg-video > #bg-scrim{
+  position:fixed; top:0; left:0; width:100vw; height:100vh;
+  z-index:1; pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(8,10,7,0.80) 0%, rgba(8,10,7,0.45) 20%, rgba(8,10,7,0.45) 56%, rgba(8,10,7,0.85) 100%);
+}
 /* escenari del highlights transparent: deixa veure el video de fons */
 #totem-stage.is-highlights{ background:transparent !important; }
 #totem-stage.is-highlights .hl{ background:transparent !important; }
+/* si l'escrim viu al body, la versio interna de l'escenari sobra */
+body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
