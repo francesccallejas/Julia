@@ -441,11 +441,10 @@ body.totem-scaled{
 }
 .hl-plan{
   flex:0 0 42%;
-  background:rgba(255,255,255,0.92);
-  border-radius:20px; padding:22px;
-  box-shadow:0 20px 50px rgba(0,0,0,.45);
+  background:transparent; padding:0; border:0; box-shadow:none;
 }
-.hl-plan img{ width:100%; height:auto; display:block; }
+.hl-plan img{ width:100%; height:auto; display:block;
+  filter: drop-shadow(0 12px 30px rgba(0,0,0,.55)); }
 .hl-specs{
   flex:1; display:grid; grid-template-columns:1fr 1fr; gap:26px 40px;
   text-align:left;
