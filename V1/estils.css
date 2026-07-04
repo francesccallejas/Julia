@@ -439,14 +439,14 @@ body.totem-scaled{
 
 /* Zona mitja: plano (esquerra) + specs (dreta) */
 .hl-mid{
-  display:flex; align-items:center; gap:44px; flex:0 0 auto; height:520px;
+  display:flex; align-items:center; gap:48px; flex:0 0 auto;
 }
 .hl-plan{
-  flex:0 0 auto;
+  flex:0 1 auto; max-width:40%;
   background:transparent; padding:0; border:0; box-shadow:none;
   display:flex; align-items:center; justify-content:center;
 }
-.hl-plan img{ height:520px; width:auto; max-width:46%; display:block;
+.hl-plan img{ max-height:600px; max-width:100%; width:auto; height:auto; display:block;
   filter: drop-shadow(0 12px 30px rgba(0,0,0,.55)); }
 .hl-specs{
   flex:1; display:grid; grid-template-columns:1fr 1fr; gap:26px 40px;
