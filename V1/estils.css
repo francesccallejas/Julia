@@ -418,9 +418,9 @@ body.totem-scaled{
   position:relative; z-index:2;
   width:100%; height:100%;
   display:flex; flex-direction:column;
-  justify-content: space-between;
-  padding: 56px 60px 52px;
-  gap: 24px;
+  justify-content: flex-start;
+  padding: 54px 60px 56px;
+  gap: 22px;
 }
 
 /* Capçalera */
@@ -438,19 +438,20 @@ body.totem-scaled{
 
 /* Zona mitja: plano (esquerra) + specs (dreta) */
 .hl-mid{
-  display:flex; align-items:center; gap:44px; flex:0 0 auto;
+  display:flex; align-items:center; gap:44px; flex:0 0 auto; height:520px;
 }
 .hl-plan{
-  flex:0 0 42%;
+  flex:0 0 auto;
   background:transparent; padding:0; border:0; box-shadow:none;
+  display:flex; align-items:center; justify-content:center;
 }
-.hl-plan img{ width:100%; height:auto; max-height:600px; object-fit:contain; display:block;
+.hl-plan img{ height:520px; width:auto; max-width:46%; display:block;
   filter: drop-shadow(0 12px 30px rgba(0,0,0,.55)); }
 .hl-specs{
   flex:1; display:grid; grid-template-columns:1fr 1fr; gap:26px 40px;
   text-align:left;
 }
-.hl-specs .spec .num{ color:#fff; font-size:56px; font-weight:800; line-height:1; text-shadow:0 2px 14px rgba(0,0,0,.6); }
+.hl-specs .spec .num{ color:#fff; font-size:56px; font-weight:800; line-height:1; white-space:nowrap; text-shadow:0 2px 14px rgba(0,0,0,.6); }
 .hl-specs .spec .lbl{ color:rgba(255,255,255,0.82); font-size:22px; margin-top:8px; text-shadow:0 1px 10px rgba(0,0,0,.6); }
 .hl-specs .spec .lbl sup{ font-size:.7em; }
 
@@ -474,11 +475,11 @@ body.totem-scaled{
   text-align:left;
 }
 .hl-item{
-  color:#fff; font-size:26px; font-weight:600; line-height:1.22;
-  padding:11px 0 11px 40px; position:relative;
+  color:#fff; font-size:24px; font-weight:600; line-height:1.2;
+  padding:9px 0 9px 38px; position:relative;
   break-inside:avoid;
 }
 .hl-item::before{
-  content:"✓"; position:absolute; left:0; top:11px;
+  content:"✓"; position:absolute; left:0; top:9px;
   color:var(--jc-orange); font-weight:800;
 }

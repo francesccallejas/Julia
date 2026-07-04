@@ -274,3 +274,30 @@ function renderHighlightsFull(dades){
 		wrap.appendChild(el);
 	}
 }
+
+
+/* Auto-ajust DINAMIC del highlights: fa que la llista de caracteristiques
+   ompli l'espai disponible i mai es talli, sigui quin sigui el plano o
+   la mida de pantalla (responsive). */
+function fitHighlights(){
+	var stage = document.getElementById('totem-stage');
+	var panel = document.querySelector('.hl-features');
+	var items = document.querySelectorAll('.hl-item');
+	if(!stage || !panel || !items.length) return;
+	function sc(){ var m=(stage.style.transform||'').match(/scale\(([^)]+)\)/); return m?parseFloat(m[1]):1; }
+	function panelBottomStage(){ return (panel.getBoundingClientRect().bottom - stage.getBoundingClientRect().top)/sc(); }
+	function gap(){ return (1920 - 46) - panelBottomStage(); }
+	var f = 24, pv = 9;
+	function apply(){
+		for(var i=0;i<items.length;i++){
+			items[i].style.setProperty('font-size', f+'px','important');
+			items[i].style.setProperty('padding', pv+'px 0 '+pv+'px 38px','important');
+			items[i].style.setProperty('line-height','1.2','important');
+		}
+	}
+	apply();
+	var g=0;
+	while(gap()<0 && f>15 && g<80){ f-=0.5; pv=Math.max(4,pv-0.35); apply(); g++; }
+	g=0;
+	while(gap()>80 && f<30 && g<80){ f+=0.5; pv+=0.35; apply(); g++; }
+}
