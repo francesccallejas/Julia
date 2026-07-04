@@ -490,8 +490,9 @@ body.totem-scaled{
   break-inside:avoid;
 }
 .hl-item::before{
-  content:"✓"; position:absolute; left:0; top:9px;
-  color:var(--jc-orange); font-weight:800;
+  content:""; position:absolute; left:0; top:.18em;
+  width:1.05em; height:1.05em;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF8000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h13M13 6l6 6-6 6'/%3E%3C/svg%3E") no-repeat center/contain;
 }
 
 /* =============================================================
