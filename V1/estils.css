@@ -346,3 +346,22 @@ html, body{
 
 /* Logo Julià a la portada highlights (mida continguda) */
 .header5 .logo-julia{ width: min(44%, 480px) !important; }
+
+
+/* =============================================================
+   FAKE del video de fons (nomes per veure el disseny sense el .mp4).
+   Quan hi ha el video real <video id="myVideo">, aquest queda a sobre i
+   tapa aquesta animacio. Substitueix pel teu video real quan el tinguis.
+   ============================================================= */
+@keyframes jcFakeBg{
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+.header5.mbr-fullscreen{
+  background:
+    linear-gradient(180deg, rgba(15,18,13,0.55) 0%, rgba(15,18,13,0.72) 55%, rgba(15,18,13,0.9) 100%),
+    linear-gradient(135deg, #0d1a12 0%, #1c2a1e 35%, #2c3422 60%, #10160f 100%) !important;
+  background-size: 100% 100%, 220% 220% !important;
+  animation: jcFakeBg 18s ease-in-out infinite;
+}

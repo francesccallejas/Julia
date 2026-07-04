@@ -1,11 +1,16 @@
-V1 — versió modificada del Yosemite (disseny nou)
-=================================================
-Aquí només hi ha els fitxers ADAPTATS. Per veure-ho funcionant, copia'ls
-a sobre d'una còpia de "Fira-original" (que té el vídeo, imatges i assets):
+V1 — versió nova del Yosemite (carpeta AUTÒNOMA, s'obre sola)
+============================================================
+Obre directament (doble clic):
+   Yosemite4x4/highlights.htm
+   Yosemite4x4/basic.htm
+   Yosemite4x4/expo.htm
 
-  estils.css              -> a l'arrel
-  funcions.js             -> a l'arrel
-  Yosemite4x4/*.htm       -> highlights, basic, expo
-  Imatges/Julia_logo_white.png i Julia_logo_black.png -> a Imatges/
+Tot funciona sense dependre de res extern:
+ - El FONS del highlights és una animació CSS (fake del vídeo). Quan tinguis
+   el teu vídeo real, posa'l a  Imatges/videos furgo junts.mp4  i tapa el fake.
+ - assets/ i algunes imatges són de MOSTRA, només perquè es vegi el disseny.
+   Substitueix-los pels teus reals si vols la versió definitiva.
 
-La resta (vídeo, dades, assets, altres models) es queda de Fira-original.
+Fitxers del disseny (els que s'han adaptat de veritat):
+   estils.css, funcions.js, i els 3 HTML de Yosemite4x4/
+   + Imatges/Julia_logo_white.png i Julia_logo_black.png
