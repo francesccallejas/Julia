@@ -333,7 +333,7 @@ function mountPhotoCarousel(containerId){
 	}
 	function start(){
 		if(imgs.length < 2) return;
-		timer = setInterval(function(){ show((cur + 1) % imgs.length); }, 4500);
+		timer = setInterval(function(){ show((cur + 1) % imgs.length); }, 3000);
 	}
 	for(var t=0;t<thumbs.length;t++){
 		(function(idx){
