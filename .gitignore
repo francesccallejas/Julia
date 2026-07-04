@@ -11,3 +11,6 @@ yarn-error.log*
 # Videos (massa grans per GitHub - queden en local)
 *.mp4
 *.mov
+
+# El plano real de la camper es local (com el video)
+yosemitte_plan.png
