@@ -239,6 +239,7 @@ function mountTotemStage(kind){
 	var stage = document.createElement('div');
 	stage.id = 'totem-stage';
 	if(kind === 'highlights') stage.className = 'is-highlights';
+	else stage.className = 'is-config';
 	var kids = Array.prototype.slice.call(body.childNodes);
 	for(var i=0;i<kids.length;i++){
 		var n = kids[i];

@@ -98,9 +98,9 @@ html, body{
 .preus{
   float: none !important;
   width: 100% !important;
-  max-width: 780px;
-  margin: 0 0 32px auto !important;
-  padding: clamp(18px, 2vw, 28px) clamp(20px, 2.4vw, 32px) !important;
+  max-width: 100%;                 /* mateixa amplada que .carac -> alineades */
+  margin: 0 0 26px 0 !important;
+  padding: clamp(18px, 2vw, 26px) clamp(22px, 2.4vw, 34px) !important;
   background: var(--jc-panel);
   border: 1px solid var(--jc-line);
   border-radius: 16px;
@@ -108,6 +108,8 @@ html, body{
   font-size: 14px;
   font-family: var(--jc-font);
 }
+/* PintaTaules deixa un <br> al final: treu l'espai buit sota la taula */
+.preus br{ display:none !important; }
 
 .preus table{
   width: 100%;
@@ -130,6 +132,7 @@ html, body{
 
 .preus table tr td:first-child{
   color: var(--jc-ink);
+  text-align: left !important;   /* concepte a l'esquerra, import a la dreta (omple l'amplada) */
 }
 
 /* fila de total intermedi (separa) i final (total) es reconeixen
@@ -151,10 +154,16 @@ html, body{
   padding-bottom: 14px;
 }
 
+.preus table tr:last-child{
+  background: rgba(255,128,0,0.10);
+}
 .preus table tr:last-child td{
-  font-size: 19px !important;
+  font-size: 24px !important;
   color: var(--jc-orange-dark);
   font-weight: 800;
+  white-space: nowrap;
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
 }
 
 .titol_taula{
@@ -165,6 +174,19 @@ html, body{
   letter-spacing: 1px;
   padding-bottom: 14px !important;
   border-bottom: 2px solid var(--jc-orange);
+}
+
+/* Pantalla de configuració (basic/expo): centra el bloc verticalment quan
+   sobra espai, pero sense retallar-lo mai si el contingut es mes alt
+   (safe center -> cau a flex-start si no cap). */
+#totem-stage.is-config{
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+}
+#totem-stage.is-config > .align-center.fixed-top{
+  position: static !important;
+  width: 100%;
 }
 
 /* ---------- Taula de característiques (camper + xassís) ---------- */
