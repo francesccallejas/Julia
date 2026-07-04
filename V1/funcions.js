@@ -179,20 +179,32 @@ function fitTotem(){
 	function gap(el){ return (stageBottom() - 16) - el.getBoundingClientRect().bottom; }
 	function shrink(el, f, p){
 		el.style.setProperty('font-size', f + 'px', 'important');
+		// OJO: hi ha DOS elements amb la classe (.carac div i <table class=carac>);
+		// el CSS fixa la mida de la taula amb !important, aixi que cal posar la
+		// mida directament a la taula i a cada cel·la, si no el text no s'encongeix.
+		var tbl = el.querySelector('table');
+		if(tbl) tbl.style.setProperty('font-size', f + 'px', 'important');
 		var tds = el.querySelectorAll('td');
 		for(var i=0;i<tds.length;i++){
+			tds[i].style.setProperty('font-size', f + 'px', 'important');
 			tds[i].style.setProperty('padding', p + 'px 8px', 'important');
 			tds[i].style.setProperty('line-height', '1.2', 'important');
 		}
 	}
 
-	// 1) encongir la taula de caracteristiques nomes fins a una mida LLEGIBLE (no menys)
+	// 1) encongir la taula de caracteristiques fins que capiga TOTA en una sola
+	//    pantalla (mai paginar/rotar; l'usuari prefereix lletra petita a rotacio)
 	var f = 14, p = 4;
 	shrink(carac, f, p);
-	while(gap(carac) < 0 && f > 11){ f -= 0.5; p = Math.max(2, p - 0.3); shrink(carac, f, p); }
+	while(gap(carac) < 0 && f > 8){ f -= 0.5; p = Math.max(1.5, p - 0.25); shrink(carac, f, p); }
 
-	// 2) si encara no cap, PAGINAR les files (roten soles) en lloc d'encongir mes
-	if(gap(carac) < 0){ paginateCarac(carac); }
+	// 2) si encara no cap (expo, amb la llista de preus llarga), encongir tambe
+	//    la taula de preus i, si cal, apurar una mica mes la de caracteristiques
+	if(gap(carac) < 0 && preus){
+		var pf = 14, pp = 7;
+		while(gap(carac) < 0 && pf > 9){ pf -= 0.5; pp = Math.max(3, pp - 0.4); shrink(preus, pf, pp); }
+		while(gap(carac) < 0 && f > 7){ f -= 0.5; p = Math.max(1, p - 0.2); shrink(carac, f, p); }
+	}
 }
 
 /* Divideix la taula de caracteristiques en pagines que roten soles cada 6s,

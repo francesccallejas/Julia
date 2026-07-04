@@ -231,6 +231,17 @@ html, body{
   letter-spacing: 0.3px;
 }
 
+/* Separacio clara de temes: CAMPER (1a columna) | CHASSIS (2 columnes).
+   Una linia vertical separa el bloc camper del bloc xassis, i una de mes
+   fina separa les dues columnes de xassis entre si. */
+.carac table td:first-child,
+.carac table th:first-child{
+  border-right: 2px solid #cfccc2;
+}
+.carac table td:nth-child(4){
+  border-left: 1px solid #e4e1d8;
+}
+
 /* ---------- Pantalla "highlights" (portada amb vídeo de fons) ---------- */
 #myVideo{
   position: fixed;
