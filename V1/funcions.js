@@ -258,3 +258,19 @@ function scaleTotemStage(){
 	apply();
 	window.addEventListener('resize', apply);
 }
+
+
+/* Portada highlights v2: mostra TOTES les caracteristiques (no nomes 6). */
+function renderHighlightsFull(dades){
+	var wrap = document.getElementById('t_highlights_full');
+	if(!wrap || !dades || !dades.highlights) return;
+	wrap.innerHTML = '';
+	for(var i=0; i<dades.highlights.length; i++){
+		var t = dades.highlights[i];
+		if(!t) continue; // saltar separadors buits
+		var el = document.createElement('div');
+		el.className = 'hl-item';
+		el.textContent = t;
+		wrap.appendChild(el);
+	}
+}

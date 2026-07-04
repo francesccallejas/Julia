@@ -400,3 +400,85 @@ body.totem-scaled{
   min-width: 100%; min-height: 100%;
   object-fit: cover;
 }
+
+/* =============================================================
+   HIGHLIGHTS v2 — pantalla completa, contrast garantit
+   ============================================================= */
+.hl #myVideo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+/* fons de reserva (fake) si no hi ha video */
+.hl{ background:#10160f; }
+/* Escrim: enfosqueix el video perque el text blanc SEMPRE es llegeixi,
+   sigui el video clar o fosc */
+.hl-scrim{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(8,10,7,0.78) 0%, rgba(8,10,7,0.45) 22%, rgba(8,10,7,0.45) 55%, rgba(8,10,7,0.82) 100%);
+}
+.hl .hl-content{
+  position:relative; z-index:2;
+  width:100%; height:100%;
+  display:flex; flex-direction:column;
+  padding: 56px 64px 48px;
+  gap: 30px;
+}
+
+/* Capçalera */
+.hl-head{ text-align:center; }
+.hl-head .logo-julia{ width:300px; height:auto; filter: drop-shadow(0 2px 12px rgba(0,0,0,.6)); }
+.hl-title{
+  font-family: var(--jc-font); font-weight:800; color:#fff;
+  font-size:76px; margin:10px 0 0; letter-spacing:1px;
+  text-shadow:0 3px 20px rgba(0,0,0,.6);
+}
+.hl-head .tagline{
+  color:#fff; font-size:26px; font-weight:500; margin:12px 0 0;
+  text-shadow:0 2px 14px rgba(0,0,0,.7);
+}
+
+/* Zona mitja: plano (esquerra) + specs (dreta) */
+.hl-mid{
+  display:flex; align-items:center; gap:44px; flex:0 0 auto;
+}
+.hl-plan{
+  flex:0 0 42%;
+  background:rgba(255,255,255,0.92);
+  border-radius:20px; padding:22px;
+  box-shadow:0 20px 50px rgba(0,0,0,.45);
+}
+.hl-plan img{ width:100%; height:auto; display:block; }
+.hl-specs{
+  flex:1; display:grid; grid-template-columns:1fr 1fr; gap:26px 40px;
+  text-align:left;
+}
+.hl-specs .spec .num{ color:#fff; font-size:52px; font-weight:800; line-height:1; text-shadow:0 2px 14px rgba(0,0,0,.6); }
+.hl-specs .spec .lbl{ color:rgba(255,255,255,0.82); font-size:22px; margin-top:8px; text-shadow:0 1px 10px rgba(0,0,0,.6); }
+.hl-specs .spec .lbl sup{ font-size:.7em; }
+
+/* Característiques: totes, en panell translúcid (glass) */
+.hl-features{
+  flex:1 1 auto; min-height:0; overflow:hidden;
+  background:rgba(12,16,11,0.55);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:22px;
+  padding:30px 40px 34px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display:flex; flex-direction:column;
+}
+.hl-features-title{
+  color:var(--jc-orange); font-weight:800; letter-spacing:3px;
+  font-size:22px; text-transform:uppercase; text-align:left; margin-bottom:20px;
+}
+.hl-list{
+  column-count:2; column-gap:48px;
+  text-align:left;
+}
+.hl-item{
+  color:#fff; font-size:23px; font-weight:600; line-height:1.2;
+  padding:8px 0 8px 38px; position:relative;
+  break-inside:avoid;
+}
+.hl-item::before{
+  content:"✓"; position:absolute; left:0; top:8px;
+  color:var(--jc-orange); font-weight:800;
+}

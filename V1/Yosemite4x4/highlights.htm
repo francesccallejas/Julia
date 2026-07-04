@@ -7,42 +7,45 @@
   <link rel="shortcut icon" href="../Imatges/Julia_Camper_logo.png" type="image/x-icon">
   <link href="../estils.css" rel="stylesheet"/>
   <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap-grid.min.css">
-  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap-reboot.min.css">
-  <link rel="stylesheet" href="../assets/animatecss/animate.css">
   <script language="JavaScript" src="dades.js"></script>
   <script language="JavaScript" src="../funcions.js"></script>
 </head>
-<body onLoad="setTimeout(function(){renderHighlights(dades); mountTotemStage('highlights'); scaleTotemStage();},30);">
-  <section data-bs-version="5.1" class="header5 cid-tJS6uM4N87 mbr-fullscreen" id="header05-1">
+<body onLoad="setTimeout(function(){renderHighlightsFull(dades); mountTotemStage('highlights'); scaleTotemStage();},30);">
+  <section class="header5 mbr-fullscreen hl" id="header05-1">
     <video autoplay muted loop playsinline id="myVideo">
       <source src="../Imatges/videos furgo junts.mp4" type="video/mp4">
     </video>
-    <div class="align-center fixed-top">
-      <div class="row mt-5 pt-5 justify-content-center">
-        <div class="col-12 col-lg-8 mt-5">
-          <img class="logo-julia" src="../Imatges/Julia_logo_white.png" alt="Julia"><br>
-          <h1 class="header5-title" style="font-size: 64px; margin-top:22px;"><b>YOSEMITE 4x4</b></h1>
-          <p class="tagline">The 6m Sprinter model to reach every summit.</p>
+    <div class="hl-scrim"></div>
+
+    <div class="align-center fixed-top hl-content">
+
+      <!-- Capçalera -->
+      <header class="hl-head">
+        <img class="logo-julia" src="../Imatges/Julia_logo_white.png" alt="Julia">
+        <h1 class="hl-title">YOSEMITE 4x4</h1>
+        <p class="tagline">The 6m Sprinter model to reach every summit.</p>
+      </header>
+
+      <!-- Plànol (esquerra) + specs tècniques (dreta) -->
+      <div class="hl-mid">
+        <div class="hl-plan">
+          <img src="../Imatges/yosemitte_plan.png" alt="Yosemite plan">
+        </div>
+        <div class="hl-specs">
+          <div class="spec"><div class="num">3500 kg</div><div class="lbl">MMTA <sup>**</sup></div></div>
+          <div class="spec"><div class="num">593 cm</div><div class="lbl">Length</div></div>
+          <div class="spec"><div class="num">206 cm</div><div class="lbl">Width</div></div>
+          <div class="spec"><div class="num">280 cm</div><div class="lbl">High <sup>***</sup></div></div>
+          <div class="spec"><div class="num">4 &ndash; 4</div><div class="lbl">Day / Evening places</div></div>
         </div>
       </div>
-      <div class="row mt-5 justify-content-center">
-        <div class="col-md-12 col-lg-10">
-          <img class="hero-plan" src="../Imatges/yosemitte_plan.png" alt="Yosemite plan">
-        </div>
+
+      <!-- Totes les característiques -->
+      <div class="hl-features">
+        <div class="hl-features-title">EQUIPMENT HIGHLIGHTS</div>
+        <div id="t_highlights_full" class="hl-list"></div>
       </div>
-      <div class="row mt-5 justify-content-center">
-        <div class="col-md-12 col-lg-9 spec-grid">
-          <div><div class="num">3500 kg</div><div class="lbl">MMTA <sup>**</sup></div></div>
-          <div><div class="num">593 cm</div><div class="lbl">Length</div></div>
-          <div><div class="num">206 cm</div><div class="lbl">Width</div></div>
-          <div><div class="num">280 cm</div><div class="lbl">High <sup>***</sup></div></div>
-          <div><div class="num">4 - 4</div><div class="lbl">Day / Evening places</div></div>
-        </div>
-      </div>
-      <div class="row mt-5 justify-content-center">
-        <div class="col-md-12 col-lg-11 curated-tags" id="t_highlights_curats"></div>
-      </div>
+
     </div>
   </section>
 </body>
