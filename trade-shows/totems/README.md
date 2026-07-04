@@ -6,7 +6,9 @@ L'única cosa que canvia entre elles són els 3 HTML del Yosemite i el CSS:
 - **original/** : tal com estava (estils.css original, HTML originals).
 - **v1/**       : mateix HTML original, només amb el `estils.css` nou (restyle).
 - **v2/**       : disseny final — 3 HTML nous (highlights/basic/expo) + `estils.css`
-                  + `totem-v2.js` (portada marketing + ajust automàtic a pantalla).
+                  + `funcions.js` (amb la portada marketing + ajust automàtic a pantalla).
+
+A v2 només canvien 5 fitxers respecte l'original: els 3 HTML, `estils.css` i `funcions.js`.
 
 Per veure-ho: obre (doble clic) `<versio>/Yosemite4x4/highlights.htm` (o basic/expo).
 
