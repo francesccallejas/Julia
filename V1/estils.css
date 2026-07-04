@@ -517,21 +517,27 @@ body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
    ============================================================= */
 .pc{ position:relative; }
 .pc-stage{
-  position:relative; width:100%; height:230px;
+  position:relative; width:100%; height:300px;
   border-radius:14px; overflow:hidden;
   box-shadow:0 10px 26px rgba(0,0,0,.42);
 }
 .pc-slide{
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  object-position:center 58%;
   opacity:0; transform:scale(1.04); transition:opacity .8s ease, transform 5s ease;
 }
 .pc-slide.is-on{ opacity:1; transform:scale(1); }
+/* enquadrament per foto perque la camper quedi sempre ben visible */
+.pc-slide:nth-child(1){ object-position:center 52%; }  /* desert */
+.pc-slide:nth-child(2){ object-position:center 82%; }  /* bosc (quadrada, camper baixa) */
+.pc-slide:nth-child(3){ object-position:center 60%; }  /* Half Dome */
 /* tira de miniatures: sempre veus que hi ha 3 fotos */
 .pc-thumbs{ display:flex; gap:10px; margin-top:12px; }
 .pc-thumb{
-  flex:1; height:60px; object-fit:cover; border-radius:9px; cursor:pointer;
+  flex:1; height:64px; object-fit:cover; object-position:center 58%; border-radius:9px; cursor:pointer;
   opacity:.5; border:2px solid transparent; transition:opacity .3s, border-color .3s;
 }
+.pc-thumb:nth-child(2){ object-position:center 82%; }  /* bosc */
 .pc-thumb.is-active{ opacity:1; border-color:var(--jc-orange); }
 .pc-dots{ display:flex; gap:9px; justify-content:center; margin-top:10px; }
 .pc-dots span{ width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.35); transition:background .3s; }
