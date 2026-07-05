@@ -484,11 +484,12 @@ body.totem-scaled{
   text-shadow:0 2px 14px rgba(0,0,0,.7);
 }
 
-/* Notes legals (*/**/***) — sota el "Built on", gris mitja, petites i sagnades */
+/* Notes legals (asterisc / doble / triple) — sota el Built on, gris mitja, petites i sagnades */
 .hl-notes{ flex:0 0 auto; display:flex; flex-direction:column; gap:1px; text-align:left !important;
-  font-size:9px; line-height:1.3; padding-left:46px; padding-right:46px;
+  font-size:9px; line-height:1.3; padding-left:120px; padding-right:80px;
   color:rgba(255,255,255,.55) !important; text-shadow:0 1px 3px rgba(0,0,0,.6); }
-.hl-notes p{ margin:0; text-align:left !important; color:rgba(255,255,255,.55) !important; }
+.hl-notes p{ margin:0; text-align:left !important; padding-left:14px; text-indent:-14px;
+  color:rgba(255,255,255,.55) !important; }
 .hl-notes b{ color:rgba(255,255,255,.72) !important; font-weight:700; }
 
 /* Franja de xassis a baix de tot: "Built on [logo]" (opcio 5 del LAB) */
