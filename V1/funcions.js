@@ -166,11 +166,16 @@ function fitTotem(){
 	var preus = document.querySelector('.preus');
 	if(!carac) return;
 
-	function stageBottom(){
-		var st = document.getElementById('totem-stage');
-		return st ? (st.getBoundingClientRect().top + 1920) : window.innerHeight;
+	var stage = document.getElementById('totem-stage');
+	function sc(){ var m = stage ? (stage.style.transform||'').match(/scale\(([^)]+)\)/) : null; return m ? parseFloat(m[1]) : 1; }
+	// gap en coordenades de l'escenari (1920 d'alt), conscient de l'escala:
+	// aixi funciona tant si es crida abans com despres d'escalar
+	function gap(el){
+		if(!stage) return window.innerHeight - el.getBoundingClientRect().bottom;
+		var top = stage.getBoundingClientRect().top;
+		var elBottom = (el.getBoundingClientRect().bottom - top) / sc();
+		return (1920 - 16) - elBottom;
 	}
-	function gap(el){ return (stageBottom() - 16) - el.getBoundingClientRect().bottom; }
 	function shrink(el, f, p, keepLast){
 		el.style.setProperty('font-size', f + 'px', 'important');
 		// OJO: hi ha DOS elements amb la classe (.carac div i <table class=carac>);
@@ -203,12 +208,22 @@ function fitTotem(){
 		while(gap(carac) < 0 && f > 7){ f -= 0.5; p = Math.max(1, p - 0.2); shrink(carac, f, p); }
 	}
 
-	// 3) si SOBRA espai (basic o expo curt), CREIXER per omplir i que les taules
-	//    inferiors es vegin mes grans; deixem ~26px de marge inferior
+	// 3) si SOBRA espai, CREIXER per omplir i que les taules inferiors es vegin mes
+	//    grans. Passos FINS (0.25px) i sense inflar el padding, si no cada pas afegia
+	//    ~60px (45 files de chassis) i es passava -> quedava encallat amb buit a sota.
 	var guard = 0;
-	while(gap(carac) > 26 && f < 21 && guard < 60){
-		f += 0.5; p = Math.min(10, p + 0.35); shrink(carac, f, p); guard++;
-		if(gap(carac) < 0){ f -= 0.5; p = Math.max(1.5, p - 0.35); shrink(carac, f, p); break; }
+	while(gap(carac) > 16 && f < 22 && guard < 200){
+		var nf = f + 0.25, np = Math.min(6, p + 0.1);   // font fina + padding suau
+		shrink(carac, nf, np);
+		if(gap(carac) < 0){ shrink(carac, f, p); break; }  // revertir l'ultim pas
+		f = nf; p = np; guard++;
+	}
+
+	// re-ajust UN cop quan la pantalla ja esta assentada (fonts/layout finals):
+	// el primer calcul sovint infravalora l'espai i quedava petit amb buit a sota
+	if(!fitTotem._settled && typeof requestAnimationFrame === 'function'){
+		fitTotem._settled = true;
+		requestAnimationFrame(function(){ fitTotem(); });
 	}
 }
 
