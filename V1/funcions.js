@@ -290,6 +290,35 @@ function renderHighlightsFull(dades){
 	}
 }
 
+/* Formata un numero en euros amb punt de milers: 104950 -> "104.950 €" */
+function fmtEurJC(n){
+	var v = Math.round(Number(n));
+	var s = String(v).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+	return s + ' €';
+}
+
+/* Pinta els 6 valors principals del highlights des de dades.js:
+   - "From" = preu base (primera fila de price.base) -> mai descuadra amb el basic
+   - els altres 5 des de dades.specs { places, mmta, length, width, high }
+   Container: <div class="hl-specs" id="hl-specs"></div> */
+function renderHighlightSpecs(dades){
+	var box = document.getElementById('hl-specs');
+	if(!box || !dades) return;
+	var base = (dades.price && dades.price.base && dades.price.base[0] && dades.price.base[0].price);
+	var from = (base!=null && base!==undefined) ? fmtEurJC(base) : '';
+	var s = dades.specs || {};
+	function spec(num, lbl, sup){
+		return '<div class="spec"><div class="num">'+(num||'')+'</div><div class="lbl">'+lbl+(sup?' <sup>'+sup+'</sup>':'')+'</div></div>';
+	}
+	box.innerHTML =
+		spec(from, 'From', '*') +
+		spec(s.places, 'Day / Evening places') +
+		spec(s.mmta, 'MMTA', '**') +
+		spec(s.length, 'Length') +
+		spec(s.width, 'Width') +
+		spec(s.high, 'High', '***');
+}
+
 
 /* Auto-ajust DINAMIC del highlights: fa que la llista de caracteristiques
    ompli l'espai disponible i mai es talli, sigui quin sigui el plano o

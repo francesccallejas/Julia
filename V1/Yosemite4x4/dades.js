@@ -1,6 +1,7 @@
 
 
 var dades={
+	specs:{places:"4 &ndash; 4",mmta:"3500 kg",length:"593 cm",width:"206 cm",high:"280 cm"},
 	highlights :
 	[
 		"4 SEATS / ISOFIX REAR PASSENGERS",

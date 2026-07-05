@@ -1,6 +1,7 @@
 
 
 var dades={
+	specs:{places:"4 &ndash; 4",mmta:"3500 kg",length:"697 cm",width:"204 cm",high:"265 cm"},
 	highlights :
 	[
 		"4 SEATS / ISOFIX REAR PASSENGERS",
@@ -509,8 +510,8 @@ var dades={
 	price:{
 		base: [
 			{
-				concept: "BASE PRICE YOSEMITE 419 4X4",
-				price: 104950.00
+				concept: "BASE PRICE ATACAMA 4X4",
+				price: 114950.00
 			},
 			{
 				concept: "UPHOLSTERY NATURAL LEATHER STRIPES",
@@ -519,23 +520,23 @@ var dades={
 			{
 				separa: true,
 				concept: "Total Netto",
-				price: 107700.00 
+				price: 117700.00 
 			},
 			{
 				concept: "TAX 19% (Mwst)",
-				price: 20463
+				price: 22363
 			},
 			{
 				separa: true,
 				total: true,
 				concept: "TOTAL PRICE WITHOUT TRANSPORT",
-				price: 128163.00 
+				price: 140063.00 
 			}
 		],
 		expo: [
 			{
-				concept: "BASE PRICE YOSEMITE 419 4X4",
-				price: 104950.00
+				concept: "BASE PRICE ATACAMA 4X4",
+				price: 114950.00
 			},
 			{
 				total: true,
@@ -640,17 +641,17 @@ var dades={
 			{
 				separa : true,
 				concept: "Total Netto",
-				price: 143603.00
+				price: 153603.00
 			},
 			{
 				concept: "TAX 19% (Mwst)",
-				price: 27284.57
+				price: 29184.57
 			},
 			{
 				separa : true,
 				total: true,
 				concept: "TOTAL PRICE WITHOUT TRANSPORT",
-				price: 170887.57
+				price: 182787.57
 			}
 		]
 	}
