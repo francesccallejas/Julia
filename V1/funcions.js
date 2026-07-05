@@ -202,21 +202,35 @@ function fitTotem(){
 
 	// 2) si encara no cap (expo, amb la llista de preus llarga), encongir tambe
 	//    la taula de preus i, si cal, apurar una mica mes la de caracteristiques
+	var pf = 14, pp = 7;   // mida actual del llistat de preus (per si cal seguir encongint)
 	if(gap(carac) < 0 && preus){
-		var pf = 14, pp = 7;
 		while(gap(carac) < 0 && pf > 9){ pf -= 0.5; pp = Math.max(3, pp - 0.4); shrink(preus, pf, pp, true); }
 		while(gap(carac) < 0 && f > 7){ f -= 0.5; p = Math.max(1, p - 0.2); shrink(carac, f, p); }
 	}
 
-	// 3) si SOBRA espai, CREIXER per omplir i que les taules inferiors es vegin mes
-	//    grans. Passos FINS (0.25px) i sense inflar el padding, si no cada pas afegia
-	//    ~60px (45 files de chassis) i es passava -> quedava encallat amb buit a sota.
-	var guard = 0;
-	while(gap(carac) > 16 && f < 22 && guard < 200){
-		var nf = f + 0.25, np = Math.min(6, p + 0.1);   // font fina + padding suau
-		shrink(carac, nf, np);
-		if(gap(carac) < 0){ shrink(carac, f, p); break; }  // revertir l'ultim pas
-		f = nf; p = np; guard++;
+	// helper: fa creixer la config amb passos FINS (0.25px) fins omplir. Passos petits
+	// perque amb moltes files (65 al SportClub) cada 0.5px afegia massa i quedava buit.
+	function growCarac(){
+		var g = 0;
+		while(gap(carac) > 16 && f < 22 && g < 300){
+			var nf = f + 0.25, np = Math.min(6, p + 0.1);
+			shrink(carac, nf, np);
+			if(gap(carac) < 0){ shrink(carac, f, p); break; }
+			f = nf; p = np; g++;
+		}
+	}
+
+	// 3) CREIXER la config per omplir l'espai lliure
+	growCarac();
+
+	// 4) si la config ha quedat PETITA (expo molt dens, p.ex. SportClub 65 files),
+	//    encongir una mica mes el llistat de preus per donar-li espai i tornar a creixer,
+	//    fins que arribi a ~9.5px o els preus toquin el minim raonable
+	if(preus && f < 9.5){
+		while(f < 9.5 && pf > 8){
+			pf -= 0.5; pp = Math.max(2.5, pp - 0.3); shrink(preus, pf, pp, true);
+			growCarac();
+		}
 	}
 
 	// re-ajust UN cop quan la pantalla ja esta assentada (fonts/layout finals):
