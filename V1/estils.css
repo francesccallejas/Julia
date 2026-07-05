@@ -609,8 +609,10 @@ body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
 .cfgscreen .mast .model{
   margin:0 0 0 auto !important; align-self:center; border:0 !important;
   background:linear-gradient(135deg,var(--jc-orange),var(--jc-orange-dark)) !important;
-  color:#fff !important; padding:11px 22px !important; border-radius:9px !important;
+  color:#fff !important; padding:11px 20px 11px 22px !important; border-radius:9px !important;
   font-size:19px !important; min-width:0 !important; letter-spacing:2px;
+  /* padding-left = padding-right + letter-spacing: compensa l'espai final del
+     letter-spacing perque les DUES linies quedin ben centrades */
   box-shadow:0 8px 22px rgba(255,102,0,.32);
 }
 /* --- Cos clar --- */
