@@ -607,7 +607,7 @@ body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
 .cfgscreen .mast .logo-julia{ height:50px !important; width:auto !important; flex:0 0 auto; filter:none; }  /* Julia ~20% mes petit */
 .cfgscreen .mast .mtitle{
   font-family:var(--jc-title); font-weight:600; text-transform:uppercase;
-  font-size:25px; color:#fff; margin:0; line-height:0.98; letter-spacing:1px;
+  font-size:21px; color:#fff; margin:0; line-height:0.98; letter-spacing:1px;
   white-space:nowrap;   /* YOSEMITE a dalt / 4x4 a sota (via <br>): dues linies compactes, alineades amb el logo */
 }
 .cfgscreen .mast .model{
