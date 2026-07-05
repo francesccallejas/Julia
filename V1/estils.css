@@ -464,22 +464,36 @@ body.totem-scaled{
   width:100%; height:100%;
   display:flex; flex-direction:column;
   justify-content: flex-start;
-  padding: 54px 60px 56px;
-  gap: 22px;
+  padding: 44px 60px 48px;
+  gap: 18px;
 }
 
 /* Capçalera */
 .hl-head{ text-align:center; }
 .hl-head .logo-julia{ width:270px; height:auto; filter: drop-shadow(0 2px 12px rgba(0,0,0,.6)); }
+/* Capçal ~12% mes petit perque tot capiga amb la franja de xassis a baix */
+.hl .hl-head .logo-julia{ width:min(38%, 415px) !important; }
 .hl-title{
   font-family: var(--jc-title); font-weight:800; color:#fff;
   font-size:66px; margin:8px 0 0; letter-spacing:1px;
   text-shadow:0 3px 20px rgba(0,0,0,.6);
 }
+.hl .hl-title{ font-size:24px !important; margin-top:6px; }
 .hl-head .tagline{
-  color:#fff; font-size:24px; font-weight:500; margin:10px 0 0;
+  color:#fff; font-size:21px; font-weight:500; margin:8px 0 0;
   text-shadow:0 2px 14px rgba(0,0,0,.7);
 }
+
+/* Franja de xassis a baix de tot: "Built on [logo]" (opcio 5 del LAB) */
+.hl-chassis{
+  flex:0 0 auto; display:flex; align-items:center; justify-content:center; gap:16px;
+  color:rgba(255,255,255,.60); font-size:15px; font-weight:600;
+  letter-spacing:2px; text-transform:uppercase; padding-top:2px;
+}
+.hl-chassis .chassis-logo{ height:38px; width:auto; opacity:.95;
+  /* els logos oficials venen foscos: brightness(0) invert(1) els deixa BLANCS */
+  filter: brightness(0) invert(1) drop-shadow(0 1px 6px rgba(0,0,0,.5)); }
+.hl-chassis .chassis-logo.merc{ height:44px; }   /* Mercedes porta estrella+text: una mica mes gran */
 
 /* Zona mitja: plano (esquerra) + specs (dreta) */
 .hl-mid{
