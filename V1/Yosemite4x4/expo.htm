@@ -9,14 +9,17 @@
   <script language="JavaScript" src="../funcions.js"></script>
 </head>
 <body onLoad="setTimeout(function(){PintaTaules(dades, 'expo', 'eng'); mountTotemStage('config'); fitTotem(); scaleTotemStage();},30);">
-<div class="align-center fixed-top">
-  <div style="padding:10px">
-     <img class="logo-julia" src="../Imatges/Julia_logo_black.png" alt="Julia">
-     <h1 style="font-family: var(--jc-title); font-size: 36px"><b>YOSEMITE 4x4</b></h1>
-     <div class="model">EXPOSITION<br>VERSION</div>
+<div class="align-center fixed-top cfgscreen">
+  <div class="mast">
+    <img class="logo-julia" src="../Imatges/Julia_logo_white.png" alt="Julia">
+    <h1 class="mtitle">YOSEMITE 4x4</h1>
+    <div class="model">EXPOSITION<br>VERSION</div>
   </div>
-<div id="t_preus" class="preus"></div>
-<div id="t_carac" class="carac"></div>
+  <div class="cbody">
+    <div class="plabel">Price</div>
+    <div id="t_preus" class="preus"></div>
+    <div id="t_carac" class="carac"></div>
+  </div>
 </div>
 </body>
 </html>

@@ -19,8 +19,8 @@
 :root{
   --jc-title: 'New Brilliant', 'JC Display', 'Oswald', var(--jc-font);
   --jc-font: 'Plus Jakarta Sans', Verdana, "Segoe UI", Arial, sans-serif;
-  --jc-orange: #FF8000;
-  --jc-orange-dark: #CC6600;
+  --jc-orange: #FF6600;       /* taronja KTM unificat */
+  --jc-orange-dark: #D9480A;  /* taronja KTM profund (no marró) */
   --jc-ink: #1c1f1a;
   --jc-charcoal: #2c3422;
   --jc-paper: #faf9f6;
@@ -585,3 +585,83 @@ body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
 .pc-dots{ display:flex; gap:9px; justify-content:center; margin-top:10px; }
 .pc-dots span{ width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.35); transition:background .3s; }
 .pc-dots span.active{ background:var(--jc-orange); }
+
+/* =============================================================
+   BASIC / EXPO · disseny "BROCHURE" (masthead fosc + cos clar, taronja KTM)
+   Reestilitza les taules que genera PintaTaules (#t_preus, #t_carac).
+   ============================================================= */
+#totem-stage.is-config{ background:#F2EFE9; }
+.cfgscreen{
+  padding:0 !important; max-width:none !important; margin:0 !important;
+  min-height:1920px; display:flex; flex-direction:column; background:#F2EFE9;
+}
+/* --- Masthead fosc --- */
+.cfgscreen .mast{
+  display:flex; align-items:center; gap:26px;
+  background:linear-gradient(180deg,#191b1f,#131418);
+  padding:44px 60px 28px; border-bottom:4px solid var(--jc-orange);
+}
+.cfgscreen .mast .logo-julia{ height:62px !important; width:auto !important; flex:0 0 auto; filter:none; }
+.cfgscreen .mast .mtitle{
+  font-family:var(--jc-title); font-weight:600; text-transform:uppercase;
+  font-size:56px; color:#fff; margin:0; line-height:.92; letter-spacing:1px;
+}
+.cfgscreen .mast .model{
+  margin:0 0 0 auto !important; align-self:center; border:0 !important;
+  background:linear-gradient(135deg,var(--jc-orange),var(--jc-orange-dark)) !important;
+  color:#fff !important; padding:11px 22px !important; border-radius:9px !important;
+  font-size:19px !important; min-width:0 !important; letter-spacing:2px;
+  box-shadow:0 8px 22px rgba(255,102,0,.32);
+}
+/* --- Cos clar --- */
+.cfgscreen{ text-align:left; }
+.cfgscreen .cbody{ flex:1; display:flex; flex-direction:column; gap:20px; padding:30px 60px 40px; min-height:0; }
+.cfgscreen .plabel{ font-size:13px; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:var(--jc-orange-dark); text-align:left; }
+
+/* --- Preus (transparent, files amb filet, TOTAL destacat) --- */
+.cfgscreen .preus{
+  background:transparent !important; border:0 !important; box-shadow:none !important;
+  padding:0 !important; margin:0 !important; max-width:none !important;
+}
+.cfgscreen .preus br{ display:none !important; }
+.cfgscreen .preus table{ width:100%; border-collapse:collapse; }
+.cfgscreen .preus table tr{ border-bottom:1px solid #e0dacb; }
+.cfgscreen .preus table td{ font-size:19px; padding:11px 4px; color:#3c414a; line-height:1.35; }
+.cfgscreen .preus table tr td:first-child{ text-align:left !important; }
+.cfgscreen .preus table tr td:last-child{ font-variant-numeric:tabular-nums; white-space:nowrap; }
+/* subtotals (Total Netto, TAX) que porten <b> */
+.cfgscreen .preus table tr:has(td b):not(:last-child) td{ color:#23262b; font-weight:700; }
+/* TOTAL final */
+.cfgscreen .preus table tr:last-child{ background:linear-gradient(135deg,#ffffff,#faf7f0); }
+.cfgscreen .preus table tr:last-child td{
+  border-top:1px solid #ecdcc9; border-bottom:1px solid #ecdcc9;
+  padding:16px 14px !important; font-family:var(--jc-title);
+}
+.cfgscreen .preus table tr:last-child td:first-child{
+  border-left:5px solid var(--jc-orange); font-size:22px; color:#1a1d22;
+  text-transform:uppercase; letter-spacing:1px; text-align:left !important;
+}
+.cfgscreen .preus table tr:last-child td:last-child{
+  border-right:1px solid #ecdcc9; font-size:32px; color:var(--jc-orange-dark);
+  font-weight:800; white-space:nowrap;
+}
+
+/* --- Característiques (transparent, CAMPER | CHASSIS, codis en TARONJA) --- */
+.cfgscreen .carac{
+  background:transparent !important; border:0 !important; box-shadow:none !important;
+  padding:0 !important; margin:0 !important;
+}
+.cfgscreen .carac table{ width:100%; border-collapse:collapse; }
+.cfgscreen .titol_taula{
+  color:#1a1d22 !important; border-bottom:2px solid var(--jc-orange) !important;
+  letter-spacing:2px;
+}
+.cfgscreen .carac table tr td{ color:#43484f; }
+.cfgscreen .carac table tr:not(:first-child):nth-child(odd){ background:#eae4d8; }
+.cfgscreen .carac table tr td:first-child{ color:#1a1d22; font-weight:600; border-right:1px solid #d8d0c0; }
+/* codis/tags en taronja KTM (píndola clara amb text taronja) */
+.cfgscreen .carac table tr td b{
+  background:#fff !important; border:1px solid #f0d3bb !important;
+  color:var(--jc-orange-dark) !important; font-weight:700 !important;
+  padding:1px 6px !important; border-radius:5px !important;
+}
