@@ -632,6 +632,8 @@ body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
   font-size:21px; color:#fff; margin:0; line-height:0.98; letter-spacing:1px;
   white-space:nowrap;   /* YOSEMITE a dalt / 4x4 a sota (via <br>): dues linies compactes, alineades amb el logo */
 }
+/* Nomes GranYosemite: el nom es llarg, titol un pel mes petit (no afecta els altres models) */
+.cfgscreen.cam-granyo .mast .mtitle{ font-size:17px; letter-spacing:.5px; }
 .cfgscreen .mast .model{
   margin:0 0 0 auto !important; align-self:center; border:0 !important;
   background:linear-gradient(135deg,var(--jc-orange),var(--jc-orange-dark)) !important;
