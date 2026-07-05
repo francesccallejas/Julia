@@ -281,10 +281,12 @@ html, body{
 
 .header5 h1{
   font-family: var(--jc-title) !important;
-  font-size: var(--step-3) !important;
+  font-size: 46px !important;          /* ~30% mes petit; cabra en 1 linia fins i tot amb New Brilliant (mes ampla) */
+  white-space: nowrap !important;      /* SEMPRE en una sola linia */
   color: #fff !important;
   text-shadow: 0 2px 18px rgba(0,0,0,0.5);
   letter-spacing: 1px;
+  line-height: 1;
 }
 
 .highlights{
@@ -601,10 +603,12 @@ body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
   background:linear-gradient(180deg,#191b1f,#131418);
   padding:44px 60px 28px; border-bottom:4px solid var(--jc-orange);
 }
-.cfgscreen .mast .logo-julia{ height:62px !important; width:auto !important; flex:0 0 auto; filter:none; }
+.cfgscreen .mast{ overflow:hidden; }
+.cfgscreen .mast .logo-julia{ height:50px !important; width:auto !important; flex:0 0 auto; filter:none; }  /* Julia ~20% mes petit */
 .cfgscreen .mast .mtitle{
   font-family:var(--jc-title); font-weight:600; text-transform:uppercase;
-  font-size:56px; color:#fff; margin:0; line-height:.92; letter-spacing:1px;
+  font-size:30px; color:#fff; margin:0; line-height:1; letter-spacing:1px;
+  white-space:nowrap;   /* Yosemite mes petit i en 1 linia, perque es vegi el badge de versio */
 }
 .cfgscreen .mast .model{
   margin:0 0 0 auto !important; align-self:center; border:0 !important;
@@ -637,7 +641,7 @@ body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
 .cfgscreen .preus table tr:last-child{ background:linear-gradient(135deg,#ffffff,#faf7f0); }
 .cfgscreen .preus table tr:last-child td{
   border-top:1px solid #ecdcc9; border-bottom:1px solid #ecdcc9;
-  padding:16px 14px !important; font-family:var(--jc-title);
+  padding:16px 14px !important; font-family:var(--jc-font);   /* Jakarta, no la de titol */
 }
 .cfgscreen .preus table tr:last-child td:first-child{
   border-left:5px solid var(--jc-orange); font-size:24px; color:#1a1d22;
