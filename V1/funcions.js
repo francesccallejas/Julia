@@ -339,7 +339,7 @@ function fitHighlights(){
 	if(!stage || !panel || !items.length) return;
 	// mesurem fins a l'ULTIM element real (franja de xassis o notes), no nomes la
 	// llista de caracteristiques, si no les notes/franja quedarien fora de pantalla
-	var ref = document.querySelector('.hl-chassis') || document.querySelector('.hl-notes') || panel;
+	var ref = document.querySelector('.hl-notes') || document.querySelector('.hl-chassis') || panel;
 	function sc(){ var m=(stage.style.transform||'').match(/scale\(([^)]+)\)/); return m?parseFloat(m[1]):1; }
 	function panelBottomStage(){ return (ref.getBoundingClientRect().bottom - stage.getBoundingClientRect().top)/sc(); }
 	function gap(){ return (1920 - 46) - panelBottomStage(); }
