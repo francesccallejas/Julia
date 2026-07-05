@@ -638,11 +638,11 @@ body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
   padding:16px 14px !important; font-family:var(--jc-title);
 }
 .cfgscreen .preus table tr:last-child td:first-child{
-  border-left:5px solid var(--jc-orange); font-size:22px; color:#1a1d22;
+  border-left:5px solid var(--jc-orange); font-size:24px; color:#1a1d22;
   text-transform:uppercase; letter-spacing:1px; text-align:left !important;
 }
 .cfgscreen .preus table tr:last-child td:last-child{
-  border-right:1px solid #ecdcc9; font-size:32px; color:var(--jc-orange-dark);
+  border-right:1px solid #ecdcc9; font-size:38px; color:var(--jc-orange-dark);
   font-weight:800; white-space:nowrap;
 }
 
