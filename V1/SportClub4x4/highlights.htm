@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Julia Camper SportClub 4x4</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="../Imatges/Julia_Camper_logo.png" type="image/x-icon">
+  <link href="../estils.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+  <style>
+    /* ---- Opció 2 · GLASS ----
+       El plano (layout) NO porta glass. Les 5 prime specs viuen en una
+       pastilla glass amb un carrousel (foto gran + 3 miniatures) integrat. */
+    .opt2 .hl-mid{ align-items:stretch; gap:44px; }
+    .opt2 .hl-plan{ max-width:38%; }
+
+    .opt2 .hl-specpod{
+      flex:1; display:flex; flex-direction:column; gap:20px;
+      background:rgba(12,16,11,0.55);
+      border:1px solid rgba(255,255,255,0.14);
+      border-radius:22px;
+      padding:26px 30px 24px;
+      -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    }
+    .opt2 .hl-specpod .hl-specs{ gap:16px 32px; }
+    .opt2 .hl-specpod .spec .num{ font-size:44px; }
+    .opt2 .hl-specpod .spec .lbl{ font-size:19px; margin-top:5px; }
+    .opt2 .specpod-sep{ height:1px; background:rgba(255,255,255,0.14); }
+  </style>
+  <script language="JavaScript" src="dades.js"></script>
+  <script language="JavaScript" src="../funcions.js"></script>
+</head>
+<body class="opt2" onLoad="setTimeout(function(){renderHighlightsFull(dades); mountTotemStage('highlights'); scaleTotemStage(); mountPhotoCarousel('pc2'); fitHighlights();},30);">
+
+  <video autoplay muted loop playsinline id="myVideo">
+    <source src="../Imatges/videos furgo junts.mp4" type="video/mp4">
+  </video>
+  <div id="bg-scrim"></div>
+
+  <section class="header5 mbr-fullscreen hl" id="header05-1">
+    <div class="align-center fixed-top hl-content">
+
+      <header class="hl-head">
+        <img class="logo-julia" src="../Imatges/Julia_logo_white.png" alt="Julia">
+        <h1 class="hl-title">SPORTCLUB 4x4</h1>
+        <p class="tagline">The 6m Sprinter model to reach every summit.</p>
+      </header>
+
+      <div class="hl-mid">
+        <div class="hl-plan">
+          <img src="../Imatges/yosemitte_plan.png" alt="SportClub plan">
+        </div>
+        <div class="hl-specpod">
+          <div class="hl-specs">
+            <div class="spec"><div class="num">3500 kg</div><div class="lbl">MMTA <sup>**</sup></div></div>
+            <div class="spec"><div class="num">593 cm</div><div class="lbl">Length</div></div>
+            <div class="spec"><div class="num">206 cm</div><div class="lbl">Width</div></div>
+            <div class="spec"><div class="num">280 cm</div><div class="lbl">High <sup>***</sup></div></div>
+            <div class="spec"><div class="num">4 &ndash; 4</div><div class="lbl">Day / Evening places</div></div>
+          </div>
+          <div class="specpod-sep"></div>
+          <div class="pc" id="pc2">
+            <div class="pc-stage">
+              <img class="pc-slide" src="../Imatges/SportClub4x4/foto-camper-1.jpg" alt="">
+              <img class="pc-slide" src="../Imatges/SportClub4x4/foto-camper-2.jpg" alt="">
+              <img class="pc-slide" src="../Imatges/SportClub4x4/foto-camper-3.jpg" alt="">
+            </div>
+            <div class="pc-thumbs">
+              <img class="pc-thumb" src="../Imatges/SportClub4x4/foto-camper-1.jpg" alt="">
+              <img class="pc-thumb" src="../Imatges/SportClub4x4/foto-camper-2.jpg" alt="">
+              <img class="pc-thumb" src="../Imatges/SportClub4x4/foto-camper-3.jpg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hl-features">
+        <div class="hl-features-title">EQUIPMENT HIGHLIGHTS</div>
+        <div id="t_highlights_full" class="hl-list"></div>
+      </div>
+
+    </div>
+  </section>
+</body>
+</html>
