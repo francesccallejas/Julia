@@ -202,6 +202,14 @@ function fitTotem(){
 		while(gap(carac) < 0 && pf > 9){ pf -= 0.5; pp = Math.max(3, pp - 0.4); shrink(preus, pf, pp, true); }
 		while(gap(carac) < 0 && f > 7){ f -= 0.5; p = Math.max(1, p - 0.2); shrink(carac, f, p); }
 	}
+
+	// 3) si SOBRA espai (basic o expo curt), CREIXER per omplir i que les taules
+	//    inferiors es vegin mes grans; deixem ~26px de marge inferior
+	var guard = 0;
+	while(gap(carac) > 26 && f < 21 && guard < 60){
+		f += 0.5; p = Math.min(10, p + 0.35); shrink(carac, f, p); guard++;
+		if(gap(carac) < 0){ f -= 0.5; p = Math.max(1.5, p - 0.35); shrink(carac, f, p); break; }
+	}
 }
 
 /* Divideix la taula de caracteristiques en pagines que roten soles cada 6s,

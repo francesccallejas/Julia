@@ -645,7 +645,7 @@ body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
 }
 /* --- Cos clar --- */
 .cfgscreen{ text-align:left; }
-.cfgscreen .cbody{ flex:1; display:flex; flex-direction:column; gap:20px; padding:30px 60px 40px; min-height:0; }
+.cfgscreen .cbody{ flex:1; display:flex; flex-direction:column; gap:20px; padding:28px 44px 30px; min-height:0; }
 .cfgscreen .plabel{ font-size:13px; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:var(--jc-orange-dark); text-align:left; }
 
 /* --- Preus (transparent, files amb filet, TOTAL destacat) --- */
