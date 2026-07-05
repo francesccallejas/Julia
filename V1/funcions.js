@@ -317,6 +317,15 @@ function renderHighlightSpecs(dades){
 		spec(s.length, 'Length') +
 		spec(s.width, 'Width') +
 		spec(s.high, 'High', '***');
+
+	// Notes legals (*/**/***), una sola font per a tots els models
+	var notes = document.getElementById('hl-notes');
+	if(notes){
+		notes.innerHTML =
+			'<p><b>*</b> Price does not include taxes.</p>' +
+			'<p><b>**</b> The technically permissible maximum mass (TPMM) may vary depending on the accessories and equipment added. The vehicle comes standard with a TPMM of up to 3,500 kg, which can reach 4,100 kg depending on the final configuration.</p>' +
+			'<p><b>***</b> Approximate height of 280 cm measured in the base configuration. This measurement may vary depending on the type of suspension, wheels, tires, or the installation of accessories such as a sunroof, skylights, or roof racks.</p>';
+	}
 }
 
 
@@ -328,8 +337,11 @@ function fitHighlights(){
 	var panel = document.querySelector('.hl-features');
 	var items = document.querySelectorAll('.hl-item');
 	if(!stage || !panel || !items.length) return;
+	// mesurem fins a l'ULTIM element real (franja de xassis o notes), no nomes la
+	// llista de caracteristiques, si no les notes/franja quedarien fora de pantalla
+	var ref = document.querySelector('.hl-chassis') || document.querySelector('.hl-notes') || panel;
 	function sc(){ var m=(stage.style.transform||'').match(/scale\(([^)]+)\)/); return m?parseFloat(m[1]):1; }
-	function panelBottomStage(){ return (panel.getBoundingClientRect().bottom - stage.getBoundingClientRect().top)/sc(); }
+	function panelBottomStage(){ return (ref.getBoundingClientRect().bottom - stage.getBoundingClientRect().top)/sc(); }
 	function gap(){ return (1920 - 46) - panelBottomStage(); }
 	var f = 24, pv = 9;
 	function apply(){
