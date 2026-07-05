@@ -652,22 +652,43 @@ body.has-bg-video #totem-stage .hl-scrim{ display:none !important; }
   font-weight:800; white-space:nowrap;
 }
 
-/* --- Característiques (transparent, CAMPER | CHASSIS, codis en TARONJA) --- */
+/* --- Característiques: DUES PASTILLES (CAMPER | CHASSIS), codis en TARONJA --- */
 .cfgscreen .carac{
   background:transparent !important; border:0 !important; box-shadow:none !important;
   padding:0 !important; margin:0 !important;
 }
-.cfgscreen .carac table{ width:100%; border-collapse:collapse; }
-.cfgscreen .titol_taula{
-  color:#1a1d22 !important; border-bottom:2px solid var(--jc-orange) !important;
-  letter-spacing:2px;
+/* contenidor flex de les dues targetes */
+.cfgscreen .cfg-cards{ display:flex; align-items:flex-start; gap:30px; }
+.cfgscreen .cfg-card{
+  background:#fffdf9; border:1px solid #e7e0d2; border-radius:18px;
+  padding:22px 24px 16px; box-shadow:0 10px 28px rgba(28,31,26,0.06);
 }
-.cfgscreen .carac table tr td{ color:#43484f; }
-.cfgscreen .carac table tr:not(:first-child):nth-child(odd){ background:#eae4d8; }
-.cfgscreen .carac table tr td:first-child{ color:#1a1d22; font-weight:600; border-right:1px solid #d8d0c0; }
-/* codis/tags en taronja KTM (píndola clara amb text taronja) */
-.cfgscreen .carac table tr td b{
-  background:#fff !important; border:1px solid #f0d3bb !important;
+.cfgscreen .cfg-cards{ width:100%; }
+.cfgscreen .cfg-card.cfg-camper{ flex:0 0 28%; min-width:0; }
+.cfgscreen .cfg-card.cfg-chassis{ flex:1 1 0%; min-width:0; }
+/* títol de cada targeta amb filet taronja i AIRE a sota */
+.cfgscreen .cfg-card-head{
+  font-size:15px; font-weight:800; letter-spacing:2px; text-transform:uppercase;
+  color:#1a1d22; padding-bottom:12px; margin-bottom:16px;
+  border-bottom:2px solid var(--jc-orange);
+}
+.cfgscreen .cfg-t{ width:100%; border-collapse:collapse; table-layout:fixed; }
+.cfgscreen .cfg-t td{
+  border:0 !important; padding:6px 8px !important; color:#43484f;
+  line-height:1.3; vertical-align:top; text-align:left !important;
+  overflow-wrap:anywhere; word-break:break-word;
+}
+.cfgscreen .cfg-t td.desc{ white-space:normal !important; }
+.cfgscreen .cfg-t td.code{ white-space:nowrap !important; }
+.cfgscreen .cfg-t tr:nth-child(odd){ background:#f3eee3 !important; }
+.cfgscreen .cfg-camper .cfg-t td.desc{ color:#1a1d22; font-weight:600; }
+/* chassis: codi estret (fix), descripció amb aire; separació entre les dues parelles */
+.cfgscreen .cfg-chassis-t td.code{ white-space:nowrap; width:58px; }
+.cfgscreen .cfg-chassis-t td.desc{ padding-right:16px !important; }
+.cfgscreen .cfg-chassis-t td:nth-child(3){ border-left:1px solid #ece1d0 !important; padding-left:18px !important; }
+/* píndola clara de codi amb text taronja KTM */
+.cfgscreen .cfg-t td.code b{
+  display:inline-block; background:#fff !important; border:1px solid #f0d3bb !important;
   color:var(--jc-orange-dark) !important; font-weight:700 !important;
-  padding:1px 6px !important; border-radius:5px !important;
+  padding:1px 6px !important; border-radius:5px !important; font-size:0.9em; letter-spacing:0.3px;
 }

@@ -97,34 +97,28 @@ function PintaTaules(dades, model, idioma)
 	{
 		var array_camper=dades.charac.camper;
 		var array_chasis=dades.charac.chasis;
-		var max=Math.max(Math.ceil(array_chasis.length/2), array_camper.length);
-		if(idioma=="ger")
-			cadena="<table class=\"carac\"><tr><th class=\"titol_taula\">CAMPER KONFIGURATION</th><th class=\"titol_taula\" colspan=\"3\">FAHRGESTELLKONFIGURATION</th></tr>";
-		else
-			cadena="<table class=\"carac\"><tr><th class=\"titol_taula\">CAMPER CONFIGURATION</th><th class=\"titol_taula\" colspan=\"3\">CHASSIS CONFIGURATION</th></tr>";
-		var i_chasis=0;
-		for(var i=0;i<max;i++)
+		var titCamper=(idioma=="ger")?"CAMPER KONFIGURATION":"CAMPER CONFIGURATION";
+		var titChasis=(idioma=="ger")?"FAHRGESTELLKONFIGURATION":"CHASSIS CONFIGURATION";
+		// Dues pastilles separades: CAMPER (1 columna) | CHASSIS (parelles codi+desc)
+		cadena="<div class=\"cfg-cards\">";
+		cadena+="<div class=\"cfg-card cfg-camper\"><div class=\"cfg-card-head\">"+titCamper+"</div>";
+		cadena+="<table class=\"cfg-t\">";
+		for(var i=0;i<array_camper.length;i++)
+			cadena+="<tr><td class=\"desc\">"+array_camper[i]+"</td></tr>";
+		cadena+="</table></div>";
+		cadena+="<div class=\"cfg-card cfg-chassis\"><div class=\"cfg-card-head\">"+titChasis+"</div>";
+		cadena+="<table class=\"cfg-t cfg-chassis-t\">";
+		for(var j=0;j<array_chasis.length;j+=2)
 		{
-			cadena+="<tr><td align=\"left\">";
-			if(i<array_camper.length)
-				cadena+=array_camper[i];
-			cadena+="</td><td align=\"left\"><b>";
-			if(i_chasis<array_chasis.length)
-				cadena+=array_chasis[i_chasis].code;
-			cadena+="</b></td><td align=\"left\">";
-			if(i_chasis<array_chasis.length)
-				cadena+=array_chasis[i_chasis].desc;
-			cadena+="</td><td align=\"left\"><b>";
-			i_chasis++;
-			if(i_chasis<array_chasis.length)
-				cadena+=array_chasis[i_chasis].code;
-			cadena+="</b></td><td align=\"left\">";
-			if(i_chasis<array_chasis.length)
-				cadena+=array_chasis[i_chasis].desc;
-			cadena+="</td></tr>";
-			i_chasis++;
+			cadena+="<tr><td class=\"code\"><b>"+array_chasis[j].code+"</b></td><td class=\"desc\">"+array_chasis[j].desc+"</td>";
+			if(j+1<array_chasis.length)
+				cadena+="<td class=\"code\"><b>"+array_chasis[j+1].code+"</b></td><td class=\"desc\">"+array_chasis[j+1].desc+"</td>";
+			else
+				cadena+="<td class=\"code\"></td><td class=\"desc\"></td>";
+			cadena+="</tr>";
 		}
-		cadena+="</table><br>";
+		cadena+="</table></div>";
+		cadena+="</div>";
 		charac.innerHTML=cadena;
 	}
 	var highlights=document.getElementById("t_highlights");
