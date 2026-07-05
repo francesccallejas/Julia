@@ -281,7 +281,7 @@ html, body{
 
 .header5 h1{
   font-family: var(--jc-title) !important;
-  font-size: 46px !important;          /* ~30% mes petit; cabra en 1 linia fins i tot amb New Brilliant (mes ampla) */
+  font-size: 28px !important;          /* 40% mes petit; en 1 linia fins i tot amb New Brilliant (molt ampla) */
   white-space: nowrap !important;      /* SEMPRE en una sola linia */
   color: #fff !important;
   text-shadow: 0 2px 18px rgba(0,0,0,0.5);
