@@ -485,10 +485,10 @@ body.totem-scaled{
 }
 
 /* Notes legals (*/**/***) — text petit i discret, sota les caracteristiques */
-.hl-notes{ flex:0 0 auto; display:flex; flex-direction:column; gap:2px; text-align:left !important;
-  font-size:11px; line-height:1.32; color:rgba(255,255,255,.42); }
+.hl-notes{ flex:0 0 auto; display:flex; flex-direction:column; gap:1px; text-align:left !important;
+  font-size:10px; line-height:1.3; color:rgba(255,255,255,.82); }
 .hl-notes p{ margin:0; text-align:left !important; }
-.hl-notes b{ color:rgba(255,255,255,.6); font-weight:700; }
+.hl-notes b{ color:#fff; font-weight:700; }
 
 /* Franja de xassis a baix de tot: "Built on [logo]" (opcio 5 del LAB) */
 .hl-chassis{

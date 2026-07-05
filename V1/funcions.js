@@ -323,8 +323,8 @@ function renderHighlightSpecs(dades){
 	if(notes){
 		notes.innerHTML =
 			'<p><b>*</b> Price does not include taxes.</p>' +
-			'<p><b>**</b> The technically permissible maximum mass (TPMM) may vary depending on the accessories and equipment added. The vehicle comes standard with a TPMM of up to 3,500 kg, which can reach 4,100 kg depending on the final configuration.</p>' +
-			'<p><b>***</b> Approximate height of 280 cm measured in the base configuration. This measurement may vary depending on the type of suspension, wheels, tires, or the installation of accessories such as a sunroof, skylights, or roof racks.</p>';
+			'<p><b>**</b> TPMM: 3,500 kg standard, up to 4,100 kg depending on configuration.</p>' +
+			'<p><b>***</b> Height ~280 cm in base config; varies with suspension, wheels, tyres or roof accessories.</p>';
 	}
 }
 
