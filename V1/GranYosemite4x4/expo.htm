@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Julià Camper Gran Yosemite 4x4</title>
-     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-    <!--link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon"/-->
-	<script language="JavaScript" src="dades.js"></script>
-	<script language="JavaScript" src="../funcions.js"></script>    
-    	<link href="../estils.css" rel="stylesheet"/>
-
-	
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Julià Camper Gran Yosemite 4x4</title>
+  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+  <link href="../estils.css" rel="stylesheet"/>
+  <script language="JavaScript" src="dades.js"></script>
+  <script language="JavaScript" src="../funcions.js"></script>
 </head>
-
-<body onLoad="setTimeout(PintaTaules(dades, 'expo', 'eng'),30);">
-<div class="align-center fixed-top">
-  <div style="padding:10px">
-     <img src="../Imatges/Julia_Camper_logo.png" alt="Julia_Camper_logo" width="100%"><br>
-     <h1 style="font-family: New Brilliant; font-size: 36px"><b>GRAN YOSEMITE 4x4</b></h1>
+<body onLoad="setTimeout(function(){PintaTaules(dades, 'expo', 'eng'); mountTotemStage('config'); fitTotem(); scaleTotemStage();},30);">
+<div class="align-center fixed-top cfgscreen">
+  <div class="mast">
+    <img class="logo-julia" src="../Imatges/Julia_logo_white.png" alt="Julia">
+    <h1 class="mtitle">GRAN YOSEMITE<br>4x4</h1>
+    <div class="model">EXPOSITION<br>VERSION</div>
   </div>
-  <div class="model">EXPOSITION<br>VERSION</div>
-<div id="t_preus" class="preus">
-</div>
-<div id="t_carac" class="carac">
-</div>
+  <div class="cbody">
+    <div class="plabel">Price</div>
+    <div id="t_preus" class="preus"></div>
+    <div id="t_carac" class="carac"></div>
+  </div>
 </div>
 </body>
 </html>
