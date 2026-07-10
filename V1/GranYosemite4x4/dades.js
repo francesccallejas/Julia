@@ -532,74 +532,102 @@ var dades={
 		expo: [
 			{
 				concept: "BASE PRICE GRAN YOSEMITE 419 4X4",
-				price: 112450.00
+				price: 113444.54
 			},
 			{
-				total: true,
-				concept: "CHASSIS CONFIGURATION"
+				concept: "SLIDING DOOR SOFT-CLOSE",
+				price: 587.39
 			},
 			{
-				concept: "METALIC COLOR TERNORITE 7755",
-				price: 2180.00
-			},			
-			{
-				total: true,
-				concept: "CAMPER CONFIGURATION"
+				concept: "FIXED TRAILER HITCH REINFORCED",
+				price: 1763.87
 			},
 			{
-				concept: "POP UP ROOF W907 L (4.1t)",
-				price: 7010.00
+				concept: "HEATED WINDSCREEN",
+				price: 503.36
 			},
 			{
-				concept: "UPHOLSTERY NATURAL LEATHER DIAMONDS",
-				price: 2750.00
+				concept: "SPECIAL PAINT",
+				price: 2184.03
+			},
+			{
+				concept: "POP UP ROOF",
+				price: 7142.02
+			},
+			{
+				concept: "LEATHER UPHOLSTERY",
+				price: 2520.17
+			},
+			{
+				concept: "TRUMA COMBI C4 DIESEL + ELECTRIC",
+				price: 587.39
+			},
+			{
+				concept: "MAXXFAN ROOF FAN",
+				price: 831.93
 			},
 			{
 				concept: "WC CLESANA C1",
-				price: 1050.00
+				price: 2092.44
 			},
 			{
-				concept: "TIRES GOODRICH 265/60/18 (4/5)",
-				price: 1275.00
+				concept: "ROOF AIR CONDITIONING TRUMA AVENTA COMPACT PLUS",
+				price: 2932.77
 			},
 			{
-				concept: "ALLOY WHEEL KLASIC_B 18x9+45 CB84,1 6X130 BLACK MATT",
-				price: 3150.00
+				concept: "SOLAR PANEL 180 W",
+				price: 1672.27
 			},
 			{
-				concept: "LAZER FRONT LIGHTS MER W907 TRIPLE R",
-				price: 930.00
+				concept: "CAB BLACKOUT BLINDS",
+				price: 839.50
 			},
 			{
-				concept: "AIR CONDITIONED (TELAIR E VAN 7400h)",
-				price: 3100.00
+				concept: "THULE AWNING BLACK",
+				price: 1588.23
 			},
 			{
-				concept: "REMIS CABINE",
-				price: 850.00
+				concept: "LAZER LIGHTS MERCEDES",
+				price: 1007.56
 			},
 			{
-				concept: "THULE 400 ANTRACITE FOR POP UP MODELS",
-				price: 1600.00
+				concept: "REAR WORK LIGHTS",
+				price: 503.36
 			},
 			{
-				concept: "WHEEL REAR SUPPORT ALU HIGH W907",
-				price: 1450.00
+				concept: "ALPHADYNAMIC ELECTRIC STEP SLIDING DOOR",
+				price: 1847.90
+			},
+			{
+				concept: "DELTA KLASSIK B ALLOY WHEELS 18\"",
+				price: 3773.11
+			},
+			{
+				concept: "LITHIUM BATTERY 150 Ah (PERFEKTIUM)",
+				price: 1588.24
+			},
+			{
+				concept: "DELIVERY & TRANSPORT",
+				price: 1672.27
+			},
+			{
+				concept: "TUV, COC, DOCUMENTS",
+				price: 495.80
 			},
 			{
 				separa : true,
 				concept: "Total Netto",
-				price: 137795.00
+				price: 149578.15
 			},
 			{
 				concept: "TAX 19% (Mwst)",
-				price: 26181.05
+				price: 28419.85
 			},
 			{
 				separa : true,
 				total: true,
-				concept: "TOTAL PRICE WITHOUT TRANSPORT",
-				price: 163976.05
+				concept: "TOTAL PRICE",
+				price: 177998.00
 			}
 		]
 	}
