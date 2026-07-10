@@ -625,111 +625,87 @@ var dades={
 				price: 85100.00
 			},
 			{
-				total: true,
-				concept: "CHASSIS CONFIGURATION"
+				concept: "SPECIAL PAINT GREY LIGHT",
+				price: 1672.27
 			},
 			{
-				concept: "SPECIAL COLOR GREY LIGHT",
-				price: 1315.00
+				concept: "FIXED TRAILER HITCH",
+				price: 1000.00
 			},
 			{
-				concept: "TRAILER HITCH SY",
-				price: 718.00
+				concept: "LEATHER SEAT COVERS",
+				price: 1679.83
 			},
 			{
-				total: true,
-				concept: "CAMPER CONFIGURATION"
+				concept: "SOLAR PANEL 140 W",
+				price: 1252.10
 			},
 			{
-				concept: "DOUBLE BED",
-				price: 0.00
+				concept: "OUTDOOR SHOWER",
+				price: 327.73
 			},
 			{
-				concept: "POP UP ROOF SY-M",
-				price: 7010.00
+				concept: "WINDOW IN BODY WIDENING",
+				price: 831.93
 			},
 			{
-				concept: "UPHOLSTERY NATURAL LEATHER STRIPES",
-				price: 2750.00
+				concept: "WINDOWS IN BOTH REAR DOORS",
+				price: 831.93
 			},
 			{
-				concept: "EXTRA SHOWER",
-				price: 240.00
-			},
-			{
-				concept: "UPGRADE TO TRUMA COMBI 4DE",
-				price: 580.00
-			},
-			{
-				concept: "INDUCTION KITCHEN",
-				price: 1800.00
-			},
-			{
-				concept: "WC CLESANA C1",
-				price: 1900.00
-			},
-			{
-				concept: "RIGID SOLAR PANEL",
-				price: 0.00
+				concept: "ALLOY WHEELS DELTA KLASSIK B 18\" BLACK MATT",
+				price: 2512.61
 			},
 			{
 				concept: "TIRES LODER AT 255/55R18 118T M+S SNOWFLAKE",
-				price: 1275.00
+				price: 1084.03
 			},
 			{
-				concept: "ALLOY WHEEL KLASSIK_B 18x8,5 +42,5 cb65,1 5/120 BLACK MATT",
-				price: 3250.00
+				concept: "SUSPENSION LIFT 4 CM",
+				price: 1000.00
 			},
 			{
-				concept: "KIT BASIC SUSPENSION LEVEL (4CM)",
-				price: 930.00
+				concept: "DELTA FENDER FLARES",
+				price: 2500.00
 			},
 			{
-				concept: "SNORKEL SY",
-				price: 890.00
+				concept: "CAB BLACKOUT BLINDS",
+				price: 915.97
 			},
 			{
-				concept: "PROTECTION DURAALU ENGINE VW/M.AN",
-				price: 660.00
+				concept: "ELECTRIC STEP (LIPPERT)",
+				price: 604.20
 			},
 			{
-				concept: "PROTECTION DURAALU DIFFERENCIAL VW/M.AN",
-				price: 320.00
+				concept: "THULE AWNING 3.25 ANTHRACITE",
+				price: 1504.20
 			},
 			{
-				concept: "LAZER FRONT LIGHTS M.A.N",
-				price: 930.00
+				concept: "LITHIUM BATTERY 180 Ah (PERFEKTIUM)",
+				price: 1588.24
 			},
 			{
-				concept: "REMIS CABINE",
-				price: 850.00
+				concept: "DELIVERY & TRANSPORT",
+				price: 1672.27
 			},
 			{
-				concept: "THULE 3.00 ANTRACITE FOR POP UP MODELS",
-				price: 1450.00
-			},
-			{
-				concept: "WHEEL REAR SUPPORT ALU TGE/CRAFTER HIGH ",
-				price: 1430.00
-			},
-			{
-				concept: "KORU SUPPORT+MAXTRAX",
-				price: 690.00
+				concept: "TUV, COC, DOCUMENTS",
+				price: 495.80
 			},
 			{
 				separa : true,
 				concept: "Total Netto",
-				price: 114088.00
+				price: 106573.11
 			},
 			{
 				concept: "TAX 19% (Mwst)",
-				price: 21676.72
+				price: 20248.89
 			},
 			{
 				separa : true,
 				total: true,
-				concept: "TOTAL PRICE WITHOUT TRANSPORT",
-				price: 135764.72
+				concept: "TOTAL PRICE",
+				price: 126822.00
 			}
 		]
 	}

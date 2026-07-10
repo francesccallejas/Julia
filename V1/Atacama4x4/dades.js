@@ -511,7 +511,7 @@ var dades={
 		base: [
 			{
 				concept: "BASE PRICE ATACAMA 4X4",
-				price: 114950.00
+				price: 126400.00
 			},
 			{
 				concept: "UPHOLSTERY NATURAL LEATHER STRIPES",
@@ -520,23 +520,23 @@ var dades={
 			{
 				separa: true,
 				concept: "Total Netto",
-				price: 117700.00 
+				price: 129150.00 
 			},
 			{
 				concept: "TAX 19% (Mwst)",
-				price: 22363
+				price: 24538.50
 			},
 			{
 				separa: true,
 				total: true,
 				concept: "TOTAL PRICE WITHOUT TRANSPORT",
-				price: 140063.00 
+				price: 153688.50 
 			}
 		],
 		expo: [
 			{
 				concept: "BASE PRICE ATACAMA 4X4",
-				price: 114950.00
+				price: 126400.00
 			},
 			{
 				total: true,
@@ -641,17 +641,17 @@ var dades={
 			{
 				separa : true,
 				concept: "Total Netto",
-				price: 153603.00
+				price: 165053.00
 			},
 			{
 				concept: "TAX 19% (Mwst)",
-				price: 29184.57
+				price: 31360.07
 			},
 			{
 				separa : true,
 				total: true,
 				concept: "TOTAL PRICE WITHOUT TRANSPORT",
-				price: 182787.57
+				price: 196413.07
 			}
 		]
 	}
