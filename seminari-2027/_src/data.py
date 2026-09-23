@@ -94,7 +94,11 @@ KINDS = {
     F: dict(label="Temps lliure", short="Lliure", color="#cfc6bb"),
 }
 
-FACILITATORS = [("OR", "Oriol"), ("LLR", "LLR"), ("MU", "Marcos Urarte"), ("NE", "NE"), ("Hotel", "Campus La Mola")]
+FAC_NAMES = {"OR": "Oriol Relats", "LLR": "Lluís Rosés", "MU": "Marcos Urarte",
+             "Hotel": "Campus La Mola"}
+
+def fac_name(code):
+    return FAC_NAMES.get(code, code)
 
 # ------------------------------------------------------------------ maths ---
 def mins(t):

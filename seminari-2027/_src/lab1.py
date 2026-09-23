@@ -5,7 +5,7 @@ from data import *
 NAME = "Serra"
 TAG = "Editorial · paper · timeline vertical"
 
-def block(x, i):
+def block(x, i, dn):
     k = KINDS[x["kind"]]
     has = bool(x["obj"] or x["timing"] or x["how"])
     det = ""
@@ -20,7 +20,7 @@ def block(x, i):
             parts.append('<div class="dt"><h4>Com ho fem</h4><ul>%s</ul></div>' %
                          "".join("<li>%s</li>" % t for t in x["how"]))
         det = '<div class="det"><div class="detin">%s</div></div>' % "".join(parts)
-    return """<article class="blk k-%s%s" style="--c:%s">
+    return """<article class="blk k-%s%s" id="b-%d-%d" style="--c:%s">
   <div class="tm"><span class="mono t1">%s</span><span class="mono t2">%s</span><span class="mono dur">%s</span></div>
   <div class="rail"><i></i></div>
   <div class="body">
@@ -33,13 +33,13 @@ def block(x, i):
     </button>%s
   </div>
 </article>""" % (
-        x["kind"], " has" if has else "", k["color"],
+        x["kind"], " has" if has else "", dn, i, k["color"],
         x["s"], x["e"], hm(dur(x)),
         ' data-t="1"' if has else ' disabled',
         ('<span class="tag mono">%s</span>' % x["tag"]) if x["tag"] else "",
         x["t"],
         ('<p class="sub">%s</p>' % x["sub"]) if x["sub"] else "",
-        x["fac"],
+        fac_name(x["fac"]),
         '<span class="chev" aria-hidden="true"></span>' if has else "",
         det)
 
@@ -59,7 +59,28 @@ def day(d):
   </header>
   <div class="tl">%s</div>
 </section>""" % (d["n"], d["n"], d["dow"], d["d"], d["month"], d["lead"], chips,
-                 "".join(block(x, i) for i, x in enumerate(d["sessions"])))
+                 "".join(block(x, i, d["n"]) for i, x in enumerate(d["sessions"])))
+
+def overlay():
+    """Resum superposat: xifres clau + index complet dels dos dies."""
+    sums = "".join(
+        '<div class="ovs" style="--c:%s"><b class="mono">%s</b><span>%s</span></div>' % (c, v, l)
+        for c, v, l in [(KINDS[H]["color"], hm(TOT[H]), "Treball estratègic"),
+                        (KINDS[S]["color"], hm(TOT[S]), "Inspiració i equip"),
+                        (KINDS[M]["color"], hm(TOT[M] + TOT[F]), "Àpats, pauses i lliure"),
+                        ("#ff5710", "3 · 3h", "Blocs de priorització")])
+    rows = ""
+    for d in DAYS:
+        rows += ('<div class="ovd"><span class="mono">Dia 0%d</span><b>%s %s de %s</b>'
+                 '<i class="mono">%s → %s</i></div>' %
+                 (d["n"], d["dow"], d["d"], d["month"], d["sessions"][0]["s"], d["sessions"][-1]["e"]))
+        for i, x in enumerate(d["sessions"]):
+            rows += ('<a class="ovr k-%s" href="#b-%d-%d" style="--c:%s">'
+                     '<span class="mono ot">%s</span><b>%s</b>'
+                     '<i class="mono od">%s</i><i class="mono of">%s</i></a>' %
+                     (x["kind"], d["n"], i, KINDS[x["kind"]]["color"], x["s"], x["t"],
+                      hm(dur(x)), fac_name(x["fac"])))
+    return sums, rows
 
 def render():
     stats = "".join(
@@ -68,6 +89,7 @@ def render():
                      ("3", "Blocs de prioritzacio"), ("2", "Dies · 1 nit")])
     legend = "".join('<span class="lg" style="--c:%s"><i></i>%s</span>' % (v["color"], v["label"])
                      for v in KINDS.values())
+    ovsums, ovrows = overlay()
     return T("""<!doctype html><html lang="ca"><head>%s
 <title>Seminari Pla Estratègic 2027 · Relats</title>
 <style>%s
@@ -88,8 +110,11 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
   padding:8px 14px;border-radius:99px;border:1px solid transparent;color:#fff;opacity:.8;transition:.25s}
 .top.on .nv a{color:var(--ink)}
 .top .nv a:hover{opacity:1;border-color:currentColor}
-.top .nv a.cta{background:var(--accent);color:#fff;opacity:1;border-color:var(--accent)}
-@media(max-width:720px){.top .nv a:not(.cta){display:none}}
+.top .nv .cta{font-family:var(--font-m);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  padding:8px 16px;border-radius:99px;background:var(--accent);color:#fff;opacity:1;
+  border:1px solid var(--accent);transition:.2s}
+.top .nv .cta:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+@media(max-width:720px){.top .nv a{display:none}}
 
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
@@ -126,13 +151,10 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .sticky .wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
 .lg{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2)}
 .lg i{width:9px;height:9px;border-radius:2px;background:var(--c)}
-.jump{margin-left:auto;display:flex;gap:8px}
-.jump a{font-family:var(--font-m);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
-  padding:7px 14px;border:1px solid var(--line);border-radius:99px;transition:.2s}
-.jump a:hover{border-color:var(--ink);background:var(--ink);color:#fff}
-
 /* ---------- day ---------- */
-.day{padding:clamp(56px,9vh,104px) 0 0}
+.day{padding:clamp(56px,9vh,104px) 0 0;scroll-margin-top:104px}
+.blk{scroll-margin-top:118px}
+.blk.flash .hd{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,87,16,.16)}
 .dayhd{display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,3vw,38px);align-items:start;
   padding-bottom:30px;border-bottom:1px solid var(--line)}
 .dayhd .wrapless{grid-column:1/-1}
@@ -216,6 +238,46 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 @media(max-width:820px){.venue .wrap{grid-template-columns:1fr}}
 
 /* ---------- footer ---------- */
+/* ---------- resum superposat ---------- */
+.ov{position:fixed;inset:0;z-index:60;background:rgba(20,24,28,.52);backdrop-filter:blur(6px);
+  display:flex;align-items:flex-start;justify-content:center;padding:clamp(16px,5vh,64px) clamp(14px,4vw,40px);
+  opacity:0;pointer-events:none;transition:opacity .26s;overflow:auto}
+.ov.on{opacity:1;pointer-events:auto}
+.ovbox{background:var(--paper);border-radius:22px;width:min(1020px,100%);max-height:100%;
+  display:flex;flex-direction:column;overflow:hidden;box-shadow:0 40px 90px -40px rgba(0,0,0,.6);
+  transform:translateY(14px);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.ov.on .ovbox{transform:none}
+.ovhd{display:flex;align-items:flex-start;gap:18px;padding:26px clamp(20px,3vw,34px) 18px;
+  border-bottom:1px solid var(--line)}
+.ovhd h2{font-size:clamp(22px,3vw,34px);font-weight:700;letter-spacing:-.028em;line-height:1.05;margin-top:6px}
+.ovhd h2 em{font-style:normal;color:var(--accent)}
+.ovx{flex:none;margin-left:auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);
+  display:grid;place-items:center;font-size:20px;line-height:1;color:var(--ink-dim);transition:.2s}
+.ovx:hover{border-color:var(--ink);color:var(--ink)}
+.ovsums{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border-bottom:1px solid var(--line)}
+.ovs{background:var(--paper);padding:15px clamp(16px,2vw,22px);border-top:3px solid var(--c)}
+.ovs b{display:block;font-size:clamp(17px,2.2vw,24px);font-weight:600;letter-spacing:-.02em}
+.ovs span{display:block;font-size:11.5px;color:var(--ink-dim);margin-top:3px;line-height:1.3}
+@media(max-width:700px){.ovsums{grid-template-columns:1fr 1fr}}
+.ovlist{overflow:auto;padding:6px clamp(12px,2vw,20px) 22px}
+.ovd{display:flex;align-items:baseline;gap:12px;padding:20px 10px 9px;margin-top:4px;
+  border-bottom:1px solid var(--line)}
+.ovd span{font-family:var(--font-m);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.ovd b{font-size:15px;font-weight:600}
+.ovd i{font-style:normal;margin-left:auto;font-size:11.5px;color:var(--ink-dim)}
+.ovr{display:flex;align-items:baseline;gap:14px;padding:9px 10px;border-radius:9px;transition:.16s;
+  border-left:2px solid var(--c)}
+.ovr:hover{background:var(--card)}
+.ovr .ot{flex:none;width:46px;font-size:12px;font-weight:600;color:var(--accent)}
+.ovr.k-meal .ot,.ovr.k-free .ot{color:var(--ink-dim);font-weight:400}
+.ovr b{flex:1;font-size:14.5px;font-weight:600;letter-spacing:-.008em}
+.ovr.k-meal b,.ovr.k-free b{font-weight:400;color:var(--ink-2)}
+.ovr i{font-style:normal;font-size:11px;color:var(--ink-dim)}
+.ovr .od{flex:none;width:54px;text-align:right}
+.ovr .of{flex:none;width:118px;text-align:right}
+@media(max-width:640px){.ovr .of{display:none}}
+
 footer{background:var(--ink);color:rgba(255,255,255,.45);border-top:1px solid rgba(255,255,255,.12)}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;
   padding-top:26px;padding-bottom:26px;font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
@@ -224,7 +286,7 @@ footer img{height:16px;filter:invert(1);opacity:.6}
 
 <div class="top" id="top"><img src="%s" alt="Relats">
   <nav class="nv"><a href="#dia1">Dia 1</a><a href="#dia2">Dia 2</a><a href="#lamola">La Mola</a>
-  <a class="cta" href="#dia1">Veure agenda</a></nav></div>
+  <button class="cta" id="openov">Veure agenda</button></nav></div>
 
 <header class="hero">%s
   <div class="wrap">
@@ -242,9 +304,7 @@ footer img{height:16px;filter:invert(1);opacity:.6}
 
 <section class="band"><div class="wrap">%s</div></section>
 
-<div class="sticky"><div class="wrap">%s
-  <div class="jump"><a href="#dia1">Dia 1 · 29</a><a href="#dia2">Dia 2 · 30</a></div>
-</div></div>
+<div class="sticky"><div class="wrap">%s</div></div>
 
 <main class="wrap">%s</main>
 
@@ -257,12 +317,43 @@ footer img{height:16px;filter:invert(1);opacity:.6}
 
 <footer><div class="wrap"><img src="%s" alt="Relats"><span>Seminari Pla Estratègic 2027</span></div></footer>
 
+<div class="ov" id="ov" role="dialog" aria-modal="true" aria-label="Resum de l'agenda">
+  <div class="ovbox">
+    <header class="ovhd">
+      <div><div class="kick">Resum · 29 i 30 de setembre</div>
+        <h2>Tota l'agenda <em>d'un cop d'ull</em></h2></div>
+      <button class="ovx" id="closeov" aria-label="Tanca">&times;</button>
+    </header>
+    <div class="ovsums">%s</div>
+    <div class="ovlist">%s</div>
+  </div>
+</div>
+
 <script>
 document.querySelectorAll('.hd[data-t]').forEach(function(b){
   b.addEventListener('click',function(){b.closest('.blk').classList.toggle('open')});
 });
 var t=document.getElementById('top');
 addEventListener('scroll',function(){t.classList.toggle('on',scrollY>innerHeight*0.82)},{passive:true});
+
+var ov=document.getElementById('ov');
+function setOv(v){
+  ov.classList.toggle('on',v);
+  document.body.style.overflow=v?'hidden':'';
+}
+document.getElementById('openov').addEventListener('click',function(){setOv(true)});
+document.getElementById('closeov').addEventListener('click',function(){setOv(false)});
+ov.addEventListener('click',function(e){if(e.target===ov)setOv(false)});
+addEventListener('keydown',function(e){if(e.key==='Escape')setOv(false)});
+ov.querySelectorAll('.ovr').forEach(function(a){
+  a.addEventListener('click',function(e){
+    e.preventDefault();setOv(false);
+    var el=document.querySelector(a.getAttribute('href'));
+    if(!el)return;
+    el.scrollIntoView({behavior:'smooth',block:'start'});
+    el.classList.add('flash');setTimeout(function(){el.classList.remove('flash')},1400);
+  });
+});
 </script>
 </body></html>""") % (
         HEAD_COMMON, RESET, TOKENS, fontface(),
@@ -270,4 +361,4 @@ addEventListener('scroll',function(){t.classList.toggle('on',scrollY>innerHeight
         "".join(day(d) for d in DAYS),
         ridge_svg(opacity=(0.14, 0.24, 0.42, 1.0)), VENUE["blurb"],
         "".join('<div class="vf"><span>%s</span><b>%s</b></div>' % f for f in VENUE["facts"]),
-        pines_svg(), LOGO)
+        pines_svg(), LOGO, ovsums, ovrows)
