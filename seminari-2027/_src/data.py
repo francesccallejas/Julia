@@ -99,7 +99,7 @@ KINDS = {
 }
 
 FAC_NAMES = {"OR": "Oriol Relats", "LLR": "Lluís Rosés", "MU": "Marcos Urarte",
-             "Hotel": "Campus La Mola"}
+             "NE": "Nines Espejo", "Hotel": "Campus La Mola"}
 
 def fac_name(code):
     return FAC_NAMES.get(code, code)
