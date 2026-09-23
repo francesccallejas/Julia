@@ -21,7 +21,7 @@ def block(x, i, dn):
             parts.append('<div class="dt"><h4>Com ho fem</h4><ul>%s</ul></div>' %
                          "".join("<li>%s</li>" % t for t in x["how"]))
         det = '<div class="det"><div class="detin">%s</div></div>' % "".join(parts)
-    return """<article class="blk k-%s%s" id="b-%d-%d" style="--c:%s">
+    return """<article class="blk k-%s%s" id="b-%d-%d" data-k="%s" style="--c:%s">
   <div class="tm"><span class="mono t1">%s</span><span class="mono t2">%s</span><span class="mono dur">%s</span></div>
   <div class="rail"><i></i></div>
   <div class="body">
@@ -34,7 +34,7 @@ def block(x, i, dn):
     </button>%s
   </div>
 </article>""" % (
-        x["kind"], " has" if has else "", dn, i, k["color"],
+        x["kind"], " has" if has else "", dn, i, x["kind"], k["color"],
         x["s"], x["e"], hm(dur(x)),
         ' data-t="1"' if has else ' disabled',
         ('<span class="tag mono">%s</span>' % x["tag"]) if x["tag"] else "",
@@ -88,8 +88,8 @@ def render():
         '<div class="st"><div class="sv mono">%s</div><div class="sl">%s</div></div>' % (v, l)
         for v, l in [(hm(TOT[H]), "Treball estratègic"), (hm(TOT[S]), "Inspiració i equip"),
                      ("3", "Blocs de prioritzacio"), ("2", "Dies · 1 nit")])
-    legend = "".join('<span class="lg" style="--c:%s"><i></i>%s</span>' % (v["color"], v["label"])
-                     for v in KINDS.values())
+    legend = "".join('<button class="lg" data-k="%s" style="--c:%s" aria-pressed="true"><i></i>%s</button>'
+                     % (k, v["color"], v["label"]) for k, v in KINDS.items())
     ovsums, ovrows = overlay()
     return T("""<!doctype html><html lang="ca"><head>%s
 <title>Seminari Pla Estratègic 2027 · Relats</title>
@@ -149,9 +149,22 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 /* ---------- legend rail ---------- */
 .sticky{position:sticky;top:52px;z-index:30;background:rgba(234,228,223,.9);backdrop-filter:blur(12px);
   border-bottom:1px solid var(--line)}
-.sticky .wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
-.lg{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2)}
-.lg i{width:9px;height:9px;border-radius:2px;background:var(--c)}
+.sticky .wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:11px;padding-bottom:11px}
+.flab{font-family:var(--font-m);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-dim);margin-right:6px}
+.lg{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);
+  padding:7px 14px;border:1px solid var(--line);border-radius:99px;background:var(--card);
+  transition:border-color .18s,background .18s,color .18s,opacity .18s}
+.lg i{width:9px;height:9px;border-radius:50%;background:var(--c);transition:.18s}
+.lg:hover{border-color:var(--ink-dim)}
+.lg.off{opacity:.42;background:transparent;color:var(--ink-dim)}
+.lg.off i{background:transparent;box-shadow:inset 0 0 0 1.5px var(--c)}
+.freset{margin-left:auto;font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);padding:7px 13px;border:1px solid currentColor;
+  border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s}
+.freset.on{opacity:1;pointer-events:auto}
+.freset:hover{background:var(--accent);color:#fff}
+@media(max-width:640px){.flab{display:none}.lg{font-size:11.5px;padding:6px 11px}}
 /* ---------- day ---------- */
 .day{padding:clamp(56px,9vh,104px) 0 0;scroll-margin-top:104px}
 .blk{scroll-margin-top:118px}
@@ -177,18 +190,27 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .dur{display:block;font-size:10.5px;color:var(--accent);margin-top:7px;letter-spacing:.04em}
 .rail{position:relative}
 .rail:before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--line);transform:translateX(-50%)}
-.blk:first-child .rail:before{top:26px}
-.blk:last-child .rail:before{bottom:calc(100% - 26px)}
+.blk.rf .rail:before{top:26px}
+.blk.rl .rail:before{bottom:calc(100% - 26px)}
+.blk.hide{display:none}
+.day.hide{display:none}
 .rail i{position:absolute;left:50%;top:26px;width:11px;height:11px;border-radius:50%;
   background:var(--c);transform:translate(-50%,-50%);box-shadow:0 0 0 4px var(--paper)}
 .k-hard .rail i{width:13px;height:13px}
 .body{padding:8px 0 10px}
 .hd{width:100%;display:flex;align-items:flex-start;gap:16px;text-align:left;padding:13px 18px;
   border:1px solid var(--line);border-radius:14px;background:var(--card);transition:.22s;position:relative}
-.hd:disabled{cursor:default;background:transparent;border-style:dashed;opacity:.9}
+.hd:disabled{cursor:default}
 .blk.has .hd:hover{border-color:var(--ink);box-shadow:0 8px 24px -14px rgba(20,24,28,.35);transform:translateY(-1px)}
-.k-hard .hd{border-left:3px solid var(--c)}
-.k-soft .hd{border-left:3px solid var(--c)}
+/* blocs de contingut amb dinamica: targeta plena */
+.k-hard .hd,.k-soft .hd{border-left:3px solid var(--c)}
+/* blocs de contingut sense dinamica: mateixa familia, un to per sota */
+.k-hard:not(.has) .hd,.k-soft:not(.has) .hd{background:#f3efe9;border-color:#ddd6cc;border-left-width:3px}
+.k-hard:not(.has) .hd h3,.k-soft:not(.has) .hd h3{font-size:clamp(15.5px,1.55vw,18px)}
+/* pauses, apats i temps lliure: sempre en segon pla */
+.k-meal .hd,.k-free .hd{background:transparent;border-style:dashed;border-left:1px dashed var(--line)}
+.k-meal h3,.k-free h3{font-weight:400;color:var(--ink-2);font-size:15.5px}
+.k-meal .fac,.k-free .fac{opacity:.7}
 .hdl{flex:1;min-width:0}
 .hdl h3{font-size:clamp(16px,1.7vw,20px);font-weight:600;letter-spacing:-.01em;line-height:1.25}
 .tag{display:inline-block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
@@ -317,7 +339,9 @@ footer img{height:16px;filter:invert(1);opacity:.6}
 
 <section class="band"><div class="wrap">%s</div></section>
 
-<div class="sticky"><div class="wrap">%s</div></div>
+<div class="sticky"><div class="wrap"><span class="flab">Filtra</span>%s
+  <button class="freset" id="freset">Mostra-ho tot</button>
+</div></div>
 
 <main class="wrap">%s</main>
 
@@ -357,6 +381,41 @@ document.querySelectorAll('.hd[data-t]').forEach(function(b){
 });
 var t=document.getElementById('top');
 addEventListener('scroll',function(){t.classList.toggle('on',scrollY>innerHeight*0.82)},{passive:true});
+
+/* ---- filtres per tipologia ---- */
+var off={}, reset=document.getElementById('freset');
+function apply(){
+  document.querySelectorAll('.blk').forEach(function(b){
+    var k=b.dataset.k;
+    b.classList.toggle('hide',!!off[k]);
+  });
+  document.querySelectorAll('.day').forEach(function(day){
+    var all=[].slice.call(day.querySelectorAll('.blk'));
+    var vis=all.filter(function(b){return !b.classList.contains('hide')});
+    all.forEach(function(b){b.classList.remove('rf','rl')});
+    if(vis.length){vis[0].classList.add('rf');vis[vis.length-1].classList.add('rl')}
+    day.classList.toggle('hide',vis.length===0);
+  });
+  var any=Object.keys(off).some(function(k){return off[k]});
+  reset.classList.toggle('on',any);
+}
+document.querySelectorAll('.lg').forEach(function(b){
+  b.addEventListener('click',function(){
+    var k=b.dataset.k;
+    off[k]=!off[k];
+    b.classList.toggle('off',!!off[k]);
+    b.setAttribute('aria-pressed',off[k]?'false':'true');
+    apply();
+  });
+});
+reset.addEventListener('click',function(){
+  off={};
+  document.querySelectorAll('.lg').forEach(function(b){
+    b.classList.remove('off');b.setAttribute('aria-pressed','true');
+  });
+  apply();
+});
+apply();
 
 var ov=document.getElementById('ov');
 function setOv(v){
