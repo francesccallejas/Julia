@@ -9,9 +9,8 @@ TAG = "Editorial · paper · timeline vertical"
 def block(x, i, dn):
     k = KINDS[x["kind"]]
     has = bool(x["obj"] or x["timing"] or x["how"])
-    det = ""
+    det, parts = "", []
     if has:
-        parts = []
         if x["obj"]:
             parts.append('<div class="dt"><h4>Objectiu</h4><p class="big">%s</p></div>' % x["obj"])
         if x["timing"]:
@@ -21,28 +20,25 @@ def block(x, i, dn):
             parts.append('<div class="dt"><h4>Com ho fem</h4><ul>%s</ul></div>' %
                          "".join("<li>%s</li>" % t for t in x["how"]))
         det = '<div class="det"><div class="detin">%s</div></div>' % "".join(parts)
-    return """<article class="blk k-%s%s" id="b-%d-%d" data-k="%s" style="--c:%s">
-  <div class="tm"><span class="mono t1">%s</span><span class="mono t2">%s</span><span class="mono dur">%s</span></div>
-  <div class="rail"><i></i></div>
-  <div class="body">
-    <button class="hd"%s>
-      <div class="hdl">
-        %s<h3>%s</h3>
-        %s
-      </div>
-      <div class="hdr"><span class="fac mono">%s</span>%s</div>
-    </button>%s
-  </div>
-</article>""" % (
-        x["kind"], " has" if has else "", dn, i, x["kind"], k["color"],
-        x["s"], x["e"], hm(dur(x)),
-        ' data-t="1"' if has else ' disabled',
+    head = ("""<div class="hdl">%s<h3>%s</h3>%s</div>"""
+            """<div class="hdr"><span class="fac mono">%s</span>%s</div>""") % (
         ('<span class="tag mono">%s</span>' % x["tag"]) if x["tag"] else "",
         x["t"],
         ('<p class="sub">%s</p>' % x["sub"]) if x["sub"] else "",
         fac_name(x["fac"]),
-        '<span class="chev" aria-hidden="true"></span>' if has else "",
-        det)
+        '<span class="chev" aria-hidden="true"></span>' if has else "")
+    if has:
+        body = ('<details class="body"><summary class="hd">%s</summary>'
+                '<div class="det"><div class="detin">%s</div></div></details>') % (head, det)
+    else:
+        body = '<div class="body"><div class="hd">%s</div></div>' % head
+    return """<article class="blk k-%s%s" id="b-%d-%d" data-k="%s" style="--c:%s">
+  <div class="tm"><span class="mono t1">%s</span><span class="mono t2">%s</span><span class="mono dur">%s</span></div>
+  <div class="rail"><i></i></div>
+  %s
+</article>""" % (
+        x["kind"], " has" if has else "", dn, i, x["kind"], k["color"],
+        x["s"], x["e"], hm(dur(x)), body)
 
 def day(d):
     tt = totals(d["sessions"])
@@ -88,34 +84,39 @@ def render():
         '<div class="st"><div class="sv mono">%s</div><div class="sl">%s</div></div>' % (v, l)
         for v, l in [(hm(TOT[H]), "Treball estratègic"), (hm(TOT[S]), "Inspiració i equip"),
                      ("3", "Blocs de prioritzacio"), ("2", "Dies · 1 nit")])
-    legend = "".join('<button class="lg" data-k="%s" style="--c:%s" aria-pressed="true"><i></i>%s</button>'
+    legend = "".join('<label class="lg" for="f-%s" style="--c:%s"><i></i>%s</label>'
                      % (k, v["color"], v["label"]) for k, v in KINDS.items())
+    inputs = "".join('<input type="checkbox" class="fst" id="f-%s" checked>' % k for k in KINDS)
     ovsums, ovrows = overlay()
     return T("""<!doctype html><html lang="ca"><head>%s
 <title>Seminari Pla Estratègic 2027 · Relats</title>
 <style>%s
 :root{%s}
-:root{--barh:64px;--anchor:132px}
+:root{--barh:65px;--anchor:132px}
+@media(max-width:720px){:root{--barh:58px;--anchor:126px}}
 %s
 body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
 
 /* ---------- topbar ---------- */
 .top{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;align-items:center;gap:20px;
-  padding:14px clamp(20px,5vw,64px);backdrop-filter:blur(14px);background:rgba(234,228,223,0);
-  border-bottom:1px solid transparent;transition:background .35s,border-color .35s}
-.top.on{background:rgba(234,228,223,.88);border-bottom-color:var(--line)}
+  padding:14px clamp(20px,5vw,64px);backdrop-filter:blur(14px);background:rgba(234,228,223,.9);
+  border-bottom:1px solid var(--line);transition:background .35s,border-color .35s}
+.top.over{background:rgba(234,228,223,0);border-bottom-color:transparent}
 .top img{height:20px;width:auto}
 .top .nv{margin-left:auto;display:flex;gap:6px}
 .top .nv a{font-family:var(--font-m);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
-  padding:8px 14px;border-radius:99px;border:1px solid transparent;color:#fff;opacity:.8;transition:.25s}
-.top.on .nv a{color:var(--ink)}
+  padding:8px 14px;border-radius:99px;border:1px solid transparent;color:var(--ink);opacity:.85;transition:.25s}
+.top.over .nv a{color:#fff}
 .top .nv a:hover{opacity:1;border-color:currentColor}
 .top .nv .cta{font-family:var(--font-m);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
   padding:8px 16px;border-radius:99px;background:var(--accent);color:#fff;opacity:1;
   border:1px solid var(--accent);transition:.2s}
 .top .nv .cta:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
-@media(max-width:720px){.top .nv a{display:none}}
+@media(max-width:720px){.top{gap:10px}.top .nv{gap:4px}
+  .top .nv a,.top .nv .cta{font-size:10.5px;padding:7px 10px}
+  .top img{height:17px}}
+@media(max-width:420px){.top .nv a[href="#lamola"]{display:none}}
 
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
@@ -159,16 +160,34 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .lg:hover{border-color:var(--ink-dim)}
 .lg.off{opacity:.42;background:transparent;color:var(--ink-dim)}
 .lg.off i{background:transparent;box-shadow:inset 0 0 0 1.5px var(--c)}
-.freset{margin-left:auto;font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--accent);padding:7px 13px;border:1px solid currentColor;
-  border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s}
-.freset.on{opacity:1;pointer-events:auto}
-.freset:hover{background:var(--accent);color:#fff}
+.fst{position:absolute;width:0;height:0;opacity:0;pointer-events:none}
+.lg{cursor:pointer;-webkit-user-select:none;user-select:none}
+#f-hard:not(:checked)~.sticky [for="f-hard"],
+#f-soft:not(:checked)~.sticky [for="f-soft"],
+#f-meal:not(:checked)~.sticky [for="f-meal"],
+#f-free:not(:checked)~.sticky [for="f-free"]{opacity:.42;background:transparent;color:var(--ink-dim)}
+#f-hard:not(:checked)~.sticky [for="f-hard"] i,
+#f-soft:not(:checked)~.sticky [for="f-soft"] i,
+#f-meal:not(:checked)~.sticky [for="f-meal"] i,
+#f-free:not(:checked)~.sticky [for="f-free"] i{background:transparent;box-shadow:inset 0 0 0 1.5px var(--c)}
+#f-hard:not(:checked)~main .k-hard,
+#f-soft:not(:checked)~main .k-soft,
+#f-meal:not(:checked)~main .k-meal,
+#f-free:not(:checked)~main .k-free{display:none}
+#f-hard:not(:checked)~#f-soft:not(:checked)~#f-meal:not(:checked)~#f-free:not(:checked)~main #dia1,
+#f-hard:not(:checked)~#f-soft:not(:checked)~#f-meal:not(:checked)~main #dia2{display:none}
+@media(max-width:720px){
+  .sticky .wrap{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+    padding-top:12px;padding-bottom:12px;
+    -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 34px),transparent);
+    mask-image:linear-gradient(90deg,#000 calc(100% - 34px),transparent)}
+  .sticky .wrap::-webkit-scrollbar{display:none}
+  .lg{flex:none}}
 @media(max-width:640px){.flab{display:none}.lg{font-size:11.5px;padding:6px 11px}}
 /* ---------- day ---------- */
 .day{padding:clamp(56px,9vh,104px) 0 0;scroll-margin-top:var(--anchor)}
 .blk{scroll-margin-top:calc(var(--anchor) + 14px)}
-.blk.flash .hd{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,87,16,.16)}
+.blk:target .hd{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,87,16,.16)}
 .dayhd{display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,3vw,38px);align-items:start;
   padding-bottom:30px;border-bottom:1px solid var(--line)}
 .dayhd .wrapless{grid-column:1/-1}
@@ -200,8 +219,10 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .body{padding:8px 0 10px}
 .hd{width:100%;display:flex;align-items:flex-start;gap:16px;text-align:left;padding:13px 18px;
   border:1px solid var(--line);border-radius:14px;background:var(--card);transition:.22s;position:relative}
-.hd:disabled{cursor:default}
-.blk.has .hd:hover{border-color:var(--ink);box-shadow:0 8px 24px -14px rgba(20,24,28,.35);transform:translateY(-1px)}
+summary.hd{cursor:pointer;list-style:none}
+summary.hd::-webkit-details-marker{display:none}
+summary.hd::marker{content:""}
+.blk.has summary.hd:hover{border-color:var(--ink);box-shadow:0 8px 24px -14px rgba(20,24,28,.35);transform:translateY(-1px)}
 /* blocs de contingut amb dinamica: targeta plena */
 .k-hard .hd,.k-soft .hd{border-left:3px solid var(--c)}
 /* blocs de contingut sense dinamica: mateixa familia, un to per sota */
@@ -221,11 +242,9 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
   border:1px solid var(--line);border-radius:6px;padding:3px 8px;background:var(--paper)}
 .chev{width:9px;height:9px;border-right:1.6px solid var(--ink-dim);border-bottom:1.6px solid var(--ink-dim);
   transform:rotate(45deg);margin-top:-4px;transition:transform .25s}
-.blk.open .chev{transform:rotate(-135deg);margin-top:2px}
-.det{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s ease}
-.blk.open .det{grid-template-rows:1fr}
-.detin{overflow:hidden}
-.blk.open .detin{padding:4px 0 2px}
+details[open] .chev{transform:rotate(-135deg);margin-top:2px}
+.detin{overflow:hidden;padding:4px 0 2px;animation:reveal .3s ease}
+@keyframes reveal{from{opacity:0;transform:translateY(-6px)}}
 .det .dt{padding:16px 18px 0}
 .det h4{font-family:var(--font-m);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--accent);margin-bottom:8px}
@@ -277,11 +296,13 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .ov{position:fixed;inset:0;z-index:60;background:rgba(20,24,28,.52);backdrop-filter:blur(6px);
   display:flex;align-items:flex-start;justify-content:center;padding:clamp(16px,5vh,64px) clamp(14px,4vw,40px);
   opacity:0;pointer-events:none;transition:opacity .26s;overflow:auto}
-.ov.on{opacity:1;pointer-events:auto}
-.ovbox{background:var(--paper);border-radius:22px;width:min(1020px,100%);max-height:100%;
+.ov:target{opacity:1;pointer-events:auto}
+.ovsc{position:absolute;inset:0}
+html:has(.ov:target){overflow:hidden}
+.ovbox{position:relative;z-index:2;background:var(--paper);border-radius:22px;width:min(1020px,100%);max-height:100%;
   display:flex;flex-direction:column;overflow:hidden;box-shadow:0 40px 90px -40px rgba(0,0,0,.6);
   transform:translateY(14px);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
-.ov.on .ovbox{transform:none}
+.ov:target .ovbox{transform:none;position:relative;z-index:2}
 .ovhd{display:flex;align-items:flex-start;gap:18px;padding:26px clamp(20px,3vw,34px) 18px;
   border-bottom:1px solid var(--line)}
 .ovhd h2{font-size:clamp(22px,3vw,34px);font-weight:700;letter-spacing:-.028em;line-height:1.05;margin-top:6px}
@@ -318,10 +339,10 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:2
   padding-top:26px;padding-bottom:26px;font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 footer img{height:16px}
 </style></head><body>
-
+%s
 <div class="top" id="top"><img src="%s" alt="Relats">
   <nav class="nv"><a href="#dia1">Dia 1</a><a href="#dia2">Dia 2</a><a href="#lamola">La Mola</a>
-  <button class="cta" id="openov">Resum</button></nav></div>
+  <a class="cta" href="#resum">Resum</a></nav></div>
 
 <header class="hero">%s
   <div class="wrap">
@@ -339,9 +360,7 @@ footer img{height:16px}
 
 <section class="band"><div class="wrap">%s</div></section>
 
-<div class="sticky"><div class="wrap"><span class="flab">Filtra</span>%s
-  <button class="freset" id="freset">Mostra-ho tot</button>
-</div></div>
+<div class="sticky"><div class="wrap"><span class="flab">Filtra</span>%s</div></div>
 
 <main class="wrap">%s</main>
 
@@ -363,12 +382,13 @@ footer img{height:16px}
 
 <footer><div class="wrap"><img src="%s" alt="Relats"><span>Seminari Pla Estratègic 2027</span></div></footer>
 
-<div class="ov" id="ov" role="dialog" aria-modal="true" aria-label="Resum de l'agenda">
+<div class="ov" id="resum" role="dialog" aria-label="Resum de l'agenda">
+  <a class="ovsc" href="#close" aria-label="Tanca"></a>
   <div class="ovbox">
     <header class="ovhd">
       <div><div class="kick">Resum · 29 i 30 de setembre</div>
         <h2>Tota l'agenda <em>d'un cop d'ull</em></h2></div>
-      <button class="ovx" id="closeov" aria-label="Tanca">&times;</button>
+      <a class="ovx" href="#close" aria-label="Tanca">&times;</a>
     </header>
     <div class="ovsums">%s</div>
     <div class="ovlist">%s</div>
@@ -376,9 +396,6 @@ footer img{height:16px}
 </div>
 
 <script>
-document.querySelectorAll('.hd[data-t]').forEach(function(b){
-  b.addEventListener('click',function(){b.closest('.blk').classList.toggle('open')});
-});
 var t=document.getElementById('top');
 var sticky=document.querySelector('.sticky');
 function bars(){
@@ -395,7 +412,8 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(bars);
 if(window.ResizeObserver){
   var ro=new ResizeObserver(bars);ro.observe(t);ro.observe(sticky);
 }
-addEventListener('scroll',function(){t.classList.toggle('on',scrollY>innerHeight*0.82)},{passive:true});
+function overHero(){t.classList.toggle('over',scrollY<innerHeight*0.82)}
+overHero();addEventListener('scroll',overHero,{passive:true});
 
 /* ---- filtres per tipologia ---- */
 var off={}, reset=document.getElementById('freset');
@@ -432,28 +450,15 @@ reset.addEventListener('click',function(){
 });
 apply();
 
-var ov=document.getElementById('ov');
-function setOv(v){
-  ov.classList.toggle('on',v);
-  document.body.style.overflow=v?'hidden':'';
-}
-document.getElementById('openov').addEventListener('click',function(){setOv(true)});
-document.getElementById('closeov').addEventListener('click',function(){setOv(false)});
-ov.addEventListener('click',function(e){if(e.target===ov)setOv(false)});
-addEventListener('keydown',function(e){if(e.key==='Escape')setOv(false)});
-ov.querySelectorAll('.ovr').forEach(function(a){
-  a.addEventListener('click',function(e){
-    e.preventDefault();setOv(false);
-    var el=document.querySelector(a.getAttribute('href'));
-    if(!el)return;
-    el.scrollIntoView({behavior:'smooth',block:'start'});
-    el.classList.add('flash');setTimeout(function(){el.classList.remove('flash')},1400);
-  });
+addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&location.hash==='#resum'){
+    history.replaceState(null,'','#close');
+  }
 });
 </script>
 </body></html>""") % (
         HEAD_COMMON, RESET, TOKENS, fontface(),
-        LOGO, ridge_svg(), hm(TOT[H] + TOT[S]), stats, legend,
+        inputs, LOGO, ridge_svg(), hm(TOT[H] + TOT[S]), stats, legend,
         "".join(day(d) for d in DAYS),
         ridge_svg(opacity=(0.14, 0.24, 0.42, 1.0)), VENUE["blurb"],
         VENUE["url"], VENUE["urllabel"],
