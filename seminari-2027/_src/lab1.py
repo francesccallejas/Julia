@@ -92,17 +92,18 @@ def render():
 <title>Seminari Pla Estratègic 2027 · Relats</title>
 <style>%s
 :root{%s}
-:root{--barh:65px;--anchor:132px}
-@media(max-width:720px){:root{--barh:58px;--anchor:126px}}
+:root{--barh:65px;--anchor:131px}
+@media(max-width:720px){:root{--barh:61px;--anchor:117px}}
 %s
+html{scroll-behavior:auto}
 body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
 
 /* ---------- topbar ---------- */
 .top{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;align-items:center;gap:20px;
-  padding:14px clamp(20px,5vw,64px);backdrop-filter:blur(14px);background:rgba(234,228,223,.9);
+  padding:14px clamp(20px,5vw,64px);background:var(--paper);
   border-bottom:1px solid var(--line);transition:background .35s,border-color .35s}
-.top.over{background:rgba(234,228,223,0);border-bottom-color:transparent}
+.top.over{background:transparent;border-bottom-color:transparent}
 .top img{height:20px;width:auto}
 .top .nv{margin-left:auto;display:flex;gap:6px}
 .top .nv a{font-family:var(--font-m);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
@@ -148,8 +149,8 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 @media(max-width:760px){.band .wrap{grid-template-columns:1fr 1fr;gap:22px}}
 
 /* ---------- legend rail ---------- */
-.sticky{position:sticky;top:var(--barh);z-index:30;background:rgba(234,228,223,.92);
-  backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.sticky{position:sticky;top:var(--barh);z-index:30;background:var(--paper);
+  border-bottom:1px solid var(--line)}
 .sticky .wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:15px;padding-bottom:15px}
 .flab{font-family:var(--font-m);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--ink-dim);margin-right:6px}
@@ -160,7 +161,7 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .lg:hover{border-color:var(--ink-dim)}
 .lg.off{opacity:.42;background:transparent;color:var(--ink-dim)}
 .lg.off i{background:transparent;box-shadow:inset 0 0 0 1.5px var(--c)}
-.fst{position:absolute;width:0;height:0;opacity:0;pointer-events:none}
+.fst{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;margin:0;border:0;padding:0;appearance:none}
 .lg{cursor:pointer;-webkit-user-select:none;user-select:none}
 #f-hard:not(:checked)~.sticky [for="f-hard"],
 #f-soft:not(:checked)~.sticky [for="f-soft"],
@@ -185,8 +186,8 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
   .lg{flex:none}}
 @media(max-width:640px){.flab{display:none}.lg{font-size:11.5px;padding:6px 11px}}
 /* ---------- day ---------- */
-.day{padding:clamp(56px,9vh,104px) 0 0;scroll-margin-top:var(--anchor)}
-.blk{scroll-margin-top:calc(var(--anchor) + 14px)}
+.day{padding:clamp(40px,5.5vh,64px) 0 0;scroll-margin-top:var(--anchor)}
+.blk{scroll-margin-top:var(--anchor)}
 .blk:target .hd{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,87,16,.16)}
 .dayhd{display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,3vw,38px);align-items:start;
   padding-bottom:30px;border-bottom:1px solid var(--line)}
@@ -403,7 +404,7 @@ function bars(){
   var sb=Math.ceil(sticky.getBoundingClientRect().height);
   var r=document.documentElement;
   r.style.setProperty('--barh',h+'px');
-  r.style.setProperty('--anchor',(h+sb+18)+'px');
+  r.style.setProperty('--anchor',(h+sb)+'px');
 }
 bars();
 addEventListener('resize',bars);
@@ -415,40 +416,35 @@ if(window.ResizeObserver){
 function overHero(){t.classList.toggle('over',scrollY<innerHeight*0.82)}
 overHero();addEventListener('scroll',overHero,{passive:true});
 
-/* ---- filtres per tipologia ---- */
-var off={}, reset=document.getElementById('freset');
-function apply(){
-  document.querySelectorAll('.blk').forEach(function(b){
-    var k=b.dataset.k;
-    b.classList.toggle('hide',!!off[k]);
-  });
-  document.querySelectorAll('.day').forEach(function(day){
-    var all=[].slice.call(day.querySelectorAll('.blk'));
-    var vis=all.filter(function(b){return !b.classList.contains('hide')});
-    all.forEach(function(b){b.classList.remove('rf','rl')});
-    if(vis.length){vis[0].classList.add('rf');vis[vis.length-1].classList.add('rl')}
-    day.classList.toggle('hide',vis.length===0);
-  });
-  var any=Object.keys(off).some(function(k){return off[k]});
-  reset.classList.toggle('on',any);
-}
-document.querySelectorAll('.lg').forEach(function(b){
-  b.addEventListener('click',function(){
-    var k=b.dataset.k;
-    off[k]=!off[k];
-    b.classList.toggle('off',!!off[k]);
-    b.setAttribute('aria-pressed',off[k]?'false':'true');
-    apply();
+/* En filtrar desapareix contingut de sobre i la pagina llisca cap amunt.
+   Ancorem el primer bloc visible que NO es del tipus que es commuta. */
+var anchorEl=null, anchorTop=0;
+function visible(e){return e.offsetParent!==null}
+document.querySelectorAll('.sticky .lg').forEach(function(l){
+  l.addEventListener('pointerdown',function(){
+    var kind=(l.getAttribute('for')||'').replace('f-','');
+    var limit=parseFloat(getComputedStyle(document.documentElement)
+              .getPropertyValue('--anchor'))||130;
+    anchorEl=null;
+    var blks=document.querySelectorAll('.blk');
+    for(var i=0;i<blks.length;i++){
+      var b=blks[i];
+      if(b.dataset.k===kind||!visible(b)) continue;
+      var r=b.getBoundingClientRect();
+      if(r.bottom>limit){anchorEl=b;anchorTop=r.top;break;}
+    }
   });
 });
-reset.addEventListener('click',function(){
-  off={};
-  document.querySelectorAll('.lg').forEach(function(b){
-    b.classList.remove('off');b.setAttribute('aria-pressed','true');
+document.querySelectorAll('.fst').forEach(function(inp){
+  inp.addEventListener('change',function(){
+    if(!anchorEl)return;
+    requestAnimationFrame(function(){
+      if(!anchorEl||!visible(anchorEl))return;
+      var d=anchorEl.getBoundingClientRect().top-anchorTop;
+      if(Math.abs(d)>1)window.scrollBy(0,d);
+    });
   });
-  apply();
 });
-apply();
 
 addEventListener('keydown',function(e){
   if(e.key==='Escape'&&location.hash==='#resum'){
