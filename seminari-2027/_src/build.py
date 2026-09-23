@@ -90,7 +90,7 @@ main{padding:clamp(26px,4vh,44px) 0 clamp(60px,9vh,110px)}
 footer{background:var(--ink);color:rgba(255,255,255,.45)}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px 0;
   font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-footer img{height:15px;filter:invert(1);opacity:.55}
+footer img{height:15px;filter:brightness(0) invert(1);opacity:.55}
 </style></head><body>
 <header>%s<div class="wrap">
   <img src="%s" alt="Relats">
