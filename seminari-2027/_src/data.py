@@ -8,6 +8,10 @@ if not os.path.exists(_B):
     _B = os.path.join(HERE, "..", "assets", "brand.json")
 BRAND = json.load(io.open(_B, encoding="utf-8"))
 
+_P = os.path.join(HERE, "photos.json")
+PHOTOS = json.load(io.open(_P, encoding="utf-8")) if os.path.exists(_P) else {}
+AERIAL = PHOTOS.get("lamola_aerial", "")
+
 def fontface():
     css = []
     for fam, w in (("Roobert", "400"), ("Roobert", "600"), ("Roobert", "700")):
@@ -161,6 +165,8 @@ VENUE = dict(
     place="Sant Llorenç Savall · Vallès Occidental",
     blurb="Una casa de seminaris al peu del parc natural de Sant Llorenç del Munt i l'Obac. "
           "Espais de treball, natura oberta i desconnexió real a 40 minuts de Barcelona.",
+    url="https://www.chateauform.com/es/casa/campus-la-mola/",
+    urllabel="chateauform.com · Campus La Mola",
     facts=[("Ubicació", "Sant Llorenç Savall, Barcelona"),
            ("Entorn", "Parc natural de Sant Llorenç del Munt"),
            ("Format", "Residencial · 2 dies, 1 nit"),

@@ -119,8 +119,13 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
   background:var(--ink);color:#fff;overflow:hidden;padding-bottom:clamp(48px,8vh,96px)}
-.hero:before{content:"";position:absolute;inset:0;
-  background:radial-gradient(120% 90% at 78% 8%,#3b4a44 0%,#1d2429 44%,#14181c 100%)}
+.heroph{position:absolute;inset:0;background-size:cover;background-position:center 42%;
+  transform:scale(1.04);animation:kb 22s ease-out forwards}
+@keyframes kb{to{transform:scale(1)}}
+.hero:before{content:"";position:absolute;inset:0;z-index:1;background:
+  linear-gradient(90deg,rgba(18,22,26,.62) 0%,rgba(18,22,26,.18) 48%,transparent 72%),
+  linear-gradient(180deg,rgba(18,22,26,.70) 0%,rgba(18,22,26,.32) 18%,rgba(18,22,26,.60) 40%,
+    rgba(18,22,26,.88) 72%,#14181c 100%)}
 .ridge{position:absolute;left:0;right:0;bottom:0;width:100%;height:min(62vh,540px);color:#000}
 .hero .wrap{position:relative;z-index:2;width:100%}
 .kick{font-family:var(--font-m);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
@@ -229,6 +234,15 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .venue h2{font-size:clamp(30px,4.6vw,58px);font-weight:700;letter-spacing:-.03em;line-height:1}
 .venue h2 em{font-style:normal;color:var(--accent)}
 .venue p{margin-top:18px;color:rgba(255,255,255,.72);font-size:15.5px;max-width:48ch;line-height:1.6}
+.vlink{display:inline-flex;align-items:center;gap:9px;margin-top:24px;font-size:11.5px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--accent);
+  border:1px solid currentColor;border-radius:99px;padding:10px 18px;transition:.2s}
+.vlink:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.vlink i{font-style:normal;font-size:13px;transition:transform .2s}
+.vlink:hover i{transform:translate(2px,-2px)}
+.vph{border-radius:18px;overflow:hidden;margin-bottom:26px;
+  box-shadow:0 26px 60px -34px rgba(0,0,0,.85)}
+.vph img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
 .vfacts{display:grid;gap:0}
 .vf{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid rgba(255,255,255,.16);font-size:14px}
 .vf:last-child{border-bottom:1px solid rgba(255,255,255,.16)}
@@ -288,7 +302,8 @@ footer img{height:16px;filter:invert(1);opacity:.6}
   <nav class="nv"><a href="#dia1">Dia 1</a><a href="#dia2">Dia 2</a><a href="#lamola">La Mola</a>
   <button class="cta" id="openov">Veure agenda</button></nav></div>
 
-<header class="hero">%s
+<header class="hero">
+  <div class="heroph" style="background-image:url(%s)"></div>
   <div class="wrap">
     <div class="kick">Seminari · 29 i 30 de setembre de 2026</div>
     <h1>Pla<br>Estratègic<br><em>2027</em></h1>
@@ -310,8 +325,14 @@ footer img{height:16px;filter:invert(1);opacity:.6}
 
 <section class="venue" id="lamola">%s
   <div class="wrap">
-    <div><div class="kick">El lloc</div><h2>Campus <em>La Mola</em></h2><p>%s</p></div>
-    <div class="vfacts">%s</div>
+    <div>
+      <div class="kick">El lloc</div><h2>Campus <em>La Mola</em></h2><p>%s</p>
+      <a class="vlink mono" href="%s" target="_blank" rel="noopener">%s<i aria-hidden="true">&#8599;</i></a>
+    </div>
+    <div>
+      <figure class="vph"><img src="%s" alt="Vista aèria del Campus La Mola, Sant Llorenç Savall" loading="lazy"></figure>
+      <div class="vfacts">%s</div>
+    </div>
   </div>%s
 </section>
 
@@ -357,8 +378,9 @@ ov.querySelectorAll('.ovr').forEach(function(a){
 </script>
 </body></html>""") % (
         HEAD_COMMON, RESET, TOKENS, fontface(),
-        LOGO, ridge_svg(), hm(TOT[H] + TOT[S]), stats, legend,
+        LOGO, AERIAL, hm(TOT[H] + TOT[S]), stats, legend,
         "".join(day(d) for d in DAYS),
         ridge_svg(opacity=(0.14, 0.24, 0.42, 1.0)), VENUE["blurb"],
+        VENUE["url"], VENUE["urllabel"], AERIAL,
         "".join('<div class="vf"><span>%s</span><b>%s</b></div>' % f for f in VENUE["facts"]),
         pines_svg(), LOGO, ovsums, ovrows)
