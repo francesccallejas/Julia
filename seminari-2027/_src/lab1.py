@@ -95,6 +95,7 @@ def render():
 <title>Seminari Pla Estratègic 2027 · Relats</title>
 <style>%s
 :root{%s}
+:root{--barh:64px;--anchor:132px}
 %s
 body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
@@ -146,9 +147,9 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 @media(max-width:760px){.band .wrap{grid-template-columns:1fr 1fr;gap:22px}}
 
 /* ---------- legend rail ---------- */
-.sticky{position:sticky;top:52px;z-index:30;background:rgba(234,228,223,.9);backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line)}
-.sticky .wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:11px;padding-bottom:11px}
+.sticky{position:sticky;top:var(--barh);z-index:30;background:rgba(234,228,223,.92);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.sticky .wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:15px;padding-bottom:15px}
 .flab{font-family:var(--font-m);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--ink-dim);margin-right:6px}
 .lg{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);
@@ -165,8 +166,8 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .freset:hover{background:var(--accent);color:#fff}
 @media(max-width:640px){.flab{display:none}.lg{font-size:11.5px;padding:6px 11px}}
 /* ---------- day ---------- */
-.day{padding:clamp(56px,9vh,104px) 0 0;scroll-margin-top:104px}
-.blk{scroll-margin-top:118px}
+.day{padding:clamp(56px,9vh,104px) 0 0;scroll-margin-top:var(--anchor)}
+.blk{scroll-margin-top:calc(var(--anchor) + 14px)}
 .blk.flash .hd{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,87,16,.16)}
 .dayhd{display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,3vw,38px);align-items:start;
   padding-bottom:30px;border-bottom:1px solid var(--line)}
@@ -379,6 +380,12 @@ document.querySelectorAll('.hd[data-t]').forEach(function(b){
   b.addEventListener('click',function(){b.closest('.blk').classList.toggle('open')});
 });
 var t=document.getElementById('top');
+function bars(){
+  var h=t.offsetHeight, sb=document.querySelector('.sticky').offsetHeight, r=document.documentElement;
+  r.style.setProperty('--barh',h+'px');
+  r.style.setProperty('--anchor',(h+sb+18)+'px');
+}
+bars();addEventListener('resize',bars);
 addEventListener('scroll',function(){t.classList.toggle('on',scrollY>innerHeight*0.82)},{passive:true});
 
 /* ---- filtres per tipologia ---- */
