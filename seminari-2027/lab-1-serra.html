@@ -573,12 +573,21 @@ document.querySelectorAll('.hd[data-t]').forEach(function(b){
   b.addEventListener('click',function(){b.closest('.blk').classList.toggle('open')});
 });
 var t=document.getElementById('top');
+var sticky=document.querySelector('.sticky');
 function bars(){
-  var h=t.offsetHeight, sb=document.querySelector('.sticky').offsetHeight, r=document.documentElement;
+  var h=Math.ceil(t.getBoundingClientRect().height);
+  var sb=Math.ceil(sticky.getBoundingClientRect().height);
+  var r=document.documentElement;
   r.style.setProperty('--barh',h+'px');
   r.style.setProperty('--anchor',(h+sb+18)+'px');
 }
-bars();addEventListener('resize',bars);
+bars();
+addEventListener('resize',bars);
+addEventListener('load',bars);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(bars);
+if(window.ResizeObserver){
+  var ro=new ResizeObserver(bars);ro.observe(t);ro.observe(sticky);
+}
 addEventListener('scroll',function(){t.classList.toggle('on',scrollY>innerHeight*0.82)},{passive:true});
 
 /* ---- filtres per tipologia ---- */
