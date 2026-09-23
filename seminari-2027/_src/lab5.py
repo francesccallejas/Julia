@@ -64,7 +64,7 @@ body{background:var(--bg);color:#f2f3f4;font-size:16px;line-height:1.5}
 .top{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;gap:16px;
   padding:16px clamp(20px,4vw,56px);pointer-events:none}
 .top>*{pointer-events:auto}
-.top img{height:19px;filter:brightness(0) invert(1);opacity:.85}
+.top img{height:19px}
 .top b{font-family:var(--font-m);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   font-weight:400;color:rgba(255,255,255,.5)}
 .now{margin-left:auto;display:none;align-items:center;gap:9px;font-family:var(--font-m);font-size:11px;

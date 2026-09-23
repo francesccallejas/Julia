@@ -149,7 +149,7 @@ main{padding:clamp(26px,4vh,44px) 0 clamp(56px,9vh,110px)}
 footer{background:var(--ink);color:rgba(255,255,255,.42);border-top:1px solid rgba(255,255,255,.12)}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px 0;
   font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-footer img{height:15px;filter:brightness(0) invert(1);opacity:.55}
+footer img{height:15px}
 </style></head><body>
 
 <div class="top"><img src="%s" alt="Relats"><b>Pla Estratègic 2027</b>

@@ -104,8 +104,7 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
   padding:14px clamp(20px,5vw,64px);backdrop-filter:blur(14px);background:rgba(234,228,223,0);
   border-bottom:1px solid transparent;transition:background .35s,border-color .35s}
 .top.on{background:rgba(234,228,223,.88);border-bottom-color:var(--line)}
-.top img{height:20px;width:auto;filter:brightness(0) invert(1);transition:filter .35s}
-.top.on img{filter:none}
+.top img{height:20px;width:auto}
 .top .nv{margin-left:auto;display:flex;gap:6px}
 .top .nv a{font-family:var(--font-m);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
   padding:8px 14px;border-radius:99px;border:1px solid transparent;color:#fff;opacity:.8;transition:.25s}
@@ -316,7 +315,7 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 footer{background:var(--ink);color:rgba(255,255,255,.45);border-top:1px solid rgba(255,255,255,.12)}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;
   padding-top:26px;padding-bottom:26px;font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-footer img{height:16px;filter:brightness(0) invert(1);opacity:.6}
+footer img{height:16px}
 </style></head><body>
 
 <div class="top" id="top"><img src="%s" alt="Relats">

@@ -62,7 +62,7 @@ body{background:var(--bg);color:#e8eaec;font-size:16px;line-height:1.5}
 .top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:18px;
   padding:13px clamp(18px,4vw,56px);background:rgba(15,19,22,.86);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--ln)}
-.top img{height:19px;filter:brightness(0) invert(1)}
+.top img{height:19px}
 .top .ttl{font-family:var(--font-m);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#7f8a92}
 .top .ttl b{color:var(--accent);font-weight:400}
 .top .lgs{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}
@@ -164,7 +164,7 @@ h1 em{font-style:normal;color:var(--accent)}
 footer{border-top:1px solid var(--ln);color:#68737a}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:24px 0;
   font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
-footer img{height:15px;filter:brightness(0) invert(1);opacity:.5}
+footer img{height:15px}
 </style></head><body>
 
 <div class="top"><img src="%s" alt="Relats">
