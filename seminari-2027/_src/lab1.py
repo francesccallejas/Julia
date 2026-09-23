@@ -151,6 +151,8 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 /* ---------- legend rail ---------- */
 .sticky{position:sticky;top:var(--barh);z-index:30;background:var(--paper);
   border-bottom:1px solid var(--line)}
+.sticky:before{content:"";position:absolute;left:0;right:0;top:-4px;height:4px;
+  background:var(--paper);pointer-events:none}
 .sticky .wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:15px;padding-bottom:15px}
 .flab{font-family:var(--font-m);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--ink-dim);margin-right:6px}
@@ -161,6 +163,14 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .lg:hover{border-color:var(--ink-dim)}
 .lg.off{opacity:.42;background:transparent;color:var(--ink-dim)}
 .lg.off i{background:transparent;box-shadow:inset 0 0 0 1.5px var(--c)}
+.freset{display:none;margin-left:auto;flex:none;font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);padding:8px 14px;border:1px solid currentColor;
+  border-radius:99px;white-space:nowrap;transition:.2s}
+.freset:hover{background:var(--accent);color:#fff}
+#f-hard:not(:checked)~.sticky .freset,
+#f-soft:not(:checked)~.sticky .freset,
+#f-meal:not(:checked)~.sticky .freset,
+#f-free:not(:checked)~.sticky .freset{display:inline-flex}
 .fst{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;margin:0;border:0;padding:0;appearance:none}
 .lg{cursor:pointer;-webkit-user-select:none;user-select:none}
 #f-hard:not(:checked)~.sticky [for="f-hard"],
@@ -340,6 +350,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:2
   padding-top:26px;padding-bottom:26px;font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 footer img{height:16px}
 </style></head><body>
+<form id="ag" onsubmit="return false">
 %s
 <div class="top" id="top"><img src="%s" alt="Relats">
   <nav class="nv"><a href="#dia1">Dia 1</a><a href="#dia2">Dia 2</a><a href="#lamola">La Mola</a>
@@ -361,7 +372,7 @@ footer img{height:16px}
 
 <section class="band"><div class="wrap">%s</div></section>
 
-<div class="sticky"><div class="wrap"><span class="flab">Filtra</span>%s</div></div>
+<div class="sticky"><div class="wrap"><span class="flab">Filtra</span>%s<button type="reset" class="freset mono">Mostra-ho tot</button></div></div>
 
 <main class="wrap">%s</main>
 
@@ -420,21 +431,26 @@ overHero();addEventListener('scroll',overHero,{passive:true});
    Ancorem el primer bloc visible que NO es del tipus que es commuta. */
 var anchorEl=null, anchorTop=0;
 function visible(e){return e.offsetParent!==null}
-document.querySelectorAll('.sticky .lg').forEach(function(l){
-  l.addEventListener('pointerdown',function(){
-    var kind=(l.getAttribute('for')||'').replace('f-','');
+function pick(kind){
     var limit=parseFloat(getComputedStyle(document.documentElement)
               .getPropertyValue('--anchor'))||130;
     anchorEl=null;
-    var blks=document.querySelectorAll('.blk');
-    for(var i=0;i<blks.length;i++){
-      var b=blks[i];
-      if(b.dataset.k===kind||!visible(b)) continue;
-      var r=b.getBoundingClientRect();
-      if(r.bottom>limit){anchorEl=b;anchorTop=r.top;break;}
+    /* El titol del dia tambe val com a ancora: si es el que tens a dalt,
+       es ell qui s'ha de quedar quiet, no un bloc de mes avall. */
+    var els=document.querySelectorAll('.dayhd,.blk');
+    for(var i=0;i<els.length;i++){
+      var e=els[i];
+      if(e.classList.contains('blk')&&e.dataset.k===kind) continue;
+      if(!visible(e)) continue;
+      var r=e.getBoundingClientRect();
+      if(r.bottom>limit){anchorEl=e;anchorTop=r.top;break;}
     }
-  });
+}
+document.querySelectorAll('.sticky .lg').forEach(function(l){
+  l.addEventListener('pointerdown',function(){pick((l.getAttribute('for')||'').replace('f-',''))});
 });
+var fr=document.querySelector('.freset');
+if(fr)fr.addEventListener('pointerdown',function(){pick('')});
 document.querySelectorAll('.fst').forEach(function(inp){
   inp.addEventListener('change',function(){
     if(!anchorEl)return;
@@ -452,6 +468,7 @@ addEventListener('keydown',function(e){
   }
 });
 </script>
+</form>
 </body></html>""") % (
         HEAD_COMMON, RESET, TOKENS, fontface(),
         inputs, LOGO, ridge_svg(), hm(TOT[H] + TOT[S]), stats, legend,
