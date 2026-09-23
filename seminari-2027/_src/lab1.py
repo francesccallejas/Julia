@@ -299,7 +299,7 @@ footer img{height:16px;filter:invert(1);opacity:.6}
 
 <div class="top" id="top"><img src="%s" alt="Relats">
   <nav class="nv"><a href="#dia1">Dia 1</a><a href="#dia2">Dia 2</a><a href="#lamola">La Mola</a>
-  <button class="cta" id="openov">Veure agenda</button></nav></div>
+  <button class="cta" id="openov">Resum</button></nav></div>
 
 <header class="hero">%s
   <div class="wrap">
