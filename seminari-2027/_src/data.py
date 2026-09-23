@@ -67,7 +67,7 @@ DAY1 = [
              "D'1 a XX, de més a menys important", "Cal preparar el paper de treball"], tag="Prio 2"),
     ses("16:00", "18:00", "Speaker motivacional", S, "NE", "Xerrada + dinàmica de grup"),
     ses("18:00", "18:15", "Break", M, "Hotel"),
-    ses("18:15", "20:00", "Caminada", S, "Hotel", "Sant Llorenç del Munt"),
+    ses("18:15", "20:00", "Caminada", S, "Hotel"),
     ses("20:00", "20:30", "Temps lliure", F, "—"),
     ses("20:30", "22:00", "Sopar", M, "Hotel"),
 ]
@@ -162,12 +162,16 @@ def pines_svg():
 
 VENUE = dict(
     name="Campus La Mola",
-    place="Sant Llorenç Savall · Vallès Occidental",
+    place="Terrassa · Vallès Occidental",
     blurb="Una casa de seminaris al peu del parc natural de Sant Llorenç del Munt i l'Obac. "
           "Espais de treball, natura oberta i desconnexió real a 40 minuts de Barcelona.",
     url="https://www.chateauform.com/es/casa/campus-la-mola/",
     urllabel="chateauform.com · Campus La Mola",
-    facts=[("Ubicació", "Sant Llorenç Savall, Barcelona"),
+    map=("https://www.google.com/maps?um=1&ie=UTF-8&fb=1&gl=es&sa=X"
+         "&geocode=KSOTIh9Rk6QSMSrBj6p95rEc"
+         "&daddr=Cam%C3%AD+dels+Plans+de+Can+Bonvilar,+S/N,+08227+Terrassa,+Barcelona"),
+    maplabel="Com arribar-hi · Google Maps",
+    facts=[("Ubicació", "Camí dels Plans de Can Bonvilar, Terrassa"),
            ("Entorn", "Parc natural de Sant Llorenç del Munt"),
            ("Format", "Residencial · 2 dies, 1 nit"),
            ("Règim", "Pensió completa · buffet")],
