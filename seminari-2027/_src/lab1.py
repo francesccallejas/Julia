@@ -17,7 +17,7 @@ def block(x, i, dn):
             sl = slack(x)
             parts.append('<div class="dt"><h4>Timing</h4><ol>%s</ol>%s</div>' % (
                 "".join("<li>%s</li>" % t for t in x["timing"]),
-                ('<p class="slack mono">+%d′ · Temps de marge</p>' % sl) if sl > 0 else ""))
+                ('<p class="slack mono">+%d′ · Coixí</p>' % sl) if sl > 0 else ""))
         if x["how"]:
             parts.append('<div class="dt"><h4>Com ho fem</h4><ul>%s</ul></div>' %
                          "".join("<li>%s</li>" % t for t in x["how"]))
