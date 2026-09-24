@@ -102,10 +102,16 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
 
 /* ---------- topbar ---------- */
-.top{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;align-items:center;gap:20px;
-  padding:14px clamp(20px,5vw,64px);background:var(--paper);
-  border-bottom:1px solid var(--line);transition:background .35s,border-color .35s}
-.top.over{background:transparent;border-bottom-color:transparent}
+/* sticky, no fixed: a l'iOS els elements fixed es despengen durant la inercia
+   del scroll. El marge negatiu fa que la portada li passi per sota igualment. */
+.top{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:20px;
+  padding:14px clamp(20px,5vw,64px);background:rgba(234,228,223,.84);
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  border-bottom:1px solid rgba(216,210,202,.7);transition:background .35s,border-color .35s;
+  margin-bottom:calc(var(--barh) * -1)}
+.top.over{background:rgba(20,24,28,.10);border-bottom-color:rgba(255,255,255,.12)}
+.home{display:flex;align-items:center;flex:none;border-radius:8px;transition:opacity .2s}
+.home:hover{opacity:.65}
 .top img{height:20px;width:auto}
 .top .nv{margin-left:auto;display:flex;gap:6px}
 .top .nv a{font-family:var(--font-m);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
@@ -151,10 +157,12 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 @media(max-width:760px){.band .wrap{grid-template-columns:1fr 1fr;gap:22px}}
 
 /* ---------- legend rail ---------- */
-.sticky{position:sticky;top:var(--barh);z-index:30;background:var(--paper);
-  border-bottom:1px solid var(--line)}
+.sticky{position:sticky;top:var(--barh);z-index:30;background:rgba(234,228,223,.84);
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  border-bottom:1px solid rgba(216,210,202,.7)}
 .sticky:before{content:"";position:absolute;left:0;right:0;top:-4px;height:4px;
-  background:var(--paper);pointer-events:none}
+  background:rgba(234,228,223,.84);-webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);pointer-events:none}
 .sticky .wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:15px;padding-bottom:15px}
 .flab{font-family:var(--font-m);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--ink-dim);margin-right:6px}
@@ -355,7 +363,7 @@ footer img{height:16px}
 </style></head><body>
 <form id="ag" onsubmit="return false">
 %s
-<div class="top" id="top"><img src="%s" alt="Relats">
+<div class="top" id="top"><a class="home" href="#" aria-label="Torna a dalt"><img src="%s" alt="Relats"></a>
   <nav class="nv"><a href="#dia1">Dia 1</a><a href="#dia2">Dia 2</a><a href="#lamola">La Mola</a>
   <a class="cta" href="#resum">Resum</a></nav></div>
 
