@@ -184,7 +184,7 @@ footer img{height:15px}
     <div class="hmeta">
       <div><span>Treball estratègic</span><b>%s</b></div>
       <div><span>Inspiració i equip</span><b>%s</b></div>
-      <div><span>Blocs de prioritzacio</span><b>3 · 3h</b></div>
+      <div><span>Blocs de priorització</span><b>3 · 3h</b></div>
       <div><span>Format</span><b>Residencial · 1 nit</b></div>
     </div>
   </div>

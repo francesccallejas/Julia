@@ -86,9 +86,9 @@ DAY2 = [
 
 DAYS = [
     dict(n=1, dow="Dimarts", d="29", month="setembre", year="2026", sessions=DAY1,
-         kicker="Dia 1", lead="Alineament, prioritzacio i energia d'equip"),
+         kicker="Dia 1", lead="Alineament, priorització i energia d'equip"),
     dict(n=2, dow="Dimecres", d="30", month="setembre", year="2026", sessions=DAY2,
-         kicker="Dia 2", lead="Inspiracio, tancament i sinergies"),
+         kicker="Dia 2", lead="Inspiració, tancament i sinergies"),
 ]
 
 KINDS = {

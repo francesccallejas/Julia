@@ -83,7 +83,7 @@ def render():
     stats = "".join(
         '<div class="st"><div class="sv mono">%s</div><div class="sl">%s</div></div>' % (v, l)
         for v, l in [(hm(TOT[H]), "Treball estratègic"), (hm(TOT[S]), "Inspiració i equip"),
-                     ("3", "Blocs de prioritzacio"), ("2", "Dies · 1 nit")])
+                     ("3", "Blocs de priorització"), ("2", "Dies · 1 nit")])
     legend = "".join('<label class="lg" for="f-%s" style="--c:%s"><i></i>%s</label>'
                      % (k, v["color"], v["label"]) for k, v in KINDS.items())
     inputs = "".join('<input type="checkbox" class="fst" id="f-%s" checked>' % k for k in KINDS)
