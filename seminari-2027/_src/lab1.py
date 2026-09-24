@@ -157,12 +157,9 @@ body{background:var(--paper);color:var(--ink);font-size:16px;line-height:1.5}
 @media(max-width:760px){.band .wrap{grid-template-columns:1fr 1fr;gap:22px}}
 
 /* ---------- legend rail ---------- */
-.sticky{position:sticky;top:var(--barh);z-index:30;background:rgba(234,228,223,.84);
+.sticky{position:sticky;top:calc(var(--barh) - 1px);z-index:30;background:rgba(234,228,223,.84);
   -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
   border-bottom:1px solid rgba(216,210,202,.7)}
-.sticky:before{content:"";position:absolute;left:0;right:0;top:-4px;height:4px;
-  background:rgba(234,228,223,.84);-webkit-backdrop-filter:blur(18px);
-  backdrop-filter:blur(18px);pointer-events:none}
 .sticky .wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:15px;padding-bottom:15px}
 .flab{font-family:var(--font-m);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--ink-dim);margin-right:6px}
