@@ -14,8 +14,10 @@ def block(x, i, dn):
         if x["obj"]:
             parts.append('<div class="dt"><h4>Objectiu</h4><p class="big">%s</p></div>' % x["obj"])
         if x["timing"]:
-            parts.append('<div class="dt"><h4>Timing</h4><ol>%s</ol></div>' %
-                         "".join("<li>%s</li>" % t for t in x["timing"]))
+            sl = slack(x)
+            parts.append('<div class="dt"><h4>Timing</h4><ol>%s</ol>%s</div>' % (
+                "".join("<li>%s</li>" % t for t in x["timing"]),
+                ('<p class="slack mono">+%d′ · Temps de marge</p>' % sl) if sl > 0 else ""))
         if x["how"]:
             parts.append('<div class="dt"><h4>Com ho fem</h4><ul>%s</ul></div>' %
                          "".join("<li>%s</li>" % t for t in x["how"]))
@@ -267,6 +269,7 @@ details[open] .chev{transform:rotate(-135deg);margin-top:2px}
 .det ol li:before{content:counter(n);position:absolute;left:0;top:1px;font-family:var(--font-m);
   font-size:10.5px;color:var(--accent)}
 .det ul li:before{content:"";position:absolute;left:2px;top:9px;width:7px;height:1px;background:var(--ink-dim)}
+.slack{margin-top:10px;padding-left:20px;font-size:11.5px;letter-spacing:.04em;color:var(--accent);opacity:.85}
 @media(max-width:700px){
   .blk{grid-template-columns:62px 20px 1fr}
   .tm{padding-right:10px}.t1{font-size:13px}.t2{display:none}

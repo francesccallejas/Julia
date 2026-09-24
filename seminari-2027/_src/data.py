@@ -46,8 +46,7 @@ PRIO2_TIMING = ["5′ · Intro",
 PRIO_HOW = ["3 grups de 3 persones",
             "PR & OR marquen Must & Don't",
             "Es puntuen totes les iniciatives d'1 a XX",
-            "D'1 a XX, de més a menys important",
-            "Cal preparar el paper de treball"]
+            "D'1 a XX, de més a menys important"]
 
 DAY1 = [
     ses("08:30", "09:00", "Arribada", M, "Hotel", "Esmorzar i cafès disponibles des de les 8.30"),
@@ -72,7 +71,7 @@ DAY1 = [
         obj="Prioritzar totes les iniciatives", timing=PRIO2_TIMING,
         how=["3 grups de 3 persones", "PR & OR marquen Must & Other",
              "Es puntuen totes les iniciatives d'1 a XX",
-             "D'1 a XX, de més a menys important", "Cal preparar el paper de treball"], tag="Prio 2"),
+             "D'1 a XX, de més a menys important"], tag="Prio 2"),
     ses("16:00", "18:00", "Speaker motivacional", S, "NE", "Xerrada + dinàmica de grup"),
     ses("18:00", "18:15", "Break", M, "Hotel"),
     ses("18:15", "20:00", "Caminada", S, "Hotel"),
@@ -131,6 +130,13 @@ def totals(sessions):
     for x in sessions:
         out[x["kind"]] = out.get(x["kind"], 0) + dur(x)
     return out
+
+def slack(x):
+    """Minuts del bloc que el timing no reparteix: marge previst per si s'allarga."""
+    import re as _r
+    tot = sum(int(m.group(1)) for t in x["timing"]
+              for m in [_r.match(r"\s*(\d+)\s*['\u2032]", t)] if m)
+    return (mins(x["e"]) - mins(x["s"]) - tot) if x["timing"] else 0
 
 ALL = DAY1 + DAY2
 PRIO = [x for x in ALL if x["tag"] and x["tag"].startswith("Prio")]
