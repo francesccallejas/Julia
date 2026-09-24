@@ -59,8 +59,8 @@ DAY1 = [
         obj="Prioritzar totes les iniciatives", timing=PRIO_TIMING, how=PRIO_HOW, tag="Prio 1"),
     ses("13:00", "13:45", "Bloc Prio 3 · People", H, "OR", "Iniciatives estratègiques 2027",
         obj="Prioritzar totes les iniciatives", timing=PRIO_TIMING, how=PRIO_HOW, tag="Prio 3"),
-    ses("13:45", "15:15", "Dinar · buffet", M, "Hotel"),
-    ses("15:15", "16:00", "Bloc Prio 2 · Diversificació", H, "OR", "Iniciatives estratègiques 2027",
+    ses("13:45", "14:45", "Dinar · buffet", M, "Hotel"),
+    ses("14:45", "16:00", "Bloc Prio 2 · Diversificació", H, "OR", "Iniciatives estratègiques 2027",
         obj="Prioritzar totes les iniciatives", timing=PRIO_TIMING,
         how=["3 grups de 3 persones", "PR & OR marquen Must & Other",
              "Es puntuen totes les iniciatives d'1 a XX",
@@ -125,6 +125,10 @@ def totals(sessions):
     return out
 
 ALL = DAY1 + DAY2
+PRIO = [x for x in ALL if x["tag"] and x["tag"].startswith("Prio")]
+PRIO_N = len(PRIO)
+PRIO_T = sum(mins(x["e"]) - mins(x["s"]) for x in PRIO)
+NBLOCKS = len(ALL)
 TOT = totals(ALL)
 TOT_ALL = sum(TOT.values())
 

@@ -184,7 +184,7 @@ footer img{height:15px}
     <div class="hmeta">
       <div><span>Treball estratègic</span><b>%s</b></div>
       <div><span>Inspiració i equip</span><b>%s</b></div>
-      <div><span>Blocs de priorització</span><b>3 · 3h</b></div>
+      <div><span>Blocs de priorització</span><b>%s</b></div>
       <div><span>Format</span><b>Residencial · 1 nit</b></div>
     </div>
   </div>
@@ -234,6 +234,6 @@ r.querySelectorAll('.stop').forEach(function(s){
 </script>
 </body></html>""") % (
         HEAD_COMMON, RESET, TOKENS, fontface(), LOGO, ridge_svg(),
-        hm(TOT[H]), hm(TOT[S]), legend, rail,
+        hm(TOT[H]), hm(TOT[S]), "%d · %s" % (PRIO_N, hm(PRIO_T)), legend, rail,
         ridge_svg(opacity=(.25, .4, .65, 1)), VENUE["blurb"],
         "".join('<div class="vf"><span>%s</span><b>%s</b></div>' % f for f in VENUE["facts"]), LOGO)

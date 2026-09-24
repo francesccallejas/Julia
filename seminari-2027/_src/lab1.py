@@ -65,7 +65,7 @@ def overlay():
         for c, v, l in [(KINDS[H]["color"], hm(TOT[H]), "Treball estratègic"),
                         (KINDS[S]["color"], hm(TOT[S]), "Inspiració i equip"),
                         (KINDS[M]["color"], hm(TOT[M] + TOT[F]), "Àpats, pauses i lliure"),
-                        ("#ff5710", "3 · 3h", "Blocs de priorització")])
+                        ("#ff5710", "%d · %s" % (PRIO_N, hm(PRIO_T)), "Blocs de priorització")])
     rows = ""
     for d in DAYS:
         rows += ('<div class="ovd"><span class="mono">Dia 0%d</span><b>%s %s de %s</b>'
@@ -83,7 +83,7 @@ def render():
     stats = "".join(
         '<div class="st"><div class="sv mono">%s</div><div class="sl">%s</div></div>' % (v, l)
         for v, l in [(hm(TOT[H]), "Treball estratègic"), (hm(TOT[S]), "Inspiració i equip"),
-                     ("3", "Blocs de priorització"), ("2", "Dies · 1 nit")])
+                     (str(PRIO_N), "Blocs de priorització"), ("2", "Dies · 1 nit")])
     legend = "".join('<label class="lg" for="f-%s" style="--c:%s"><i></i>%s</label>'
                      % (k, v["color"], v["label"]) for k, v in KINDS.items())
     inputs = "".join('<input type="checkbox" class="fst" id="f-%s" checked>' % k for k in KINDS)

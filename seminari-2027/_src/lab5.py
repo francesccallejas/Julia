@@ -197,7 +197,7 @@ h1 em{font-style:normal;color:var(--accent)}
       <div><span>Dates</span><b>29 &amp; 30 setembre</b></div>
       <div><span>Treball estratègic</span><b>%s</b></div>
       <div><span>Inspiració i equip</span><b>%s</b></div>
-      <div><span>Blocs</span><b>21</b></div>
+      <div><span>Blocs</span><b>%s</b></div>
     </div>
   </div>
   <div class="cue">Scroll · ↓ ↑ per navegar</div>
@@ -268,7 +268,7 @@ addEventListener('keydown',function(e){
 </script>
 </body></html>""") % (
         HEAD_COMMON, RESET, TOKENS, fontface(), LOGO, "".join(rail), ridge_svg(),
-        hm(TOT[H]), hm(TOT[S]), "".join(screens),
+        hm(TOT[H]), hm(TOT[S]), str(NBLOCKS), "".join(screens),
         ridge_svg(opacity=(.3, .5, .85, 1)), VENUE["blurb"],
         "".join('<div class="vf"><span>%s</span><b>%s</b></div>' % f for f in VENUE["facts"]),
         "".join(idx))

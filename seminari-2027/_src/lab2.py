@@ -50,7 +50,7 @@ def render():
                      for v in KINDS.values())
     stats = "".join('<div class="st"><b class="mono">%s</b><span>%s</span></div>' % (v, l)
                     for v, l in [(hm(TOT[H]), "Treball estratègic"), (hm(TOT[S]), "Inspiració i equip"),
-                                 (hm(TOT[M] + TOT[F]), "Àpats, pauses i lliure"), ("21h 30′", "Total agenda")])
+                                 (hm(TOT[M] + TOT[F]), "Àpats, pauses i lliure"), (hm(TOT_ALL), "Total agenda")])
     return T("""<!doctype html><html lang="ca"><head>%s
 <title>Seminari Pla Estratègic 2027 · Relats</title>
 <style>%s
