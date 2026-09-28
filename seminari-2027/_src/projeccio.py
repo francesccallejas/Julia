@@ -9,6 +9,7 @@ import io, os, sys, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from data import HEAD_COMMON, TOKENS, RESET, fontface, LOGO, T
 from iniciatives import I, BLOCS, per_bloc, OBJECTIU
+from valoracio import BE, MILLORA, SINTESI
 from data import ALL as SESSIONS
 
 OUT = "/home/user/Julia/seminari-2027"
@@ -19,6 +20,17 @@ FASES = {  # minuts de cada fase, tal com surten de l'agenda
     2: [("Intro", 5), ("Treball en grup", 30), ("Bolcat a l'Excel", 5), ("Selecció final", 20), ("Coixí", 15)],
 }
 ORDRE = [1, 3, 2]   # l'ordre real de l'agenda del dia 29
+
+# Bloc de best practices / lessons learnt (11:00-11:30). No té llista prèvia:
+# les accions es redacten a la sessió, per això la taula deixa escriure-les.
+BP = dict(nom="Best practices", ini="11:00", fi="11:30", accions=6, objectiu=2,
+          persones=9, vots_persona=3,
+          fases=[("3 accions per grup", 10), ("Presentació", 10), ("Votació", 5), ("Coixí", 5)],
+          com=["2 grups, de 4 i 5 persones",
+               "Cada grup escriu 3 accions a la seva fitxa",
+               "Es presenten: surten 6 accions en total",
+               "Es voten a mà alçada, 3 vots per persona",
+               "En surten 2"])
 
 def nom_bloc(b):
     return BLOCS[b][0].split("·")[-1].strip()
@@ -134,6 +146,66 @@ def taula(b, idx_id):
       El rànquing orienta, però <b>les guanyadores són les que marqueu a la columna Final</b>.</p>
   </div>""" % (nom_bloc(b), idx_id, b, len(k), OBJECTIU[b], altres, altres, files, nom_bloc(b), len(k), len(k), len(k)*(len(k)+1)//2)
 
+def bp_cover():
+    fases = "".join('<li><b class="mono">%d′</b>%s</li>' % (m, t) for t, m in BP["fases"])
+    com = "".join("<li>%s</li>" % h for h in BP["com"])
+    return """<div class="in">
+    <div class="kick mono">Dimarts 29 · %s → %s</div>
+    <h1>Best practices i <em>lessons learnt</em></h1>
+    <p class="lead">Revisió del Pla Estratègic 2026 · <b>en sortiran %d accions</b></p>
+    <div class="cbox">
+      <div class="cb"><h3>Com ens organitzem</h3><ul class="com">%s</ul></div>
+      <div class="cb"><h3>Timing</h3><ul class="fases">%s</ul></div>
+    </div>
+  </div>""" % (BP["ini"], BP["fi"], BP["objectiu"], com, fases)
+
+def bp_valoracio():
+    def col(titol, items, cls):
+        return ('<div class="vcol %s"><h3>%s</h3>%s</div>' % (cls, titol,
+                "".join('<div class="vi"><span class="vn mono">%d</span>'
+                        '<div><b>%s</b><p>%s</p></div></div>' % (i + 1, t, d)
+                        for i, (t, d) in enumerate(items))))
+    return """<div class="in">
+    <div class="kick mono">Valoració global del Pla Estratègic 2026</div>
+    <div class="vcols">%s%s</div>
+    <div class="vsint"><span class="mono">En síntesi</span><p>%s</p></div>
+  </div>""" % (col("Què ha funcionat", BE, "ok"), col("Què hem de millorar", MILLORA, "imp"), SINTESI)
+
+def bp_taula():
+    files = "".join(
+        '<tr data-i="%d"><td class="n mono">%02d</td>'
+        '<td class="gr mono">Grup %d</td>'
+        '<td><input type="text" class="acc" placeholder="Escriu l\u2019acció…"></td>'
+        '<td><input type="number" class="vot" min="0" max="%d" inputmode="numeric"></td>'
+        '<td class="rk mono">—</td>'
+        '<td><button class="fin" type="button">○</button></td></tr>'
+        % (i, i + 1, 1 if i < 3 else 2, BP["persones"]) for i in range(BP["accions"]))
+    return """<div class="in wide">
+    <div class="kick mono">Best practices · votació de les accions</div>
+    <div class="tctl">
+      <button class="tb" data-act="sort" type="button">Ordena per vots</button>
+      <button class="tb" data-act="orig" type="button">Ordre original</button>
+      <span class="tsum mono"></span>
+      <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
+      <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
+    </div>
+    <table class="ctv" data-obj="%d" data-vots="%d">
+      <thead><tr><th class="n">#</th><th class="gr">Grup</th><th>Acció</th>
+        <th class="g">Vots</th><th class="g">Rang</th><th class="g">Final</th></tr></thead>
+      <tbody>%s</tbody>
+    </table>
+    <div class="res" hidden>
+      <div class="rhd"><h2>Accions <em>escollides</em></h2>
+        <button class="tb" data-act="back" type="button">Torna a la taula</button></div>
+      <ol class="rl"></ol>
+    </div>
+    <p class="tnote">%d persones amb <b>%d vots cadascuna</b> a mà alçada: %d vots a repartir.
+      Aquí mana més vots, al revés dels blocs de priorització. L\u2019objectiu són
+      <b>%d accions</b>, i com sempre el que decideix és la columna <b>Final</b>.</p>
+  </div>""" % (BP["objectiu"], BP["persones"] * BP["vots_persona"], files,
+               BP["persones"], BP["vots_persona"], BP["persones"] * BP["vots_persona"],
+               BP["objectiu"])
+
 # ------------------------------------------------------------------- pagina ---
 CSS = """
 :root{%s--bg:#0e1114;--fg:#f2f3f4;--dim:rgba(255,255,255,.55);--ln:rgba(255,255,255,.14);
@@ -238,6 +310,12 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .navcov:hover,.navidx:hover,.navtau:hover{opacity:1;color:var(--fg);border-color:var(--fg)}
 .sl.index .navidx{display:none}
 .sl.cover .navcov{display:none}
+.sl.bp.cover .navcov{display:none}
+.sl.bp.valoracio .navidx{display:none}
+.sl.bp.taula .navtau{display:none}
+.sl.bp.taula .nav{display:none}
+.sl.bp.taula .navbtns{display:none}
+.stage:has(.sl.bp.taula:target) ~ .hint{display:none}
 
 .in.wide{max-width:1760px}
 .tctl{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:nowrap}
@@ -328,6 +406,57 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 
 .sl.taula .in{padding-top:clamp(18px,2.5vh,34px);padding-bottom:52px}
 @media(max-width:1400px){.ct{font-size:12.5px}.ct td.nm .sp{display:none}}
+
+/* --- valoració 2026 --- */
+.vcols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3.5vw,58px);
+  margin-top:clamp(18px,3vh,32px)}
+.vcol{border-top:2px solid var(--ln);padding-top:18px}
+.vcol.ok{border-top-color:#4fbf9a}
+.vcol.imp{border-top-color:var(--accent)}
+.vcol h3{font-family:var(--font-m);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:18px}
+.vcol.ok h3{color:#4fbf9a}
+.vcol.imp h3{color:var(--accent)}
+.vi{display:flex;gap:14px;margin-bottom:16px}
+.vi:last-child{margin-bottom:0}
+.vn{flex:none;font-size:13px;color:var(--dim);padding-top:3px}
+.vi b{display:block;font-size:clamp(16px,1.5vw,21px);font-weight:600;letter-spacing:-.012em;
+  line-height:1.25;margin-bottom:4px}
+.vi p{font-size:clamp(13px,1.1vw,16px);color:var(--dim);line-height:1.4}
+.vsint{display:flex;gap:18px;align-items:baseline;margin-top:clamp(20px,3vh,34px);
+  padding:16px 20px;background:var(--surf);border-left:3px solid var(--accent)}
+.vsint span{flex:none;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.vsint p{font-size:clamp(14px,1.2vw,17px);line-height:1.45}
+@media(max-width:1000px){.vcols{grid-template-columns:1fr}}
+
+/* --- taula de votació --- */
+.ctv{width:100%%;border-collapse:collapse;font-size:15px;margin-bottom:6px}
+.ctv th{font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);font-weight:400;text-align:left;padding:0 10px 10px;border-bottom:1px solid var(--ln)}
+.ctv th.n{width:40px}
+.ctv th.gr{width:92px}
+.ctv th.g{width:104px;text-align:center}
+.ctv td{padding:7px 10px;border-bottom:1px solid var(--ln);vertical-align:middle}
+.ctv td.n{color:var(--dim);font-size:12px}
+.ctv td.gr{color:var(--dim);font-size:12px;letter-spacing:.06em}
+.ctv .acc{width:100%%;padding:11px 14px;font-family:var(--font);font-size:16px;
+  border:1px solid var(--ln);border-radius:10px;background:var(--surf);color:var(--fg)}
+.ctv .acc::placeholder{color:var(--dim);opacity:.6}
+.ctv .vot{width:88px;padding:10px 4px;text-align:center;font-family:var(--font-m);font-size:17px;
+  border:1px solid var(--ln);border-radius:10px;background:var(--surf);color:var(--fg);
+  -moz-appearance:textfield}
+.ctv .vot::-webkit-outer-spin-button,.ctv .vot::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ctv .acc:focus,.ctv .vot:focus{outline:none;border-color:var(--accent);background:transparent}
+.ctv .vot.oor{border-color:#e0341f;background:rgba(224,52,31,.16);color:#ff9d8c}
+.ctv td.g{text-align:center}
+.ctv .rk{font-size:17px;font-weight:600;color:var(--dim)}
+.ctv tr.hi .rk{color:var(--accent);font-size:21px}
+.ctv tr.hi{background:rgba(255,87,16,.07)}
+.ctv .fin{font-family:var(--font-m);font-size:12px;letter-spacing:.08em;padding:8px 14px;
+  border:1px solid var(--ln);border-radius:99px;color:var(--dim);transition:.16s;min-width:52px}
+.ctv .fin:hover{border-color:var(--fg);color:var(--fg)}
+.ctv .fin[data-fin="1"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.sl.bp.taula .in{padding-top:clamp(18px,2.5vh,34px);padding-bottom:52px}
 .hint{position:fixed;left:50%%;bottom:16px;transform:translateX(-50%%);z-index:20;
   font-family:var(--font-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--dim);opacity:.5}
@@ -335,7 +464,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 
 def render():
     # 1 · muntem la llista de pantalles per poder enllaçar-les entre elles
-    plan = []
+    plan = [["bp", "cover"], ["bp", "valoracio"], ["bp", "taula"]]
     for b in ORDRE:
         plan.append([b, "cover"])
         plan.append([b, "index"])
@@ -346,6 +475,7 @@ def render():
     item_ids = {}
     idx_of, cov_of, tau_of = {}, {}, {}
     for n, p in enumerate(plan):
+        if p[0] == "bp": continue
         if p[1] == "index": idx_of[p[0]] = ids[n]
         elif p[1] == "cover": cov_of[p[0]] = ids[n]
         elif p[1] == "taula": tau_of[p[0]] = ids[n]
@@ -353,8 +483,23 @@ def render():
 
     # 2 · pintem cada pantalla amb els seus controls
     out = []
+    bp_ids = [ids[n] for n, p in enumerate(plan) if p[0] == "bp"]
     for n, p in enumerate(plan):
         b, kind = p[0], p[1]
+        if b == "bp":
+            inner = {"cover": bp_cover, "valoracio": bp_valoracio, "taula": bp_taula}[kind]()
+            prev, nxt = ids[n - 1], ids[(n + 1) % len(ids)]
+            out.append(
+                '<section id="%s" class="sl bp %s" data-b="bp">%s'
+                '<a class="nav prev" href="#%s"><span>&#8592;</span></a>'
+                '<a class="nav next" href="#%s"><span>&#8594;</span></a>'
+                '<div class="navbtns">'
+                '<a class="navcov" href="#%s">Portada</a>'
+                '<a class="navidx" href="#%s">Valoració 2026</a>'
+                '<a class="navtau" href="#%s">Votació</a></div>'
+                '</section>' % (ids[n], kind, inner, prev, nxt,
+                                bp_ids[0], bp_ids[1], bp_ids[2]))
+            continue
         if kind == "cover":
             inner, cls = cover(b), "cover"
         elif kind == "index":
@@ -376,8 +521,10 @@ def render():
             '<a class="navtau" href="#%s">Consolidació</a></div>'
             '</section>' % (ids[n], cls, b, inner, prev, nxt, cov_of[b], idx_of[b], tau_of[b]))
 
-    tabs = "".join('<a class="tab" href="#%s" data-b="%d">%s <i class="mono">%d</i></a>'
-                   % (cov_of[b], b, nom_bloc(b), len(per_bloc(b))) for b in ORDRE)
+    tabs = ('<a class="tab" href="#%s" data-b="bp">Best practices <i class="mono">%d</i></a>'
+            % (bp_ids[0], BP["accions"]))
+    tabs += "".join('<a class="tab" href="#%s" data-b="%d">%s <i class="mono">%d</i></a>'
+                    % (cov_of[b], b, nom_bloc(b), len(per_bloc(b))) for b in ORDRE)
     fases = json.dumps({str(b): [[t, m] for t, m in FASES[b]] for b in ORDRE}, ensure_ascii=False)
 
     return """<!doctype html><html lang="ca" data-theme="dark"><head>%s
@@ -584,6 +731,132 @@ document.querySelectorAll('.ct').forEach(function(t){
     };
   });
 });
+
+/* ---- best practices: 6 accions, es voten a ma alcada ---- */
+(function(){
+  var t=document.querySelector('.ctv'); if(!t) return;
+  var KEY='pe2027-bp', obj=+t.dataset.obj, maxv=+t.dataset.vots;
+  var box=t.parentNode;
+  function rows(){return [].slice.call(t.querySelectorAll('tbody tr'))}
+  function saveV(){
+    try{
+      var d=rows().sort(function(a,b){return (+a.dataset.i)-(+b.dataset.i)}).map(function(r){
+        return {a:r.querySelector('.acc').value, v:r.querySelector('.vot').value,
+                f:r.querySelector('.fin').dataset.fin||'0'};});
+      localStorage.setItem(KEY,JSON.stringify(d));
+    }catch(e){}
+  }
+  function loadV(){
+    try{
+      var d=JSON.parse(localStorage.getItem(KEY)||'[]');
+      rows().forEach(function(r,i){
+        var o=d[i]; if(!o) return;
+        r.querySelector('.acc').value=o.a||'';
+        r.querySelector('.vot').value=o.v||'';
+        var f=r.querySelector('.fin'); f.dataset.fin=o.f||'0'; f.textContent=o.f==='1'?'●':'○';
+      });
+    }catch(e){}
+  }
+  function recalcV(){
+    var rs=rows(), tot=0, fin=0, dades=[];
+    rs.forEach(function(r){
+      var inp=r.querySelector('.vot');
+      inp.classList.remove('oor');
+      var v=inp.value===''?null:+inp.value;
+      if(v!==null&&(v<0||v>maxv)){inp.classList.add('oor');v=null}
+      if(v!==null) tot+=v;
+      dades.push({r:r,v:v});
+    });
+    dades.filter(function(d){return d.v!==null})
+         .sort(function(a,b){return b.v-a.v})
+         .forEach(function(d,i){d.rk=i+1});
+    dades.forEach(function(d){
+      d.r.querySelector('.rk').textContent=d.rk?d.rk:'—';
+      var f=d.r.querySelector('.fin').dataset.fin==='1';
+      d.r.classList.toggle('hi',f);
+      if(f) fin++;
+    });
+    var sum=box.querySelector('.tsum');
+    sum.textContent=tot+'/'+maxv+' vots repartits · '+fin+'/'+obj+' escollides';
+    sum.className='tsum mono'+(fin===obj?' ok':(fin>obj?' over':''));
+    saveV();
+  }
+  function winV(){
+    var res=box.querySelector('.res'), ol=res.querySelector('.rl');
+    var d=rows().map(function(r){
+      return {rk:r.querySelector('.rk').textContent,
+              a:r.querySelector('.acc').value||'(sense redactar)',
+              g:r.querySelector('.gr').textContent,
+              v:r.querySelector('.vot').value||'—',
+              f:r.querySelector('.fin').dataset.fin==='1'};});
+    function ord(a,b){
+      if(a.rk==='—'&&b.rk==='—') return 0;
+      if(a.rk==='—') return 1; if(b.rk==='—') return -1;
+      return (+a.rk)-(+b.rk);
+    }
+    function fila(o,gran){
+      return '<li class="rw'+(gran?' top':'')+'">'
+        +'<span class="rn mono">'+o.rk+'</span>'
+        +'<span class="rt">'+o.a+'<em>'+o.g+'</em></span>'
+        +'<span class="rp mono">'+o.v+'</span></li>';
+    }
+    var tria=d.filter(function(o){return o.f}).sort(ord);
+    var resta=d.filter(function(o){return !o.f&&o.rk!=='—'}).sort(ord);
+    var h='';
+    if(!tria.length&&!resta.length){
+      h='<li class="rw empty">Encara no hi ha vots.</li>';
+    } else if(!tria.length){
+      h='<li class="rw nota">Cap acció marcada encara. Fes servir la columna '
+        +'<b>Final</b> per marcar les escollides.</li>'
+        +resta.map(function(o){return fila(o,false)}).join('');
+    } else {
+      h='<li class="rsec'+(tria.length>obj?' over':'')+'"><span>Escollides</span>'
+        +'<i>'+tria.length+' de '+obj+'</i></li>'
+        +tria.map(function(o){return fila(o,true)}).join('');
+      if(resta.length) h+='<li class="rsec"><span>La resta, per vots</span><i>'+resta.length+'</i></li>'
+        +resta.map(function(o){return fila(o,false)}).join('');
+    }
+    ol.innerHTML=h;
+    res.hidden=false; t.hidden=true; box.querySelector('.tnote').hidden=true;
+    box.querySelectorAll('.tctl .tb').forEach(function(x){
+      if(x.dataset.act!=='back') x.hidden=true});
+  }
+  loadV(); recalcV();
+  t.addEventListener('input',recalcV);
+  t.addEventListener('click',function(e){
+    var f=e.target.closest('button.fin'); if(!f) return;
+    f.dataset.fin=f.dataset.fin==='1'?'0':'1';
+    f.textContent=f.dataset.fin==='1'?'●':'○'; recalcV();
+  });
+  box.querySelectorAll('.tb').forEach(function(btn){
+    btn.onclick=function(){
+      var tb=t.querySelector('tbody'), rs=rows();
+      if(btn.dataset.act==='sort'){
+        rs.sort(function(a,b){
+          var ra=a.querySelector('.rk').textContent, rb=b.querySelector('.rk').textContent;
+          if(ra==='—'&&rb==='—') return (+a.dataset.i)-(+b.dataset.i);
+          if(ra==='—') return 1; if(rb==='—') return -1;
+          return (+ra)-(+rb);});
+        rs.forEach(function(r){tb.appendChild(r)});
+      } else if(btn.dataset.act==='orig'){
+        rs.sort(function(a,b){return (+a.dataset.i)-(+b.dataset.i)});
+        rs.forEach(function(r){tb.appendChild(r)});
+      } else if(btn.dataset.act==='win'){ winV();
+      } else if(btn.dataset.act==='back'){
+        box.querySelector('.res').hidden=true; t.hidden=false;
+        box.querySelector('.tnote').hidden=false;
+        box.querySelectorAll('.tctl .tb').forEach(function(x){x.hidden=false});
+      } else if(btn.dataset.act==='reset'){
+        if(!confirm('Vols esborrar les accions i els vots?')) return;
+        rs.forEach(function(r){
+          r.querySelector('.acc').value=''; r.querySelector('.vot').value='';
+          var f=r.querySelector('.fin'); f.dataset.fin='0'; f.textContent='○';
+        });
+        recalcV();
+      }
+    };
+  });
+})();
 
 var fase=-1, left=0, tick=null, clock=document.getElementById('clock');
 function cur(){var h=location.hash.slice(1);
