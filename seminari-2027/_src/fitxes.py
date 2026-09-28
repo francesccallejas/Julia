@@ -4,6 +4,7 @@ import io, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from data import *
 from iniciatives import per_bloc, BLOCS, OBJECTIU
+import internals as IN
 
 OUT = "/home/user/Julia/seminari-2027"
 
@@ -72,10 +73,11 @@ def page_guia():
     <div class="tbox"><h4>Què s'imprimeix</h4>
       <table class="mini">
         <tr><th></th><th>Bloc</th><th>Durada</th><th>Còpies</th></tr>
-        %s%s%s%s
+        %s%s%s%s%s
       </table>
       <p class="note">Les fitxes de priorització són iguals per als tres blocs, només canvia
-        la capçalera. Cada grup n'omple una.</p>
+        la capçalera. Cada grup n'omple una. La votació de les best practices no porta fitxa:
+        es fa a pantalla.</p>
     </div>
   </div>
   <div>
@@ -84,8 +86,9 @@ def page_guia():
         <li>2 grups, de 4 i 5 persones.</li>
         <li>Cada grup escriu <b>3 accions</b> a la seva fitxa (10′).</li>
         <li>Es presenten les accions (10′). Surten <b>6 accions</b> en total.</li>
-        <li>El facilitador les passa al full de votació i a l'Excel.</li>
-        <li>Es voten: <b>3 vots a mà alçada per persona</b>. En surten <b>2</b> (5′).</li>
+        <li>El facilitador les escriu directament a la <b>pantalla de votació</b> projectada.</li>
+        <li>Es voten: <b>3 vots a mà alçada per persona</b>. En surten <b>2</b> (5′).
+          La votació no té fitxa: es fa allà mateix, a pantalla.</li>
       </ol>
     </div>
     <div class="tbox"><h4>Priorització de Blocs 1, 2, 3</h4>
@@ -110,7 +113,8 @@ def page_guia():
 %s
 </section>""" % (head("Guia del facilitador", "Fitxes de treball",
                       "Material imprès per al dimarts 29 de setembre"),
-                 line(bp, "2"), line(p1, "3"), line(p3, "3"), line(p2, "3"), FOOT)
+                 line(bp, "2"), line(p1, "3"), line(p3, "3"), line(p2, "3"),
+                 line(sesh("Internal projects"), "9"), FOOT)
 
 def page_best():
     x = sesh("Best practices")
@@ -137,26 +141,6 @@ def page_best():
         "".join('<div class="act"><span class="an2 mono">%d</span><div class="ab"></div></div>' % i
                 for i in (1, 2, 3)),
         FOOT)
-
-def page_vots():
-    return """<section class="page">
-%s
-<div class="obj"><span class="mono">Com es vota</span><b>3 vots a mà alçada per persona · en surten 2 accions de les 6</b></div>
-<table class="vt">
-  <tr><th class="num">#</th><th>Acció</th><th class="g">Grup</th><th class="v">Vots</th><th class="w">Escollida</th></tr>
-  %s
-</table>
-<div class="two">
-  <div class="tbox"><h4>Les 2 accions escollides</h4>%s</div>
-  <div class="tbox"><h4>Qui se n'encarrega i per quan</h4>%s</div>
-</div>
-%s
-</section>""" % (
-        head("Dimarts 29 · 11:00", "Votació de les accions",
-             "Full del facilitador · Best practices i lessons learnt"),
-        "".join('<tr><td class="num mono">%02d</td><td></td><td class="g"></td>'
-                '<td class="v"></td><td class="w"></td></tr>' % i for i in range(1, 7)),
-        lines(2, 12), lines(2, 12), FOOT)
 
 def page_prio(tag):
     x = sesh(tag)
@@ -193,6 +177,64 @@ def page_prio(tag):
         head("Dimarts 29 · %s" % x["s"], x["t"], "Iniciatives estratègiques 2027 · %s" % area, x),
         x["obj"], timing_box(x), how_box(x, n=len(k)), len(k), OBJECTIU[b], other, files,
         lines(2, 7), lines(2, 7), FOOT)).replace("{DENSE}", " dense" if dense else "")
+
+# Alçades reals de la fitxa, en mil·límetres: la columna del nom fa uns 125 mm
+# i a 9 pt hi caben unes 62 lletres per línia.
+IP_LINIA, IP_TAG, IP_PAD, IP_CAP, IP_UTIL, IP_OBJ = 3.9, 2.9, 2.2, 10.2, 221.0, 13.0
+
+
+def _ip_cost(x):
+    """Mil·límetres que ocupa un projecte a la fitxa."""
+    linies = max(1, -(-len(x[0]) // 62))
+    return IP_PAD + linies * IP_LINIA + (IP_TAG if (x[1] or x[2]) else 0)
+
+
+def _ip_pagines():
+    """Reparteix els sponsors entre pàgines sense partir-ne cap pel mig."""
+    pags, actual, alt = [], [], 0.0
+    for s in IN.SPONSORS:
+        c = IP_CAP + sum(_ip_cost(x) for x in IN.per_sponsor(s))
+        limit = IP_UTIL - (IP_OBJ if not pags and not actual else 0)
+        if actual and alt + c > limit:
+            pags.append(actual); actual, alt = [], 0.0
+        actual.append(s); alt += c
+    if actual:
+        pags.append(actual)
+    return pags
+
+
+def page_internals(sponsors, n, tot):
+    x = sesh("Internal projects")
+    grups = ""
+    for s in sponsors:
+        k = IN.per_sponsor(s)
+        def etiq(it):
+            t = ([it[2]] if it[2] else []) + [
+                "Prio %d" % p if IN.PRIO_NOM[p] == it[2] else "Prio %d · %s" % (p, IN.PRIO_NOM[p])
+                for p in it[1]]
+            return '<span class="sp mono">%s</span>' % " · ".join(t) if t else ""
+        files = "".join(
+            '<tr><td class="num mono">%02d</td><td class="nm">%s%s</td><td class="no"></td></tr>'
+            % (i + 1, it[0], etiq(it)) for i, it in enumerate(k))
+        grups += ('<div class="ipg"><div class="iph"><b>%s</b>'
+                  '<i class="mono">%d′ · %d projecte%s</i></div>'
+                  '<table class="ipt">%s</table></div>'
+                  % (s, IN.torn_minuts(), len(k), "s" if len(k) != 1 else "", files))
+    cap = ("""<div class="obj"><span class="mono">Com ho fem</span>
+      <b>Un torn de %d′ per funció · qui vegi un solapament amb el seu ho diu al moment</b></div>"""
+           % IN.torn_minuts()) if n == 1 else ""
+    return """<section class="page">
+%s
+%s
+<div class="ipcols mono"><span>Projecte</span><span>Notes i sinergies</span></div>
+<div class="ipwrap">%s</div>
+%s
+</section>""" % (
+        head("Dimecres 30 · %s" % x["s"], "Internal projects",
+             "%d projectes per sponsor · full %d de %d" % (len(IN.P), n, tot),
+             x if n == 1 else None),
+        cap, grups, FOOT)
+
 
 # -------------------------------------------------------------------- css ---
 CSS = """
@@ -262,7 +304,26 @@ th{font-family:var(--font-m);font-size:7.5pt;letter-spacing:.12em;text-transform
 .vt .g{width:18mm}.vt .v{width:26mm;border-left:.6pt solid #eee}
 .vt .w{width:22mm;border-left:.6pt solid #eee}
 .it{margin-bottom:3mm}
-.vt{margin-bottom:4mm}
+
+/* --- internal projects --- */
+.ipwrap{flex:1}
+.ipcols{display:flex;font-size:7pt;letter-spacing:.14em;text-transform:uppercase;color:#aaa;
+  margin-bottom:1.6mm}
+.ipcols span:first-child{flex:1;padding-left:8mm}
+.ipcols span:last-child{width:52mm;flex:none;padding-left:2mm}
+.ipg{margin-bottom:3.6mm;break-inside:avoid}
+.iph{display:flex;align-items:baseline;gap:3mm;padding-bottom:1.2mm;margin-bottom:1.4mm;
+  border-bottom:1.6pt solid #111}
+.iph b{font-size:11pt;font-weight:700;letter-spacing:-.01em}
+.iph i{font-style:normal;margin-left:auto;font-size:7.5pt;color:#ff5710;letter-spacing:.08em}
+.ipt{width:100%;border-collapse:collapse}
+.ipt td{border-bottom:.6pt solid #ddd;vertical-align:top;padding:1.1mm 0}
+.ipt tr:last-child td{border-bottom:0}
+.ipt .num{width:8mm;color:#aaa;font-size:7.5pt;text-align:center;padding-top:1.5mm}
+.ipt .nm{font-size:9pt;font-weight:600;line-height:1.2;padding-right:3mm}
+.ipt .nm .sp{display:block;font-size:6.8pt;font-weight:400;color:#888;margin-top:.4mm;
+  letter-spacing:.04em}
+.ipt .no{width:52mm;border-left:.6pt solid #eee}
 .mini th{font-size:7pt;padding-bottom:1mm}
 .mini td{font-size:9pt;padding:1.4mm 0;border-bottom:.6pt solid #eee}
 .mini .t{width:24mm;color:#666;font-size:8.5pt}
@@ -295,8 +356,11 @@ th{font-family:var(--font-m);font-size:7.5pt;letter-spacing:.12em;text-transform
 """
 
 def render():
-    pages = (page_guia() + page_best() + page_vots()
-             + page_prio("Prio 1") + page_prio("Prio 3") + page_prio("Prio 2"))
+    pags_int = _ip_pagines()
+    pages = (page_guia() + page_best()
+             + page_prio("Prio 1") + page_prio("Prio 3") + page_prio("Prio 2")
+             + "".join(page_internals(g, i + 1, len(pags_int))
+                       for i, g in enumerate(pags_int)))
     return """<!doctype html><html lang="ca"><head>%s
 <title>Fitxes de treball · Seminari Pla Estratègic 2027</title>
 <style>:root{%s}

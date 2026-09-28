@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """Projectes interns 2027 · transcrits de l'Excel «EAR/SQUAD/Internal».
 
+Salesforce Development (A. Martínez) s'ha tret: és el mateix que Salesforce
+improvements (F.Callejas).
+
 Columnes de l'origen:
     Initiative | Prioritat 1 (Auto), 2 (Diversificació), 3 (People) | Pillar |
     Sponsor | EAR/SQUAD/Internal
@@ -62,7 +65,6 @@ P = [
  ("Organització Comercial", [], "", "A. Martínez", "Internal"),
  ("Impacte Comercial en Releases", [], "", "A. Martínez", "Internal"),
  ("3PLs Analysis (Turkey, Egypt, El Salvador, Indonesia)", [], "", "A. Martínez", "Internal"),
- ("Salesforce Development", [], "", "A. Martínez", "Internal"),
  ("Regionalizacion – Finalizar la organización y continuar las reuniones para asegurar "
   "que se implementa de manera rápida y eficiente", [], "", "M.de Torres", "Internal"),
  ("Mercados – Preparar plan y estrategia a corto y medio plazo para los clientes principales "
