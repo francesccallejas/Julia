@@ -11,6 +11,7 @@ from data import HEAD_COMMON, TOKENS, RESET, fontface, LOGO, T
 from iniciatives import I, BLOCS, per_bloc, OBJECTIU
 from valoracio import BE, MILLORA, SINTESI
 from data import ALL as SESSIONS
+import internals as IN
 
 OUT = "/home/user/Julia/seminari-2027"
 
@@ -205,6 +206,97 @@ def bp_taula():
   </div>""" % (BP["objectiu"], BP["persones"] * BP["vots_persona"], files,
                BP["persones"], BP["vots_persona"], BP["persones"] * BP["vots_persona"],
                BP["objectiu"])
+
+# ------------------------------------------------------ projectes interns ---
+def ip_tags(x, sponsor=None):
+    """Etiquetes d'un projecte intern: prioritat, pilar, avisos."""
+    t = []
+    for p in x[1]:
+        t.append('<span class="ch pr">Prio %d · %s</span>' % (p, IN.PRIO_NOM[p]))
+    if x[2]:
+        t.append('<span class="ch pil">%s</span>' % x[2])
+    if x[4].endswith("?"):
+        t.append('<span class="ch alerta">Encara per confirmar</span>')
+    if IN.compartit(x):
+        altres = [s.strip() for s in x[3].split("/") if s.strip() != sponsor]
+        t.append('<span class="ch junts">Compartit amb %s</span>' % " i ".join(altres))
+    return "".join(t)
+
+
+def ip_cover():
+    torn = IN.torn_minuts()
+    torns = "".join('<li><b class="mono">%d′</b>%s<i class="mono">%d</i></li>'
+                    % (torn, s, len(IN.per_sponsor(s))) for s in IN.SPONSORS)
+    com = "".join("<li>%s</li>" % h for h in [
+        "Un torn per funció, en l'ordre de la llista",
+        "Explicació breu: què és, on som i qui hi toca",
+        "Qui vegi un solapament amb el seu, ho diu al moment",
+        "Al final, la vista creuada per veure on ens trobem"])
+    return """<div class="in">
+    <div class="kick mono">%s · %s → %s</div>
+    <h1>Internal <em>projects</em></h1>
+    <p class="lead">%d projectes · %d funcions · <b>%d′ per funció</b></p>
+    <div class="cbox">
+      <div class="cb"><h3>Com ens organitzem</h3><ul class="com">%s</ul>
+        <p class="cnote">%s</p></div>
+      <div class="cb"><h3>Torns</h3><ul class="fases torns">%s</ul></div>
+    </div>
+  </div>""" % (IN.BLOC["dia"], IN.BLOC["ini"], IN.BLOC["fi"], len(IN.P),
+               len(IN.SPONSORS), torn, com, IN.BLOC["objectiu"], torns)
+
+
+def ip_sponsor(s, n, tot):
+    k = IN.per_sponsor(s)
+    cls = "n%d" % min(len(k), 9)
+    cards = "".join(
+        '<div class="pc%s"><span class="pn mono">%02d</span>'
+        '<div class="pb"><b>%s</b><div class="chips">%s</div></div></div>'
+        % (" llarg" if len(x[0]) > 90 else "", i + 1, _h.escape(x[0]), ip_tags(x, s))
+        for i, x in enumerate(k))
+    return """<div class="in wide">
+    <div class="shd"><div>
+        <div class="kick mono">Internal projects · %d de %d · %d′</div>
+        <h2>%s</h2></div>
+      <span class="scount mono">%d projecte%s</span></div>
+    <div class="pg %s">%s</div>
+  </div>""" % (n, tot, IN.torn_minuts(), s, len(k), "s" if len(k) != 1 else "", cls, cards)
+
+
+def ip_mapa(ids):
+    cols = "".join(
+        '<div class="mcol"><a class="mh" href="#%s"><span>%s</span>'
+        '<i class="mono">%d</i></a><ul>%s</ul></div>'
+        % (ids[s], s, len(IN.per_sponsor(s)),
+           "".join('<li%s>%s</li>' % (' class="dub"' if x[4].endswith("?") else "",
+                                      _h.escape(x[0])) for x in IN.per_sponsor(s)))
+        for s in IN.SPONSORS)
+    return """<div class="in wide">
+    <div class="kick mono">Internal projects · tots, per funció</div>
+    <h2 class="mtit">On és cada cosa <em>i de qui</em></h2>
+    <div class="mgrid">%s</div>
+    <p class="tnote">Clica el nom d’una funció per anar al seu torn. Els projectes en taronja
+      encara estan per confirmar si són interns o pugen a estratègics.</p>
+  </div>""" % cols
+
+
+def ip_pilars():
+    grups = [(p, [x for x in IN.P if x[2] == p]) for p in IN.PILARS]
+    grups.append(("Sense pilar assignat", [x for x in IN.P if not x[2]]))
+    cols = "".join(
+        '<div class="pcol%s"><div class="ph"><span>%s</span><i class="mono">%d</i></div><ul>%s</ul></div>'
+        % (("" if p != "Sense pilar assignat" else " sense") + (" ample" if len(k) > 10 else ""),
+           p, len(k),
+           "".join('<li><b>%s</b><em>%s</em></li>' % (_h.escape(x[0]), x[3]) for x in k))
+        for p, k in grups)
+    return """<div class="in wide">
+    <div class="kick mono">Internal projects · vista creuada</div>
+    <h2 class="mtit">Els mateixos projectes, <em>per pilar</em></h2>
+    <div class="pgrid">%s</div>
+    <p class="tnote">Aquí és on es veuen les sinergies: dos noms diferents al mateix pilar
+      sovint són la mateixa feina. <b>%d dels %d projectes encara no tenen pilar assignat</b> a
+      l’Excel — val la pena tancar-ho en aquest bloc.</p>
+  </div>""" % (cols, sum(1 for x in IN.P if not x[2]), len(IN.P))
+
 
 def wrap():
     prev = sum(OBJECTIU[b] for b in ORDRE)
@@ -475,6 +567,87 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .ctv .fin[data-fin="1"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .sl.bp.taula .in{padding-top:clamp(18px,2.5vh,34px);padding-bottom:52px}
 
+/* --- projectes interns --- */
+.sl.int.mapa .nav,.sl.int.pilars .nav{display:none}
+.sl.int.cover .navcov{display:none}
+.sl.int.mapa .navidx{display:none}
+.sl.int.pilars .navtau{display:none}
+.sl.int .in{padding-top:clamp(18px,2.5vh,34px);padding-bottom:56px}
+.sl.int.pilars .in,.sl.int.mapa .in{padding-bottom:104px}
+.torns li{justify-content:flex-start}
+.torns i{font-style:normal;margin-left:auto;font-size:11px;color:var(--accent)}
+.cnote{margin-top:16px;padding-top:14px;border-top:1px solid var(--ln);font-size:13px;
+  color:var(--dim)}
+.cnote:before{content:"Objectiu del bloc · ";font-family:var(--font-m);font-size:10.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.shd{display:flex;align-items:flex-end;gap:24px;padding-bottom:18px;margin-bottom:20px;
+  border-bottom:1px solid var(--ln)}
+.shd h2{font-size:clamp(30px,4.4vw,62px);font-weight:700;letter-spacing:-.035em;line-height:1}
+.scount{margin-left:auto;flex:none;font-size:12px;color:var(--dim);letter-spacing:.06em}
+.pg{display:grid;gap:10px;grid-template-columns:repeat(3,1fr)}
+.pg.n1,.pg.n2{grid-template-columns:1fr}
+.pg.n4{grid-template-columns:repeat(2,1fr)}
+.pc{display:flex;gap:14px;padding:14px 18px;border:1px solid var(--ln);border-radius:14px;
+  background:var(--surf);min-width:0}
+.pc.llarg{grid-column:span 2}
+.pg.n1 .pc.llarg,.pg.n2 .pc.llarg,.pg.n4 .pc.llarg{grid-column:auto}
+.pc .pn{flex:none;font-size:13px;color:var(--accent);padding-top:3px}
+.pc .pb{min-width:0}
+.pc .pb b{display:block;font-size:17px;font-weight:600;line-height:1.28;letter-spacing:-.014em}
+.pc .chips{margin-top:9px}
+.pc .ch{font-size:10.5px;padding:4px 10px}
+.ch.pr{color:var(--fg);border-color:var(--fg)}
+.ch.alerta{color:#ff8a5c;border-color:#ff8a5c}
+.ch.junts{color:var(--accent);border-color:var(--accent)}
+@media(max-width:1400px){.pg{grid-template-columns:repeat(2,1fr)}.pc.llarg{grid-column:auto}}
+@media(max-width:900px){.pg,.pg.n4{grid-template-columns:1fr}}
+
+.mtit{font-size:clamp(24px,3vw,40px);font-weight:700;letter-spacing:-.03em;margin-bottom:20px}
+.mtit em{font-style:normal;color:var(--accent)}
+.mgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px 14px}
+.mh{display:flex;align-items:baseline;gap:8px;padding-bottom:7px;margin-bottom:9px;
+  border-bottom:1px solid var(--ln)}
+.mh span{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent)}
+.mh i{font-style:normal;font-family:var(--font-m);font-size:10.5px;color:var(--dim);margin-left:auto}
+.mh:hover span{text-decoration:underline}
+.mcol ul{list-style:none;display:grid;gap:5px}
+.mcol li{font-size:12.5px;line-height:1.3;color:var(--dim);padding-left:10px;position:relative}
+.mcol li:before{content:"";position:absolute;left:0;top:.6em;width:4px;height:1px;background:var(--ln)}
+.mcol li.dub{color:#ff8a5c}
+@media(max-width:1400px){.mgrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.mgrid{grid-template-columns:1fr}}
+
+.pgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px 16px;align-items:start}
+.pcol.ample{grid-column:span 2}
+.pcol.ample ul{columns:2;column-gap:16px}
+.pcol.sense.ample{grid-column:span 3}
+.pcol.sense.ample ul{columns:3}
+.pcol.ample li{break-inside:avoid}
+.ph{display:flex;align-items:baseline;gap:8px;padding-bottom:8px;margin-bottom:10px;
+  border-bottom:1px solid var(--accent)}
+.ph span{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent)}
+.ph i{font-style:normal;font-family:var(--font-m);font-size:10.5px;color:var(--dim);margin-left:auto}
+.pcol.sense .ph{border-bottom-color:var(--ln)}
+.pcol.sense .ph span{color:var(--dim)}
+.pcol ul{list-style:none}
+.pcol li{padding:0 0 7px 10px;margin-bottom:7px;border-left:2px solid var(--ln);
+  border-bottom:1px solid var(--ln)}
+.pcol li:last-child{border-bottom:0}
+.pcol li b{display:block;font-size:12px;font-weight:600;line-height:1.28}
+.pcol li em{display:block;font-style:normal;font-family:var(--font-m);font-size:9.5px;
+  color:var(--dim);margin-top:2px}
+.pcol.sense li b{color:var(--dim)}
+@media(max-height:980px){.pcol li b{font-size:11px;line-height:1.25}
+  .pcol li{padding-bottom:6px;margin-bottom:6px}
+  .pcol li em{font-size:9px}
+  .sl.int.pilars .in,.sl.int.mapa .in{padding-bottom:88px}
+  .sl.int.pilars .mtit,.sl.int.mapa .mtit{margin-bottom:14px}}
+@media(max-width:1200px){.pgrid{grid-template-columns:repeat(2,1fr)}.pcol.ample{grid-column:span 2}}
+@media(max-width:800px){.pgrid{grid-template-columns:1fr}
+  .pcol.ample{grid-column:auto}.pcol.ample ul{columns:1}}
+
 .sl.wrap .in{padding-top:clamp(18px,2.5vh,34px);padding-bottom:52px}
 .whd{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:22px}
 .whd h1{font-size:clamp(30px,4.2vw,58px);font-weight:700;letter-spacing:-.035em;line-height:1}
@@ -515,11 +688,16 @@ def render():
             plan.append([b, "item", i])
         plan.append([b, "taula"])
     plan.append(["wrap", "wrap"])
+    plan.append(["int", "cover"])
+    for i in range(len(IN.SPONSORS)):
+        plan.append(["int", "sp", i])
+    plan.append(["int", "mapa"])
+    plan.append(["int", "pilars"])
     ids = ["s%d" % n for n in range(len(plan))]
     item_ids = {}
     idx_of, cov_of, tau_of = {}, {}, {}
     for n, p in enumerate(plan):
-        if p[0] in ("bp", "wrap"): continue
+        if p[0] in ("bp", "wrap", "int"): continue
         if p[1] == "index": idx_of[p[0]] = ids[n]
         elif p[1] == "cover": cov_of[p[0]] = ids[n]
         elif p[1] == "taula": tau_of[p[0]] = ids[n]
@@ -528,8 +706,32 @@ def render():
     # 2 · pintem cada pantalla amb els seus controls
     out = []
     bp_ids = [ids[n] for n, p in enumerate(plan) if p[0] == "bp"]
+    int_ids = [ids[n] for n, p in enumerate(plan) if p[0] == "int"]
+    sp_ids = {IN.SPONSORS[p[2]]: ids[n]
+              for n, p in enumerate(plan) if p[0] == "int" and p[1] == "sp"}
     for n, p in enumerate(plan):
         b, kind = p[0], p[1]
+        if b == "int":
+            if kind == "cover":
+                inner = ip_cover()
+            elif kind == "mapa":
+                inner = ip_mapa(sp_ids)
+            elif kind == "pilars":
+                inner = ip_pilars()
+            else:
+                inner = ip_sponsor(IN.SPONSORS[p[2]], p[2] + 1, len(IN.SPONSORS))
+            prev, nxt = ids[n - 1], ids[(n + 1) % len(ids)]
+            out.append(
+                '<section id="%s" class="sl int %s" data-b="int">%s'
+                '<a class="nav prev" href="#%s"><span>&#8592;</span></a>'
+                '<a class="nav next" href="#%s"><span>&#8594;</span></a>'
+                '<div class="navbtns">'
+                '<a class="navcov" href="#%s">Portada del bloc</a>'
+                '<a class="navidx" href="#%s">Tots per funció</a>'
+                '<a class="navtau" href="#%s">Per pilar</a></div>'
+                '</section>' % (ids[n], kind, inner, prev, nxt,
+                                int_ids[0], int_ids[-2], int_ids[-1]))
+            continue
         if b == "wrap":
             prev, nxt = ids[n - 1], ids[(n + 1) % len(ids)]
             out.append('<section id="%s" class="sl wrap" data-b="wrap">%s'
@@ -576,7 +778,10 @@ def render():
             % (bp_ids[0], BP["accions"]))
     tabs += "".join('<a class="tab" href="#%s" data-b="%d">%s <i class="mono">%d</i></a>'
                     % (cov_of[b], b, nom_bloc(b), len(per_bloc(b))) for b in ORDRE)
-    tabs += '<a class="tab wtab" href="#%s" data-b="wrap">Wrap up</a>' % ids[-1]
+    tabs += ('<a class="tab wtab" href="#%s" data-b="wrap">Wrap up</a>'
+             % [ids[n] for n, p in enumerate(plan) if p[0] == "wrap"][0])
+    tabs += ('<a class="tab" href="#%s" data-b="int">Internal projects <i class="mono">%d</i></a>'
+             % (int_ids[0], len(IN.P)))
     fases = json.dumps({str(b): [[t, m] for t, m in FASES[b]] for b in ORDRE}, ensure_ascii=False)
 
     return """<!doctype html><html lang="ca" data-theme="dark"><head>%s
