@@ -43,6 +43,42 @@ def head(kicker, title, sub, x=None):
 FOOT = ('<footer class="ft mono">Seminari Pla Estratègic 2027 · 29 i 30 de setembre · '
         'Campus La Mola</footer>')
 
+
+# ------------------------------------------------- valoració global 2026 ---
+# Font: valoració en 5 punts del CEO. Els punts 1 i 2 són fortaleses i el 3, 4
+# i 5 punts de millora; per quadrar-ho a 3 + 3 s'ha desdoblat el punt 2, que
+# en conté dos (la traducció a recursos i la col·laboració entre àrees).
+BE = [
+    ("Avenç en la implantació estratègica",
+     "S'han posat en marxa iniciatives rellevants amb rapidesa, destacant el Market Scan "
+     "i l'exploració de nous productes BPM mitjançant partnerships."),
+    ("Iniciatives traduïdes a necessitats de recursos",
+     "Per primera vegada s'han traduït les iniciatives estratègiques en necessitats de recursos."),
+    ("Més alineació i transversalitat",
+     "Bona col·laboració entre àrees i un millor coneixement global de les necessitats de la companyia."),
+]
+MILLORA = [
+    ("Connexió feble entre estratègia i planificació operativa",
+     "Cal alinear millor el Pla Estratègic 2026-2030 amb el Business Plan, l'AOP 2027 i els plans "
+     "regionals, concretant-lo en projectes, responsables i accions executables."),
+    ("Excés d'iniciatives i manca de governança",
+     "L'operativa diària desplaça l'estratègia, no hi ha una priorització prou clara i falten una "
+     "funció PMO, reunions estables, responsabilitats definides i una gestió disciplinada del portfolio."),
+    ("Seguiment, comunicació i autonomia insuficients",
+     "Cal més visibilitat del progrés amb fites, KPIs i impacte econòmic, comunicar millor el pla a qui "
+     "executa les accions i accelerar la regionalització, reduint intervencions de poc valor des d'HQ."),
+]
+SINTESI = ("El 2026 ha servit per crear una bona base i mobilitzar l'organització. El pas següent és "
+           "prioritzar, assignar recursos, reforçar la governança i convertir les iniciatives en "
+           "resultats mesurables.")
+
+def assess_col(title, items, cls):
+    return ('<div class="acol %s"><h4>%s</h4>%s</div>' % (
+        cls, title,
+        "".join('<div class="ai"><span class="an mono">%d</span>'
+                '<div><b>%s</b><p>%s</p></div></div>' % (i + 1, t, d)
+                for i, (t, d) in enumerate(items))))
+
 # ------------------------------------------------------------------ pages ---
 def page_guia():
     bp = sesh("Best practices")
@@ -99,22 +135,21 @@ def page_best():
   <div class="fld"><span class="mono">Grup</span><div class="fl"></div></div>
   <div class="fld w2"><span class="mono">Membres</span><div class="fl"></div></div>
 </div>
-<div class="obj"><span class="mono">Objectiu</span><b>%s</b></div>
 <div class="two tight">%s%s</div>
-<div class="two">
-  <div class="tbox grow"><h4>Què ha funcionat bé el 2026</h4>%s</div>
-  <div class="tbox grow"><h4>Què hem de millorar</h4>%s</div>
-</div>
+<div class="assess">%s%s</div>
+<div class="synth"><span class="mono">En síntesi</span><p>%s</p></div>
 <div class="tbox"><h4>Les 3 accions del nostre grup <span class="hint">— les que presentarem</span></h4>
   <div class="acts">%s</div>
 </div>
 %s
 </section>""" % (
         head("Dimarts 29 · 11:00", "Best practices i lessons learnt",
-             "Revisió del Pla Estratègic 2026", x),
-        x["obj"], timing_box(x), how_box(x),
-        lines(5, 12), lines(5, 12),
-        "".join('<div class="act"><span class="an mono">%d</span><div class="ab"></div></div>' % i
+             "Valoració global del Pla Estratègic 2026", x),
+        timing_box(x), how_box(x),
+        assess_col("Què ha funcionat", BE, "ok"),
+        assess_col("Què hem de millorar", MILLORA, "imp"),
+        SINTESI,
+        "".join('<div class="act"><span class="an2 mono">%d</span><div class="ab"></div></div>' % i
                 for i in (1, 2, 3)),
         FOOT)
 
@@ -233,9 +268,26 @@ th{font-family:var(--font-m);font-size:7.5pt;letter-spacing:.12em;text-transform
 .mini .t{width:24mm;color:#666;font-size:8.5pt}
 .mini .c{width:14mm;text-align:center;color:#ff5710}
 
+.assess{display:flex;gap:5mm;margin-bottom:4mm}
+.acol{flex:1;border:.8pt solid #ccc;border-radius:2mm;padding:3mm 4mm}
+.acol h4{font-family:var(--font-m);font-size:7.5pt;letter-spacing:.16em;text-transform:uppercase;
+  margin-bottom:2.5mm}
+.acol.ok{border-top:2.4pt solid #2f5d50}
+.acol.ok h4{color:#2f5d50}
+.acol.imp{border-top:2.4pt solid #ff5710}
+.acol.imp h4{color:#ff5710}
+.ai{display:flex;gap:2.5mm;margin-bottom:2.6mm}
+.ai:last-child{margin-bottom:0}
+.an{flex:none;font-size:8pt;color:#aaa;padding-top:.4mm}
+.ai b{display:block;font-size:9pt;font-weight:600;line-height:1.25;margin-bottom:.6mm}
+.ai p{font-size:8pt;color:#555;line-height:1.3}
+.synth{display:flex;gap:4mm;align-items:baseline;padding:2.5mm 4mm;background:#f4f1ec;
+  border-left:2.4pt solid #111;margin-bottom:4mm}
+.synth span{flex:none;font-size:7.5pt;letter-spacing:.14em;text-transform:uppercase;color:#777}
+.synth p{font-size:8.5pt;line-height:1.3}
 .acts{display:flex;flex-direction:column;gap:3mm}
 .act{display:flex;align-items:stretch;gap:3mm}
-.an{flex:none;width:7mm;font-size:12pt;color:#ff5710;font-weight:600;padding-top:1mm}
+.an2{flex:none;width:7mm;font-size:12pt;color:#ff5710;font-weight:600;padding-top:1mm}
 .ab{flex:1;height:17mm;border:.8pt solid #ccc;border-radius:1.5mm;background:#fcfbf9}
 
 .ft{margin-top:auto;padding-top:3mm;border-top:.6pt solid #ddd;font-size:7.5pt;
