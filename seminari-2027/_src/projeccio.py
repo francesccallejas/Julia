@@ -67,6 +67,48 @@ def item(b, i, x, n):
                size_class(x[4]), x[4] or "—",
                size_class(x[5]), x[5] or '<span class="buit">Pendent de definir</span>')
 
+
+def taula(b):
+    k = per_bloc(b)
+    altres = "Other" if b == 2 else "Don't"
+    files = "".join(
+        '<tr data-i="%d"><td class="n mono">%02d</td>'
+        '<td class="nm">%s<span class="sp mono">%s</span></td>'
+        '<td><input type="number" min="1" max="%d" data-g="0" inputmode="numeric"></td>'
+        '<td><input type="number" min="1" max="%d" data-g="1" inputmode="numeric"></td>'
+        '<td><input type="number" min="1" max="%d" data-g="2" inputmode="numeric"></td>'
+        '<td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td>'
+        '<td><button class="md" type="button">—</button></td>'
+        '<td><button class="fin" type="button">○</button></td></tr>'
+        % (i, i + 1, x[0], x[3], len(k), len(k), len(k))
+        for i, x in enumerate(k))
+    return """<div class="in wide">
+    <div class="kick mono">Bloc %s · consolidació de les puntuacions</div>
+    <div class="tctl">
+      <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
+      <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
+      <span class="tsum mono"></span>
+      <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
+      <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
+    </div>
+    <table class="ct" data-b="%d" data-n="%d" data-other="%s">
+      <thead><tr><th class="n">#</th><th>Iniciativa</th>
+        <th class="g">G1</th><th class="g">G2</th><th class="g">G3</th>
+        <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferència entre el grup que més i el que menys l\'ha puntuada">Disc.</th>
+        <th class="md"><span class="who">Oriol / Pere</span>Must / %s</th>
+        <th class="g">Final</th></tr></thead>
+      <tbody>%s</tbody>
+    </table>
+    <div class="res" hidden>
+      <div class="rhd"><h2>Guanyadores del bloc <em>%s</em></h2>
+        <button class="tb" data-act="back" type="button">Torna a la taula</button></div>
+      <ol class="rl"></ol>
+    </div>
+    <p class="tnote">Els grups puntuen d'1 a %d, d'on 1 és la més important. Es suma i es rànqueja
+      pel total: <b>com més baix, més prioritària</b>. La columna <b>Disc.</b> marca en taronja les
+      iniciatives on els grups discrepen més — són les que val la pena discutir.</p>
+  </div>""" % (nom_bloc(b), b, len(k), altres, altres, files, nom_bloc(b), len(k))
+
 # ------------------------------------------------------------------- pagina ---
 CSS = """
 :root{%s--bg:#0e1114;--fg:#f2f3f4;--dim:rgba(255,255,255,.55);--ln:rgba(255,255,255,.14);
@@ -160,6 +202,78 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
   color:var(--dim);border:1px solid var(--ln);border-radius:99px;padding:7px 15px;opacity:.65;transition:.2s}
 .navidx:hover{opacity:1;color:var(--fg);border-color:var(--fg)}
 .sl.index .navidx{display:none}
+
+.in.wide{max-width:1760px}
+.tctl{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.tb{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  padding:8px 14px;border:1px solid var(--ln);border-radius:99px;color:var(--dim);transition:.2s}
+.tb:hover{color:var(--fg);border-color:var(--fg)}
+.tb.warn:hover{color:#fff;background:#e0341f;border-color:#e0341f}
+.tsum{margin-left:auto;font-size:12px;color:var(--dim);letter-spacing:.06em}
+.ct{width:100%%;border-collapse:collapse;font-size:14px}
+.ct th{font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);font-weight:400;text-align:left;padding:0 8px 10px;border-bottom:1px solid var(--ln);
+  vertical-align:bottom}
+.ct th.g,.ct td.g{text-align:center}
+.ct th.n{width:36px}
+.ct th.g{width:78px;text-align:center}
+.ct th.md{width:132px}
+.ct th.md .who{display:block;font-size:9px;color:var(--accent);margin-bottom:3px;letter-spacing:.14em}
+.ct td{padding:5px 8px;border-bottom:1px solid var(--ln);vertical-align:middle}
+.ct td.n{color:var(--dim);font-size:12px}
+.ct td.nm{font-weight:600;line-height:1.2;letter-spacing:-.01em}
+.ct td.nm .sp{display:block;font-size:10.5px;font-weight:400;color:var(--dim);margin-top:2px}
+.ct input{width:100%%;max-width:62px;padding:7px 4px;text-align:center;font-family:var(--font-m);
+  font-size:15px;border:1px solid var(--ln);border-radius:8px;background:var(--surf);color:var(--fg);
+  -moz-appearance:textfield}
+.ct input::-webkit-outer-spin-button,.ct input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ct input:focus{outline:none;border-color:var(--accent);background:transparent}
+.ct .tot,.ct .rk,.ct .dsc{text-align:center;font-size:15px;color:var(--dim)}
+.ct .rk{color:var(--fg);font-weight:600}
+.ct tr.hi .rk{color:var(--accent);font-size:19px}
+.ct tr.hi td.nm{color:var(--fg)}
+.ct tr.hi{background:rgba(255,87,16,.07)}
+.ct tr.dis .dsc{color:#ff8a5c;font-weight:600}
+.ct .md,.ct .fin{font-family:var(--font-m);font-size:12px;letter-spacing:.08em;padding:7px 12px;
+  border:1px solid var(--ln);border-radius:99px;color:var(--dim);transition:.16s;min-width:52px}
+.ct .md:hover,.ct .fin:hover{border-color:var(--fg);color:var(--fg)}
+.ct .md[data-md="M"]{background:#2f5d50;border-color:#2f5d50;color:#fff}
+.ct .md[data-md="D"]{background:#e0341f;border-color:#e0341f;color:#fff}
+.ct .fin[data-fin="1"]{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.res{margin-top:6px}
+.rhd{display:flex;align-items:baseline;gap:20px;margin-bottom:22px}
+.rhd h2{font-size:clamp(26px,3.2vw,46px);font-weight:700;letter-spacing:-.03em}
+.rhd h2 em{font-style:normal;color:var(--accent)}
+.rhd .tb{margin-left:auto}
+.rl{list-style:none;display:flex;flex-direction:column;gap:7px}
+.rw{display:flex;align-items:center;gap:18px;padding:11px 18px;border:1px solid var(--ln);
+  border-radius:12px;background:var(--surf)}
+.rw .rn{flex:none;width:46px;font-size:19px;color:var(--dim);text-align:center}
+.rw .rt{flex:1;font-size:17px;font-weight:600;letter-spacing:-.01em;min-width:0}
+.rw .rt em{display:block;font-style:normal;font-size:11.5px;font-weight:400;color:var(--dim);
+  font-family:var(--font-m);margin-top:2px}
+.rw .rm{flex:none;font-family:var(--font-m);font-size:11px;letter-spacing:.08em;padding:5px 11px;
+  border-radius:99px;border:1px solid var(--ln);color:var(--dim)}
+.rw .rm.M{background:#2f5d50;border-color:#2f5d50;color:#fff}
+.rw .rm.D{background:#e0341f;border-color:#e0341f;color:#fff}
+.rw .rp{flex:none;width:60px;text-align:right;font-size:15px;color:var(--dim)}
+.rw.top{border-color:var(--accent);background:rgba(255,87,16,.09)}
+.rw.top .rn{color:var(--accent);font-size:26px;font-weight:600}
+.rw.top .rt{font-size:21px}
+.rw.fin .rt em:after{content:" · seleccionada";color:var(--accent)}
+.rw.empty{justify-content:center;color:var(--dim);font-size:15px}
+.tb.go{border-color:var(--accent);color:var(--accent)}
+.tb.go:hover{background:var(--accent);color:#fff}
+.tnote{margin-top:18px;font-size:12.5px;color:var(--dim);line-height:1.5;max-width:110ch}
+.sl.taula .navtau{display:none}
+.sl.taula .nav{display:none}
+.navtau{position:fixed;left:50%%;bottom:46px;transform:translateX(calc(-50%% + 132px));z-index:15;
+  font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);border:1px solid var(--ln);border-radius:99px;padding:7px 15px;opacity:.65;transition:.2s}
+.navtau:hover{opacity:1;color:var(--fg);border-color:var(--fg)}
+.sl.taula .in{padding-top:clamp(18px,2.5vh,34px)}
+@media(max-width:1400px){.ct{font-size:12.5px}.ct td.nm .sp{display:none}}
 .hint{position:fixed;left:50%%;bottom:16px;transform:translateX(-50%%);z-index:20;
   font-family:var(--font-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--dim);opacity:.5}
@@ -173,12 +287,14 @@ def render():
         plan.append([b, "index"])
         for i in range(len(per_bloc(b))):
             plan.append([b, "item", i])
+        plan.append([b, "taula"])
     ids = ["s%d" % n for n in range(len(plan))]
     item_ids = {}
-    idx_of, cov_of = {}, {}
+    idx_of, cov_of, tau_of = {}, {}, {}
     for n, p in enumerate(plan):
         if p[1] == "index": idx_of[p[0]] = ids[n]
         elif p[1] == "cover": cov_of[p[0]] = ids[n]
+        elif p[1] == "taula": tau_of[p[0]] = ids[n]
         else: item_ids[(p[0], p[2])] = ids[n]
 
     # 2 · pintem cada pantalla amb els seus controls
@@ -190,6 +306,8 @@ def render():
         elif kind == "index":
             inner = index(b, [item_ids[(b, i)] for i in range(len(per_bloc(b)))])
             cls = "index"
+        elif kind == "taula":
+            inner, cls = taula(b), "taula"
         else:
             k = per_bloc(b)
             inner, cls = item(b, p[2], k[p[2]], len(k)), "item"
@@ -199,7 +317,8 @@ def render():
             '<a class="nav prev" href="#%s" aria-label="Anterior"><span>&#8592;</span></a>'
             '<a class="nav next" href="#%s" aria-label="Següent"><span>&#8594;</span></a>'
             '<a class="navidx" href="#%s">Índex del bloc</a>'
-            '</section>' % (ids[n], cls, b, inner, prev, nxt, idx_of[b]))
+            '<a class="navtau" href="#%s">Consolidació</a>'
+            '</section>' % (ids[n], cls, b, inner, prev, nxt, idx_of[b], tau_of[b]))
 
     tabs = "".join('<a class="tab" href="#%s" data-b="%d">%s <i class="mono">%d</i></a>'
                    % (cov_of[b], b, nom_bloc(b), len(per_bloc(b))) for b in ORDRE)
@@ -225,6 +344,136 @@ def render():
 <script>
 var FASES=%s;
 var sl=[].slice.call(document.querySelectorAll('.sl'));
+/* ---- consolidació: suma, rànquing i discrepància, desat al navegador ---- */
+function key(b){return 'pe2027-bloc'+b}
+function load(t){
+  try{var d=JSON.parse(localStorage.getItem(key(t.dataset.b))||'[]');
+    [].slice.call(t.querySelectorAll('tbody tr')).forEach(function(r,i){
+      var o=d[i]; if(!o) return;
+      [].slice.call(r.querySelectorAll('input')).forEach(function(inp,j){
+        inp.value=(o.g&&o.g[j]!=null)?o.g[j]:''});
+      var md=r.querySelector('.md'); md.dataset.md=o.md||''; md.textContent=o.md||'—';
+      var f=r.querySelector('.fin'); f.dataset.fin=o.fin||'0'; f.textContent=o.fin==='1'?'●':'○';
+    });
+  }catch(e){}
+}
+function save(t){
+  try{
+    var d=[].slice.call(t.querySelectorAll('tbody tr')).sort(function(a,b){
+      return (+a.dataset.i)-(+b.dataset.i)}).map(function(r){
+      return {g:[].slice.call(r.querySelectorAll('input')).map(function(i){
+                return i.value===''?null:+i.value}),
+              md:r.querySelector('.md').dataset.md||'',
+              fin:r.querySelector('.fin').dataset.fin||'0'};
+    });
+    localStorage.setItem(key(t.dataset.b),JSON.stringify(d));
+  }catch(e){}
+}
+
+function winners(t){
+  var box=t.parentNode, res=box.querySelector('.res'), ol=res.querySelector('.rl');
+  var other=t.dataset.other||'';
+  var rows=[].slice.call(t.querySelectorAll('tbody tr')).map(function(r){
+    var nm=r.querySelector('.nm');
+    return {rk:r.querySelector('.rk').textContent,
+            tot:r.querySelector('.tot').textContent,
+            nm:nm.childNodes[0].textContent,
+            sp:nm.querySelector('.sp')?nm.querySelector('.sp').textContent:'',
+            md:r.querySelector('button.md').dataset.md||'',
+            fin:r.querySelector('button.fin').dataset.fin==='1'};
+  }).filter(function(o){return o.rk!=='—'})
+    .sort(function(a,b){return (+a.rk)-(+b.rk)});
+  ol.innerHTML = rows.length
+    ? rows.map(function(o,i){
+        return '<li class="rw'+(i<5?' top':'')+(o.fin?' fin':'')+'">'
+          +'<span class="rn mono">'+o.rk+'</span>'
+          +'<span class="rt">'+o.nm+'<em>'+o.sp+'</em></span>'
+          +(o.md?'<span class="rm '+o.md+'">'+(o.md==='M'?'Must':other)+'</span>':'')
+          +'<span class="rp mono">'+o.tot+'</span></li>';
+      }).join('')
+    : '<li class="rw empty">Encara no hi ha cap iniciativa amb puntuacions.</li>';
+  res.hidden=false; t.hidden=true;
+  box.querySelector('.tnote').hidden=true;
+  box.querySelectorAll('.tctl .tb').forEach(function(x){
+    if(x.dataset.act!=='back') x.hidden=true});
+}
+function backToTable(t){
+  var box=t.parentNode;
+  box.querySelector('.res').hidden=true; t.hidden=false;
+  box.querySelector('.tnote').hidden=false;
+  box.querySelectorAll('.tctl .tb').forEach(function(x){x.hidden=false});
+}
+function recalc(t){
+  var rows=[].slice.call(t.querySelectorAll('tbody tr'));
+  var n=+t.dataset.n, lim=Math.max(3,Math.ceil(n/3));
+  var data=rows.map(function(r){
+    var v=[].slice.call(r.querySelectorAll('input')).map(function(i){
+      return i.value===''?null:+i.value});
+    var f=v.filter(function(x){return x!==null});
+    return {r:r,
+            tot:f.length?f.reduce(function(a,b){return a+b},0):null,
+            dsc:f.length>1?Math.max.apply(null,f)-Math.min.apply(null,f):null,
+            n:f.length};
+  });
+  data.filter(function(d){return d.tot!==null})
+      .sort(function(a,b){return a.tot-b.tot})
+      .forEach(function(d,i){d.rk=i+1});
+  var done=0, must=0, fin=0;
+  data.forEach(function(d){
+    d.r.querySelector('.tot').textContent=d.tot===null?'—':d.tot;
+    d.r.querySelector('.rk').textContent=d.rk?d.rk:'—';
+    d.r.querySelector('.dsc').textContent=d.dsc===null?'—':d.dsc;
+    d.r.classList.toggle('hi',!!d.rk&&d.rk<=5);
+    d.r.classList.toggle('dis',d.dsc!==null&&d.dsc>=lim);
+    if(d.n===3)done++;
+    if(d.r.querySelector('.md').dataset.md==='M')must++;
+    if(d.r.querySelector('.fin').dataset.fin==='1')fin++;
+  });
+  t.parentNode.querySelector('.tsum').textContent =
+    done+' de '+rows.length+' amb les 3 puntuacions · '+must+' Must · '+fin+' seleccionades';
+  save(t);
+}
+document.querySelectorAll('.ct').forEach(function(t){
+  load(t); recalc(t);
+  t.addEventListener('input',function(){recalc(t)});
+  t.addEventListener('click',function(e){
+    var md=e.target.closest('button.md');
+    if(md){var o={'':'M','M':'D','D':''}[md.dataset.md||''];
+      md.dataset.md=o; md.textContent=o||'—'; recalc(t); return}
+    var f=e.target.closest('button.fin');
+    if(f){f.dataset.fin=f.dataset.fin==='1'?'0':'1';
+      f.textContent=f.dataset.fin==='1'?'●':'○'; recalc(t)}
+  });
+  var box=t.parentNode;
+  box.querySelectorAll('.tb').forEach(function(btn){
+    if(btn.dataset.act==='back'){btn.onclick=function(){backToTable(t)};return}
+    btn.onclick=function(){
+      var tb=t.querySelector('tbody'), rows=[].slice.call(tb.querySelectorAll('tr'));
+      if(btn.dataset.act==='sort'){
+        rows.sort(function(a,b){
+          var ra=a.querySelector('.rk').textContent, rb=b.querySelector('.rk').textContent;
+          if(ra==='—'&&rb==='—') return (+a.dataset.i)-(+b.dataset.i);
+          if(ra==='—') return 1; if(rb==='—') return -1;
+          return (+ra)-(+rb);});
+        rows.forEach(function(r){tb.appendChild(r)});
+      } else if(btn.dataset.act==='orig'){
+        rows.sort(function(a,b){return (+a.dataset.i)-(+b.dataset.i)});
+        rows.forEach(function(r){tb.appendChild(r)});
+      } else if(btn.dataset.act==='win'){
+        winners(t);
+      } else if(btn.dataset.act==='reset'){
+        if(!confirm('Vols esborrar les puntuacions del bloc?')) return;
+        rows.forEach(function(r){
+          r.querySelectorAll('input').forEach(function(i){i.value=''});
+          var m=r.querySelector('.md'); m.dataset.md=''; m.textContent='—';
+          var f=r.querySelector('.fin'); f.dataset.fin='0'; f.textContent='○';
+        });
+        recalc(t);
+      }
+    };
+  });
+});
+
 var fase=-1, left=0, tick=null, clock=document.getElementById('clock');
 function cur(){var h=location.hash.slice(1);
   for(var i=0;i<sl.length;i++) if(sl[i].id===h) return i;
