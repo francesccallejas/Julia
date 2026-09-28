@@ -6,6 +6,9 @@ from data import *
 from iniciatives import per_bloc, BLOCS, OBJECTIU
 import internals as IN
 
+def nom_bloc(b):
+    return BLOCS[b][0].split('·')[-1].strip()
+
 OUT = "/home/user/Julia/seminari-2027"
 
 # ---------------------------------------------------------------- helpers ---
@@ -98,13 +101,13 @@ def page_guia():
         <li><b>Oriol i Pere</b> marquen cada iniciativa com a <b>Must</b> o <b>Don't</b>
           (al bloc de Diversificació, <b>Must</b> o <b>Other</b>).</li>
         <li>Cada grup ordena <b>totes</b> les iniciatives, de més a menys important:
-          <b>Auto d'1 a 15 · Diversificació d'1 a 5 · People d'1 a 3</b>.
+          <b>%s</b>.
           <b>Cada número es fa servir una sola vegada</b>; si se'n repeteix o se'n deixa cap,
           la suma del grup canvia i el seu vot pesa més o menys que el dels altres.</li>
         <li>El facilitador passa les tres puntuacions a la <b>pantalla de consolidació</b>,
           que calcula el total, el rànquing i on hi ha més desacord entre grups.</li>
         <li>Selecció final, amb el botó <b>Veure les guanyadores</b> projectat. Objectiu:
-          <b>Auto 7 · Diversificació 3 · People 2</b> — és una guia per entrar amb un número
+          <b>%s</b> — és una guia per entrar amb un número
           al cap, no un límit: a la sala en podeu marcar més o menys.</li>
       </ol>
     </div>
@@ -114,7 +117,10 @@ def page_guia():
 </section>""" % (head("Guia del facilitador", "Fitxes de treball",
                       "Material imprès per al dimarts 29 de setembre"),
                  line(bp, "2"), line(p1, "3"), line(p3, "3"), line(p2, "3"),
-                 line(sesh("Internal projects"), "9"), FOOT)
+                 line(sesh("Internal projects"), "9"),
+                 " · ".join("%s d'1 a %d" % (nom_bloc(b), len(per_bloc(b))) for b in (1, 2, 3)),
+                 " · ".join("%s %d" % (nom_bloc(b), OBJECTIU[b]) for b in (1, 2, 3)),
+                 FOOT)
 
 def page_best():
     x = sesh("Best practices")
@@ -149,9 +155,10 @@ def page_prio(tag):
     area = x["t"].split("·")[-1].strip()
     k = per_bloc(b)
     dense = len(k) > 10
-    h = 6.8 if dense else 13
+    # les files han de cabre en uns 116 mm: amb moltes iniciatives s'apreten
+    h = min(7.6, 112.0 / len(k)) if dense else 13
     files = "".join(
-        '<tr style="height:%.1fmm"><td class="num mono">%02d</td><td class="nm">%s'
+        '<tr style="--h:%.2fmm"><td class="num mono">%02d</td><td class="nm">%s'
         '<span class="sp mono">%s</span></td><td class="pt"></td><td class="ms"></td></tr>'
         % (h, i + 1, it[0], it[3]) for i, it in enumerate(k))
     return ("""<section class="page">
@@ -290,7 +297,7 @@ body{font-family:var(--font);color:#111;background:#fff;font-size:10pt;line-heig
 table{width:100%;border-collapse:collapse}
 th{font-family:var(--font-m);font-size:7.5pt;letter-spacing:.12em;text-transform:uppercase;
   color:#777;text-align:left;padding:0 0 1.5mm;border-bottom:1.2pt solid #111;font-weight:400}
-.it td{border-bottom:.6pt solid #ccc;height:7.6mm}
+.it td{border-bottom:.6pt solid #ccc;height:var(--h,7.6mm)}
 .vt td{border-bottom:.6pt solid #ccc;height:9.2mm}
 .it .num,.vt .num{width:9mm;color:#aaa;font-size:8pt;text-align:center;vertical-align:middle}
 .it.dense .nm{font-size:8.3pt;line-height:1.15}

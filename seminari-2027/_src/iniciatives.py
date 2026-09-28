@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-"""Iniciatives estratègiques 2027 · transcrites de la taula del Pla Estratègic.
+"""Iniciatives estratègiques 2027 · les files SQUAD de la taula del Pla Estratègic.
 
 Els noms, objectius i KPIs es mantenen tal com arriben de la font, sense
-corregir. Els possibles errors es llisten a la comprovació de sota.
+corregir. L'ordre és el de l'Excel. Els possibles errors es llisten a la
+comprovació de sota.
+
+Les iniciatives que a l'Excel surten a dos blocs es compten al bloc 1, tal com
+es va decidir: Marketing at Relats i Product Management (PDM) porten «1,2».
 """
 
 # nom, blocs (1=Auto, 2=Diversificació, 3=People), pilar, sponsor, objectiu, kpi, dpts
@@ -43,11 +47,6 @@ I = [
   "Lead gen grow by 10% · Revenue form campaigs grow by 10%",
   "Industrial · Technical · Purchasing · Digital"),
 
- ("Sales Performance (Pricing and Margin)", [1], "Excel·lència operativa", "F.Rebolledo",
-  "Implementació Política Preus i Marges",
-  "KPI = % Implementació · % Implementació % Report",
-  "Sales · Finance"),
-
  ("Autonomy", [1], "Excel·lència operativa", "F.Rebolledo",
   "DoA 5 Processos Clau & SLA", "% Processos amb DoA & SLA", "All"),
 
@@ -87,6 +86,13 @@ I = [
   "level. 2 Objectives: 1) Stablish new product demand input & its assessment for approval system; "
   "2) create the Product Roadmap for Existing & New products acc. to industries or Auto-applications.",
   "", ""),
+
+ # Nova a la taula: encara no en tenim objectiu, KPI ni departaments.
+ ("BOM & Routine Strategy", [1], "Mercat", "J. Yi", "", "", ""),
+
+ # Nova a la taula. Substitueix «Sales Performance (Pricing and Margin)», que era
+ # de F.Rebolledo; no s'hi ha traspassat l'objectiu ni el KPI d'aquella.
+ ("Price & Margin Strategy", [1], "Excel·lència operativa", "A. Martínez", "", "", ""),
 
  ("Diversification. Expand to other markets (Aerospace, Defense, Rail, Data centers, BESS, Bus&Trucks).",
   [2], "Mercat", "A. Martínez",
@@ -170,7 +176,8 @@ if __name__ == "__main__":
 
     print("\nDades que falten:")
     for x in I:
-        buits = [n for n, v in (("KPI", x[5]), ("Departaments", x[6])) if not v.strip()]
+        buits = [n for n, v in (("Objectiu", x[4]), ("KPI", x[5]), ("Departaments", x[6]))
+                 if not v.strip()]
         if buits:
             print("   %-62s → %s" % (x[0][:62], ", ".join(buits)))
 
