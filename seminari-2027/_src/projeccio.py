@@ -68,7 +68,7 @@ def item(b, i, x, n):
                size_class(x[5]), x[5] or '<span class="buit">Pendent de definir</span>')
 
 
-def taula(b):
+def taula(b, idx_id):
     k = per_bloc(b)
     altres = "Other" if b == 2 else "Don't"
     files = "".join(
@@ -85,6 +85,7 @@ def taula(b):
     return """<div class="in wide">
     <div class="kick mono">Bloc %s · consolidació de les puntuacions</div>
     <div class="tctl">
+      <a class="tb" href="#%s">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
       <span class="tsum mono"></span>
@@ -94,20 +95,28 @@ def taula(b):
     <table class="ct" data-b="%d" data-n="%d" data-other="%s">
       <thead><tr><th class="n">#</th><th>Iniciativa</th>
         <th class="g">G1</th><th class="g">G2</th><th class="g">G3</th>
-        <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferència entre el grup que més i el que menys l\'ha puntuada">Disc.</th>
+        <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferencia entre el grup que la posa mes amunt i el que la posa mes avall">Desacord</th>
         <th class="md"><span class="who">Oriol / Pere</span>Must / %s</th>
         <th class="g">Final</th></tr></thead>
       <tbody>%s</tbody>
+      <tfoot><tr>
+        <td></td><td class="fl">Control per grup <span class="fh">posades · suma</span></td>
+        <td class="gc" data-g="0">—</td><td class="gc" data-g="1">—</td><td class="gc" data-g="2">—</td>
+        <td colspan="5"></td>
+      </tr></tfoot>
     </table>
     <div class="res" hidden>
       <div class="rhd"><h2>Guanyadores del bloc <em>%s</em></h2>
         <button class="tb" data-act="back" type="button">Torna a la taula</button></div>
       <ol class="rl"></ol>
     </div>
-    <p class="tnote">Els grups puntuen d'1 a %d, d'on 1 és la més important. Es suma i es rànqueja
-      pel total: <b>com més baix, més prioritària</b>. La columna <b>Disc.</b> marca en taronja les
-      iniciatives on els grups discrepen més — són les que val la pena discutir.</p>
-  </div>""" % (nom_bloc(b), b, len(k), altres, altres, files, nom_bloc(b), len(k))
+    <p class="tnote">Els grups ordenen les iniciatives <b>d'1 a %d</b>, on l'1 és la més important, i
+      <b>cada número s'ha de fer servir un sol cop</b>: si un grup en repeteix o se'n deixa, la seva suma
+      canvia i el seu vot passa a pesar més o menys que el dels altres. Els números repetits es marquen
+      en vermell i la fila de control diu si cada grup ha posat les %d posicions i si la suma quadra
+      (ha de donar %d). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
+      <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.</p>
+  </div>""" % (nom_bloc(b), idx_id, b, len(k), altres, altres, files, nom_bloc(b), len(k), len(k), len(k)*(len(k)+1)//2)
 
 # ------------------------------------------------------------------- pagina ---
 CSS = """
@@ -218,7 +227,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
   vertical-align:bottom}
 .ct th.g,.ct td.g{text-align:center}
 .ct th.n{width:36px}
-.ct th.g{width:78px;text-align:center}
+.ct th.g{width:94px;text-align:center}
 .ct th.md{width:132px}
 .ct th.md .who{display:block;font-size:9px;color:var(--accent);margin-bottom:3px;letter-spacing:.14em}
 .ct td{padding:5px 8px;border-bottom:1px solid var(--ln);vertical-align:middle}
@@ -267,11 +276,21 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
 .rw.empty{justify-content:center;color:var(--dim);font-size:15px}
 .tb.go{border-color:var(--accent);color:var(--accent)}
 .tb.go:hover{background:var(--accent);color:#fff}
-.tnote{margin-top:18px;font-size:12.5px;color:var(--dim);line-height:1.5;max-width:110ch}
+.ct tfoot td{border-top:1px solid var(--ln);border-bottom:none;padding-top:10px;font-size:12px;color:var(--dim)}
+.ct tfoot .fl{font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
+.ct tfoot .fh{display:block;font-size:9.5px;opacity:.6;letter-spacing:.1em;margin-top:2px}
+.ct tfoot .gc{text-align:center;font-family:var(--font-m);font-size:12px;line-height:1.3}
+.ct tfoot .gc.ok{color:#4fbf9a}
+.ct tfoot .gc.bad{color:#ff8a5c}
+.ct input.dup{border-color:#e0341f;background:rgba(224,52,31,.16);color:#ff9d8c}
+.tnote{margin-top:16px;font-size:12px;color:var(--dim);line-height:1.5;max-width:110ch}
 .sl.taula .navtau{display:none}
 .sl.taula .nav{display:none}
+.sl.taula .navbtns{display:none}
+/* a la consolidacio no calen les dreceres de baix: la pantalla te la seva barra */
+.stage:has(.sl.taula:target) ~ .hint{display:none}
 
-.sl.taula .in{padding-top:clamp(18px,2.5vh,34px)}
+.sl.taula .in{padding-top:clamp(18px,2.5vh,34px);padding-bottom:52px}
 @media(max-width:1400px){.ct{font-size:12.5px}.ct td.nm .sp{display:none}}
 .hint{position:fixed;left:50%%;bottom:16px;transform:translateX(-50%%);z-index:20;
   font-family:var(--font-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
@@ -306,7 +325,7 @@ def render():
             inner = index(b, [item_ids[(b, i)] for i in range(len(per_bloc(b)))])
             cls = "index"
         elif kind == "taula":
-            inner, cls = taula(b), "taula"
+            inner, cls = taula(b, idx_of[b]), "taula"
         else:
             k = per_bloc(b)
             inner, cls = item(b, p[2], k[p[2]], len(k)), "item"
@@ -395,7 +414,7 @@ function winners(t){
   res.hidden=false; t.hidden=true;
   box.querySelector('.tnote').hidden=true;
   box.querySelectorAll('.tctl .tb').forEach(function(x){
-    if(x.dataset.act!=='back') x.hidden=true});
+    if(x.dataset.act!=='back' && x.tagName!=='A') x.hidden=true});
 }
 function backToTable(t){
   var box=t.parentNode;
@@ -418,6 +437,30 @@ function recalc(t){
   data.filter(function(d){return d.tot!==null})
       .sort(function(a,b){return a.tot-b.tot})
       .forEach(function(d,i){d.rk=i+1});
+  /* duplicats per columna: una ordenacio ha de fer servir cada posicio un sol cop */
+  var cols=[[],[],[]];
+  rows.forEach(function(r){
+    [].slice.call(r.querySelectorAll('input')).forEach(function(inp,g){
+      inp.classList.remove('dup');
+      if(inp.value!=='') cols[g].push({v:+inp.value,el:inp});
+    });
+  });
+  var esperat=n*(n+1)/2;
+  cols.forEach(function(c,g){
+    var cnt={};
+    c.forEach(function(o){cnt[o.v]=(cnt[o.v]||0)+1});
+    var reps=0;
+    c.forEach(function(o){if(cnt[o.v]>1){o.el.classList.add('dup');reps++}});
+    var suma=c.reduce(function(a,o){return a+o.v},0);
+    var cell=t.querySelector('tfoot .gc[data-g="'+g+'"]');
+    if(!cell) return;
+    if(!c.length){cell.textContent='—';cell.className='gc';return}
+    var complet=(c.length===n), net=(reps===0), quadra=(suma===esperat);
+    cell.innerHTML=c.length+' / '+n+'<br>'+suma+' de '+esperat
+      +(reps?'<br>'+reps+' repetits':'');
+    cell.className='gc '+((complet&&net&&quadra)?'ok':'bad');
+  });
+
   var done=0, must=0, fin=0;
   data.forEach(function(d){
     d.r.querySelector('.tot').textContent=d.tot===null?'—':d.tot;

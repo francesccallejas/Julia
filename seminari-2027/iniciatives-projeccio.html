@@ -122,7 +122,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
   vertical-align:bottom}
 .ct th.g,.ct td.g{text-align:center}
 .ct th.n{width:36px}
-.ct th.g{width:78px;text-align:center}
+.ct th.g{width:94px;text-align:center}
 .ct th.md{width:132px}
 .ct th.md .who{display:block;font-size:9px;color:var(--accent);margin-bottom:3px;letter-spacing:.14em}
 .ct td{padding:5px 8px;border-bottom:1px solid var(--ln);vertical-align:middle}
@@ -171,11 +171,21 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
 .rw.empty{justify-content:center;color:var(--dim);font-size:15px}
 .tb.go{border-color:var(--accent);color:var(--accent)}
 .tb.go:hover{background:var(--accent);color:#fff}
-.tnote{margin-top:18px;font-size:12.5px;color:var(--dim);line-height:1.5;max-width:110ch}
+.ct tfoot td{border-top:1px solid var(--ln);border-bottom:none;padding-top:10px;font-size:12px;color:var(--dim)}
+.ct tfoot .fl{font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
+.ct tfoot .fh{display:block;font-size:9.5px;opacity:.6;letter-spacing:.1em;margin-top:2px}
+.ct tfoot .gc{text-align:center;font-family:var(--font-m);font-size:12px;line-height:1.3}
+.ct tfoot .gc.ok{color:#4fbf9a}
+.ct tfoot .gc.bad{color:#ff8a5c}
+.ct input.dup{border-color:#e0341f;background:rgba(224,52,31,.16);color:#ff9d8c}
+.tnote{margin-top:16px;font-size:12px;color:var(--dim);line-height:1.5;max-width:110ch}
 .sl.taula .navtau{display:none}
 .sl.taula .nav{display:none}
+.sl.taula .navbtns{display:none}
+/* a la consolidacio no calen les dreceres de baix: la pantalla te la seva barra */
+.stage:has(.sl.taula:target) ~ .hint{display:none}
 
-.sl.taula .in{padding-top:clamp(18px,2.5vh,34px)}
+.sl.taula .in{padding-top:clamp(18px,2.5vh,34px);padding-bottom:52px}
 @media(max-width:1400px){.ct{font-size:12.5px}.ct td.nm .sp{display:none}}
 .hint{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:20;
   font-family:var(--font-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
@@ -323,6 +333,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
   </div><a class="nav prev" href="#s15" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s17" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s17" class="sl taula" data-b="1"><div class="in wide">
     <div class="kick mono">Bloc Auto · consolidació de les puntuacions</div>
     <div class="tctl">
+      <a class="tb" href="#s1">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
       <span class="tsum mono"></span>
@@ -332,19 +343,27 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
     <table class="ct" data-b="1" data-n="15" data-other="Don't">
       <thead><tr><th class="n">#</th><th>Iniciativa</th>
         <th class="g">G1</th><th class="g">G2</th><th class="g">G3</th>
-        <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferència entre el grup que més i el que menys l'ha puntuada">Disc.</th>
+        <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferencia entre el grup que la posa mes amunt i el que la posa mes avall">Desacord</th>
         <th class="md"><span class="who">Oriol / Pere</span>Must / Don't</th>
         <th class="g">Final</th></tr></thead>
       <tbody><tr data-i="0"><td class="n mono">01</td><td class="nm">Management Tools (ILM-PLM/PMI-Simulation tool)<span class="sp mono">S.Alcaraz</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="1"><td class="n mono">02</td><td class="nm">AI Adoption Plan<span class="sp mono">F.Callejas</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="2"><td class="n mono">03</td><td class="nm">Industry 4.0 (Phase 1 Aerospace, Phase 2 Others)<span class="sp mono">F.Callejas</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="3"><td class="n mono">04</td><td class="nm">Sales Performance (Pricing and Margin)<span class="sp mono">F.Rebolledo</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="4"><td class="n mono">05</td><td class="nm">Autonomy<span class="sp mono">F.Rebolledo</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="5"><td class="n mono">06</td><td class="nm">Plant Automation<span class="sp mono">D. Mota</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="6"><td class="n mono">07</td><td class="nm">Paraguay Greenfield Manufacturing Plant Implementation<span class="sp mono">D. Mota</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="7"><td class="n mono">08</td><td class="nm">Lean Manufacturing Operating Model Implementation<span class="sp mono">D. Mota</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="8"><td class="n mono">09</td><td class="nm">Manufacturing Footprint Optimization & Braiding Localization in Vietnam<span class="sp mono">D. Mota</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="9"><td class="n mono">10</td><td class="nm">Marketing at Relats<span class="sp mono">J. Yi</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="10"><td class="n mono">11</td><td class="nm">Product Management (PDM) & Portfolio Management<span class="sp mono">J. Yi</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="11"><td class="n mono">12</td><td class="nm">Geografic expansion. India.<span class="sp mono">A. Martínez</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="12"><td class="n mono">13</td><td class="nm">Risk Map & Mitigation<span class="sp mono">F.Rebolledo</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="13"><td class="n mono">14</td><td class="nm">SQA integration<span class="sp mono">F. Millán</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="14"><td class="n mono">15</td><td class="nm">Carton packaging reduction<span class="sp mono">F. Millán</span></td><td><input type="number" min="1" max="15" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="15" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr></tbody>
+      <tfoot><tr>
+        <td></td><td class="fl">Control per grup <span class="fh">posades · suma</span></td>
+        <td class="gc" data-g="0">—</td><td class="gc" data-g="1">—</td><td class="gc" data-g="2">—</td>
+        <td colspan="5"></td>
+      </tr></tfoot>
     </table>
     <div class="res" hidden>
       <div class="rhd"><h2>Guanyadores del bloc <em>Auto</em></h2>
         <button class="tb" data-act="back" type="button">Torna a la taula</button></div>
       <ol class="rl"></ol>
     </div>
-    <p class="tnote">Els grups puntuen d'1 a 15, d'on 1 és la més important. Es suma i es rànqueja
-      pel total: <b>com més baix, més prioritària</b>. La columna <b>Disc.</b> marca en taronja les
-      iniciatives on els grups discrepen més — són les que val la pena discutir.</p>
+    <p class="tnote">Els grups ordenen les iniciatives <b>d'1 a 15</b>, on l'1 és la més important, i
+      <b>cada número s'ha de fer servir un sol cop</b>: si un grup en repeteix o se'n deixa, la seva suma
+      canvia i el seu vot passa a pesar més o menys que el dels altres. Els números repetits es marquen
+      en vermell i la fila de control diu si cada grup ha posat les 15 posicions i si la suma quadra
+      (ha de donar 120). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
+      <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.</p>
   </div><a class="nav prev" href="#s16" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s18" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s18" class="sl cover" data-b="3"><div class="in">
     <div class="kick mono">Dimarts 29 · 13:00 → 13:45</div>
     <h1>Bloc <em>People</em></h1>
@@ -380,6 +399,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
   </div><a class="nav prev" href="#s21" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s23" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s23" class="sl taula" data-b="3"><div class="in wide">
     <div class="kick mono">Bloc People · consolidació de les puntuacions</div>
     <div class="tctl">
+      <a class="tb" href="#s19">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
       <span class="tsum mono"></span>
@@ -389,19 +409,27 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
     <table class="ct" data-b="3" data-n="3" data-other="Don't">
       <thead><tr><th class="n">#</th><th>Iniciativa</th>
         <th class="g">G1</th><th class="g">G2</th><th class="g">G3</th>
-        <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferència entre el grup que més i el que menys l'ha puntuada">Disc.</th>
+        <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferencia entre el grup que la posa mes amunt i el que la posa mes avall">Desacord</th>
         <th class="md"><span class="who">Oriol / Pere</span>Must / Don't</th>
         <th class="g">Final</th></tr></thead>
       <tbody><tr data-i="0"><td class="n mono">01</td><td class="nm">RWF: Knowledge Management<span class="sp mono">N.Espejo</span></td><td><input type="number" min="1" max="3" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="3" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="3" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="1"><td class="n mono">02</td><td class="nm">RWF: Staffing model / Regionalization HQ-Plants empowerment<span class="sp mono">N.Espejo</span></td><td><input type="number" min="1" max="3" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="3" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="3" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="2"><td class="n mono">03</td><td class="nm">People Infrastructure & Digitalization<span class="sp mono">N.Espejo / F. Callejas</span></td><td><input type="number" min="1" max="3" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="3" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="3" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr></tbody>
+      <tfoot><tr>
+        <td></td><td class="fl">Control per grup <span class="fh">posades · suma</span></td>
+        <td class="gc" data-g="0">—</td><td class="gc" data-g="1">—</td><td class="gc" data-g="2">—</td>
+        <td colspan="5"></td>
+      </tr></tfoot>
     </table>
     <div class="res" hidden>
       <div class="rhd"><h2>Guanyadores del bloc <em>People</em></h2>
         <button class="tb" data-act="back" type="button">Torna a la taula</button></div>
       <ol class="rl"></ol>
     </div>
-    <p class="tnote">Els grups puntuen d'1 a 3, d'on 1 és la més important. Es suma i es rànqueja
-      pel total: <b>com més baix, més prioritària</b>. La columna <b>Disc.</b> marca en taronja les
-      iniciatives on els grups discrepen més — són les que val la pena discutir.</p>
+    <p class="tnote">Els grups ordenen les iniciatives <b>d'1 a 3</b>, on l'1 és la més important, i
+      <b>cada número s'ha de fer servir un sol cop</b>: si un grup en repeteix o se'n deixa, la seva suma
+      canvia i el seu vot passa a pesar més o menys que el dels altres. Els números repetits es marquen
+      en vermell i la fila de control diu si cada grup ha posat les 3 posicions i si la suma quadra
+      (ha de donar 6). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
+      <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.</p>
   </div><a class="nav prev" href="#s22" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s24" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s24" class="sl cover" data-b="2"><div class="in">
     <div class="kick mono">Dimarts 29 · 14:45 → 16:00</div>
     <h1>Bloc <em>Diversificació</em></h1>
@@ -453,6 +481,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
   </div><a class="nav prev" href="#s29" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s31" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s31" class="sl taula" data-b="2"><div class="in wide">
     <div class="kick mono">Bloc Diversificació · consolidació de les puntuacions</div>
     <div class="tctl">
+      <a class="tb" href="#s25">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
       <span class="tsum mono"></span>
@@ -462,19 +491,27 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
     <table class="ct" data-b="2" data-n="5" data-other="Other">
       <thead><tr><th class="n">#</th><th>Iniciativa</th>
         <th class="g">G1</th><th class="g">G2</th><th class="g">G3</th>
-        <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferència entre el grup que més i el que menys l'ha puntuada">Disc.</th>
+        <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferencia entre el grup que la posa mes amunt i el que la posa mes avall">Desacord</th>
         <th class="md"><span class="who">Oriol / Pere</span>Must / Other</th>
         <th class="g">Final</th></tr></thead>
       <tbody><tr data-i="0"><td class="n mono">01</td><td class="nm">Innovation Hub from JTBD to POC<span class="sp mono">S.Alcaraz</span></td><td><input type="number" min="1" max="5" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="5" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="5" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="1"><td class="n mono">02</td><td class="nm">Campaigns, Brand and Lead Generation.<span class="sp mono">F.Callejas</span></td><td><input type="number" min="1" max="5" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="5" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="5" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="2"><td class="n mono">03</td><td class="nm">Diversification. Expand to other markets (Aerospace, Defense, Rail, Data centers, BESS, Bus&Trucks).<span class="sp mono">A. Martínez</span></td><td><input type="number" min="1" max="5" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="5" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="5" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="3"><td class="n mono">04</td><td class="nm">BPM<span class="sp mono">A. Martínez</span></td><td><input type="number" min="1" max="5" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="5" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="5" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr><tr data-i="4"><td class="n mono">05</td><td class="nm">Diversification Supplier Ecosystem<span class="sp mono">F. Millán</span></td><td><input type="number" min="1" max="5" data-g="0" inputmode="numeric"></td><td><input type="number" min="1" max="5" data-g="1" inputmode="numeric"></td><td><input type="number" min="1" max="5" data-g="2" inputmode="numeric"></td><td class="tot mono">—</td><td class="rk mono">—</td><td class="dsc mono">—</td><td><button class="md" type="button">—</button></td><td><button class="fin" type="button">○</button></td></tr></tbody>
+      <tfoot><tr>
+        <td></td><td class="fl">Control per grup <span class="fh">posades · suma</span></td>
+        <td class="gc" data-g="0">—</td><td class="gc" data-g="1">—</td><td class="gc" data-g="2">—</td>
+        <td colspan="5"></td>
+      </tr></tfoot>
     </table>
     <div class="res" hidden>
       <div class="rhd"><h2>Guanyadores del bloc <em>Diversificació</em></h2>
         <button class="tb" data-act="back" type="button">Torna a la taula</button></div>
       <ol class="rl"></ol>
     </div>
-    <p class="tnote">Els grups puntuen d'1 a 5, d'on 1 és la més important. Es suma i es rànqueja
-      pel total: <b>com més baix, més prioritària</b>. La columna <b>Disc.</b> marca en taronja les
-      iniciatives on els grups discrepen més — són les que val la pena discutir.</p>
+    <p class="tnote">Els grups ordenen les iniciatives <b>d'1 a 5</b>, on l'1 és la més important, i
+      <b>cada número s'ha de fer servir un sol cop</b>: si un grup en repeteix o se'n deixa, la seva suma
+      canvia i el seu vot passa a pesar més o menys que el dels altres. Els números repetits es marquen
+      en vermell i la fila de control diu si cada grup ha posat les 5 posicions i si la suma quadra
+      (ha de donar 15). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
+      <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.</p>
   </div><a class="nav prev" href="#s30" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s0" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section></div>
 <div class="hint">← → navegar · G índex · 1 2 3 blocs · T tema · F pantalla completa</div>
 
@@ -532,7 +569,7 @@ function winners(t){
   res.hidden=false; t.hidden=true;
   box.querySelector('.tnote').hidden=true;
   box.querySelectorAll('.tctl .tb').forEach(function(x){
-    if(x.dataset.act!=='back') x.hidden=true});
+    if(x.dataset.act!=='back' && x.tagName!=='A') x.hidden=true});
 }
 function backToTable(t){
   var box=t.parentNode;
@@ -555,6 +592,30 @@ function recalc(t){
   data.filter(function(d){return d.tot!==null})
       .sort(function(a,b){return a.tot-b.tot})
       .forEach(function(d,i){d.rk=i+1});
+  /* duplicats per columna: una ordenacio ha de fer servir cada posicio un sol cop */
+  var cols=[[],[],[]];
+  rows.forEach(function(r){
+    [].slice.call(r.querySelectorAll('input')).forEach(function(inp,g){
+      inp.classList.remove('dup');
+      if(inp.value!=='') cols[g].push({v:+inp.value,el:inp});
+    });
+  });
+  var esperat=n*(n+1)/2;
+  cols.forEach(function(c,g){
+    var cnt={};
+    c.forEach(function(o){cnt[o.v]=(cnt[o.v]||0)+1});
+    var reps=0;
+    c.forEach(function(o){if(cnt[o.v]>1){o.el.classList.add('dup');reps++}});
+    var suma=c.reduce(function(a,o){return a+o.v},0);
+    var cell=t.querySelector('tfoot .gc[data-g="'+g+'"]');
+    if(!cell) return;
+    if(!c.length){cell.textContent='—';cell.className='gc';return}
+    var complet=(c.length===n), net=(reps===0), quadra=(suma===esperat);
+    cell.innerHTML=c.length+' / '+n+'<br>'+suma+' de '+esperat
+      +(reps?'<br>'+reps+' repetits':'');
+    cell.className='gc '+((complet&&net&&quadra)?'ok':'bad');
+  });
+
   var done=0, must=0, fin=0;
   data.forEach(function(d){
     d.r.querySelector('.tot').textContent=d.tot===null?'—':d.tot;
