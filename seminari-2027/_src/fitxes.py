@@ -111,7 +111,7 @@ def page_guia():
         <li>Es voten: <b>3 vots a mà alçada per persona</b>. En surten <b>2</b> (5′).</li>
       </ol>
     </div>
-    <div class="tbox"><h4>Priorització · com va</h4>
+    <div class="tbox"><h4>Priorització de Blocs 1, 2, 3</h4>
       <ol>
         <li>3 grups de 3 persones.</li>
         <li>PR i OR marquen cada iniciativa com a <b>Must</b> o <b>Don't</b>
