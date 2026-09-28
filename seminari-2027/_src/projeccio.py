@@ -110,9 +110,11 @@ def taula(b, idx_id):
         '<td><button class="fin" type="button">○</button></td></tr>'
         % (i, _h.escape(x[5] or "", quote=True), i + 1, x[0], x[3], len(k), len(k), len(k))
         for i, x in enumerate(k))
-    return """<div class="in wide">
+    return ("""<div class="in wide">
     <div class="kick mono">Bloc %s · consolidació de les puntuacions</div>
     <div class="tctl">
+      <a class="tb nv" href="#{PREV}" title="Pantalla anterior">&#8592;</a>
+      <a class="tb nv" href="#{NEXT}" title="Pantalla següent">&#8594;</a>
       <a class="tb" href="#%s">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
@@ -120,7 +122,7 @@ def taula(b, idx_id):
       <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
       <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
     </div>
-    <table class="ct" data-b="%d" data-n="%d" data-obj="%d" data-other="%s">
+    <table class="ct{LLARGA}" data-b="%d" data-n="%d" data-obj="%d" data-other="%s">
       <thead><tr><th class="n">#</th><th>Iniciativa</th>
         <th class="g">G1</th><th class="g">G2</th><th class="g">G3</th>
         <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferencia entre el grup que la posa mes amunt i el que la posa mes avall">Desacord</th>
@@ -145,7 +147,8 @@ def taula(b, idx_id):
       (ha de donar %d). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
       <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.
       El rànquing orienta, però <b>les guanyadores són les que marqueu a la columna Final</b>.</p>
-  </div>""" % (nom_bloc(b), idx_id, b, len(k), OBJECTIU[b], altres, altres, files, nom_bloc(b), len(k), len(k), len(k)*(len(k)+1)//2)
+  </div>""" % (nom_bloc(b), idx_id, b, len(k), OBJECTIU[b], altres, altres, files, nom_bloc(b),
+                len(k), len(k), len(k)*(len(k)+1)//2)).replace("{LLARGA}", " llarga" if len(k) > 10 else "")
 
 def bp_cover():
     fases = "".join('<li><b class="mono">%d′</b>%s</li>' % (m, t) for t, m in BP["fases"])
@@ -184,6 +187,8 @@ def bp_taula():
     return """<div class="in wide">
     <div class="kick mono">Best practices · votació de les accions</div>
     <div class="tctl">
+      <a class="tb nv" href="#{PREV}" title="Pantalla anterior">&#8592;</a>
+      <a class="tb nv" href="#{NEXT}" title="Pantalla següent">&#8594;</a>
       <button class="tb" data-act="sort" type="button">Ordena per vots</button>
       <button class="tb" data-act="orig" type="button">Ordre original</button>
       <span class="tsum mono"></span>
@@ -303,6 +308,8 @@ def wrap():
     <div class="kick mono">Dimecres 30 · 10:30 → 12:00 · Wrap up</div>
     <div class="whd"><h1>Iniciatives <em>escollides</em> 2027</h1>
       <div class="wctl"><span class="tsum mono wsum"></span>
+        <a class="tb nv" href="#{PREV}" title="Pantalla anterior">&#8592;</a>
+        <a class="tb nv" href="#{NEXT}" title="Pantalla següent">&#8594;</a>
         <button class="tb" data-wrap="upd" type="button">Actualitza</button>
         <button class="tb go" data-wrap="copy" type="button">Copia el resum</button></div></div>
     <div class="wbody"><div class="wr buit">Obre aquesta pantalla al mateix navegador on heu fet la
@@ -426,6 +433,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .in.wide{max-width:1760px}
 .tctl{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:nowrap}
 .tctl .tb{white-space:nowrap;flex:none}
+.tb.nv{padding-left:13px;padding-right:13px;font-size:14px;line-height:1}
 .tb{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   padding:8px 14px;border:1px solid var(--ln);border-radius:99px;color:var(--dim);transition:.2s}
 .tb:hover{color:var(--fg);border-color:var(--fg)}
@@ -504,6 +512,32 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .ct tfoot .gc.bad{color:#ff8a5c}
 .ct input.dup,.ct input.oor{border-color:#e0341f;background:rgba(224,52,31,.16);color:#ff9d8c}
 .tnote{margin-top:16px;font-size:12px;color:var(--dim);line-height:1.5;max-width:110ch}
+/* blocs llargs o pantalles baixes: s'apreta la taula perque hi capiga sencera */
+.ct.llarga td{padding:2px 8px}
+.ct.llarga input{padding:5px 4px;font-size:14px}
+.ct.llarga .md,.ct.llarga .fin{padding:5px 10px;font-size:11px;min-width:46px}
+@media(max-height:1000px){
+  .ct.llarga{font-size:13px}
+  .ct.llarga td{padding:1px 6px}
+  .ct.llarga td.nm .sp{display:none}
+  .ct.llarga input{padding:3px 4px;font-size:13px;max-width:54px}
+  .ct.llarga .md,.ct.llarga .fin{padding:3px 8px;font-size:10px;min-width:40px}
+  .ct.llarga .tot,.ct.llarga .rk,.ct.llarga .dsc{font-size:13px}
+  .ct.llarga tr.hi .rk{font-size:15px}
+  .sl.taula .tnote{font-size:10.5px;margin-top:10px;line-height:1.4}
+}
+@media(max-height:820px){
+  .ct.llarga td{padding:0 6px}
+  .ct.llarga input{padding:2px 4px}
+  .ct.llarga .md,.ct.llarga .fin{padding:2px 7px}
+  .sl.taula .tnote{font-size:10px;margin-top:8px}
+  .sl.taula .in{padding-top:14px;padding-bottom:44px}
+}
+@media(max-height:750px){
+  .ct.llarga th{padding-bottom:6px}
+  .sl.taula .tnote{margin-top:5px}
+  .sl.taula .in{padding-top:10px;padding-bottom:38px}
+}
 .sl.taula .navtau{display:none}
 .sl.taula .nav{display:none}
 .sl.taula .navbtns{display:none}
@@ -736,11 +770,13 @@ def render():
             out.append('<section id="%s" class="sl wrap" data-b="wrap">%s'
                 '<a class="nav prev" href="#%s"><span>&#8592;</span></a>'
                 '<a class="nav next" href="#%s"><span>&#8594;</span></a>'
-                '</section>' % (ids[n], wrap(), prev, nxt))
+                '</section>' % (ids[n],
+                                wrap().replace("{PREV}", prev).replace("{NEXT}", nxt), prev, nxt))
             continue
         if b == "bp":
-            inner = {"cover": bp_cover, "valoracio": bp_valoracio, "taula": bp_taula}[kind]()
             prev, nxt = ids[n - 1], ids[(n + 1) % len(ids)]
+            inner = {"cover": bp_cover, "valoracio": bp_valoracio, "taula": bp_taula}[kind]()
+            inner = inner.replace("{PREV}", prev).replace("{NEXT}", nxt)
             out.append(
                 '<section id="%s" class="sl bp %s" data-b="bp">%s'
                 '<a class="nav prev" href="#%s"><span>&#8592;</span></a>'
@@ -758,7 +794,9 @@ def render():
             inner = index(b, [item_ids[(b, i)] for i in range(len(per_bloc(b)))])
             cls = "index"
         elif kind == "taula":
-            inner, cls = taula(b, idx_of[b]), "taula"
+            inner, cls = (taula(b, idx_of[b])
+                          .replace("{PREV}", ids[n - 1])
+                          .replace("{NEXT}", ids[(n + 1) % len(ids)]), "taula")
         else:
             k = per_bloc(b)
             inner, cls = item(b, p[2], k[p[2]], len(k)), "item"

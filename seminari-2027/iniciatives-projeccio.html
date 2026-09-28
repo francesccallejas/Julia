@@ -127,6 +127,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .in.wide{max-width:1760px}
 .tctl{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:nowrap}
 .tctl .tb{white-space:nowrap;flex:none}
+.tb.nv{padding-left:13px;padding-right:13px;font-size:14px;line-height:1}
 .tb{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   padding:8px 14px;border:1px solid var(--ln);border-radius:99px;color:var(--dim);transition:.2s}
 .tb:hover{color:var(--fg);border-color:var(--fg)}
@@ -205,6 +206,32 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .ct tfoot .gc.bad{color:#ff8a5c}
 .ct input.dup,.ct input.oor{border-color:#e0341f;background:rgba(224,52,31,.16);color:#ff9d8c}
 .tnote{margin-top:16px;font-size:12px;color:var(--dim);line-height:1.5;max-width:110ch}
+/* blocs llargs o pantalles baixes: s'apreta la taula perque hi capiga sencera */
+.ct.llarga td{padding:2px 8px}
+.ct.llarga input{padding:5px 4px;font-size:14px}
+.ct.llarga .md,.ct.llarga .fin{padding:5px 10px;font-size:11px;min-width:46px}
+@media(max-height:1000px){
+  .ct.llarga{font-size:13px}
+  .ct.llarga td{padding:1px 6px}
+  .ct.llarga td.nm .sp{display:none}
+  .ct.llarga input{padding:3px 4px;font-size:13px;max-width:54px}
+  .ct.llarga .md,.ct.llarga .fin{padding:3px 8px;font-size:10px;min-width:40px}
+  .ct.llarga .tot,.ct.llarga .rk,.ct.llarga .dsc{font-size:13px}
+  .ct.llarga tr.hi .rk{font-size:15px}
+  .sl.taula .tnote{font-size:10.5px;margin-top:10px;line-height:1.4}
+}
+@media(max-height:820px){
+  .ct.llarga td{padding:0 6px}
+  .ct.llarga input{padding:2px 4px}
+  .ct.llarga .md,.ct.llarga .fin{padding:2px 7px}
+  .sl.taula .tnote{font-size:10px;margin-top:8px}
+  .sl.taula .in{padding-top:14px;padding-bottom:44px}
+}
+@media(max-height:750px){
+  .ct.llarga th{padding-bottom:6px}
+  .sl.taula .tnote{margin-top:5px}
+  .sl.taula .in{padding-top:10px;padding-bottom:38px}
+}
 .sl.taula .navtau{display:none}
 .sl.taula .nav{display:none}
 .sl.taula .navbtns{display:none}
@@ -403,6 +430,8 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
   </div><a class="nav prev" href="#s0"><span>&#8592;</span></a><a class="nav next" href="#s2"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada</a><a class="navidx" href="#s1">Valoració 2026</a><a class="navtau" href="#s2">Votació</a></div></section><section id="s2" class="sl bp taula" data-b="bp"><div class="in wide">
     <div class="kick mono">Best practices · votació de les accions</div>
     <div class="tctl">
+      <a class="tb nv" href="#s1" title="Pantalla anterior">&#8592;</a>
+      <a class="tb nv" href="#s3" title="Pantalla següent">&#8594;</a>
       <button class="tb" data-act="sort" type="button">Ordena per vots</button>
       <button class="tb" data-act="orig" type="button">Ordre original</button>
       <span class="tsum mono"></span>
@@ -564,6 +593,8 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
   </div><a class="nav prev" href="#s19" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s21" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s3">Portada del bloc</a><a class="navidx" href="#s4">Índex del bloc</a><a class="navtau" href="#s21">Consolidació</a></div></section><section id="s21" class="sl taula" data-b="1"><div class="in wide">
     <div class="kick mono">Bloc Auto · consolidació de les puntuacions</div>
     <div class="tctl">
+      <a class="tb nv" href="#s20" title="Pantalla anterior">&#8592;</a>
+      <a class="tb nv" href="#s22" title="Pantalla següent">&#8594;</a>
       <a class="tb" href="#s4">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
@@ -571,7 +602,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
       <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
       <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
     </div>
-    <table class="ct" data-b="1" data-n="16" data-obj="7" data-other="Don't">
+    <table class="ct llarga" data-b="1" data-n="16" data-obj="7" data-other="Don't">
       <thead><tr><th class="n">#</th><th>Iniciativa</th>
         <th class="g">G1</th><th class="g">G2</th><th class="g">G3</th>
         <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferencia entre el grup que la posa mes amunt i el que la posa mes avall">Desacord</th>
@@ -634,6 +665,8 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
   </div><a class="nav prev" href="#s25" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s27" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s22">Portada del bloc</a><a class="navidx" href="#s23">Índex del bloc</a><a class="navtau" href="#s27">Consolidació</a></div></section><section id="s27" class="sl taula" data-b="3"><div class="in wide">
     <div class="kick mono">Bloc People · consolidació de les puntuacions</div>
     <div class="tctl">
+      <a class="tb nv" href="#s26" title="Pantalla anterior">&#8592;</a>
+      <a class="tb nv" href="#s28" title="Pantalla següent">&#8594;</a>
       <a class="tb" href="#s23">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
@@ -720,6 +753,8 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
   </div><a class="nav prev" href="#s33" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s35" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s28">Portada del bloc</a><a class="navidx" href="#s29">Índex del bloc</a><a class="navtau" href="#s35">Consolidació</a></div></section><section id="s35" class="sl taula" data-b="2"><div class="in wide">
     <div class="kick mono">Bloc Diversificació · consolidació de les puntuacions</div>
     <div class="tctl">
+      <a class="tb nv" href="#s34" title="Pantalla anterior">&#8592;</a>
+      <a class="tb nv" href="#s36" title="Pantalla següent">&#8594;</a>
       <a class="tb" href="#s29">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
@@ -756,6 +791,8 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
     <div class="kick mono">Dimecres 30 · 10:30 → 12:00 · Wrap up</div>
     <div class="whd"><h1>Iniciatives <em>escollides</em> 2027</h1>
       <div class="wctl"><span class="tsum mono wsum"></span>
+        <a class="tb nv" href="#s35" title="Pantalla anterior">&#8592;</a>
+        <a class="tb nv" href="#s37" title="Pantalla següent">&#8594;</a>
         <button class="tb" data-wrap="upd" type="button">Actualitza</button>
         <button class="tb go" data-wrap="copy" type="button">Copia el resum</button></div></div>
     <div class="wbody"><div class="wr buit">Obre aquesta pantalla al mateix navegador on heu fet la
