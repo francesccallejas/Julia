@@ -48,8 +48,16 @@ def head(kicker, title, sub, x=None):
   <div class="shr">%s<img src="%s" alt="Relats"></div>
 </header>""" % (kicker, title, sub, when, LOGO)
 
-FOOT = ('<footer class="ft mono">Seminari Pla Estratègic 2027 · 29 i 30 de setembre · '
-        'Campus La Mola</footer>')
+FOOT = ('<footer class="ft mono"><span>Seminari Pla Estratègic 2027 · 29 i 30 de setembre · '
+        'Campus La Mola</span><b>{PAG}</b></footer>')
+
+
+def numera(html):
+    """Posa el número a cada peu de pàgina: {PAG} → «3 / 8»."""
+    tot = html.count("{PAG}")
+    for n in range(1, tot + 1):
+        html = html.replace("{PAG}", "%d / %d" % (n, tot), 1)
+    return html
 
 
 from valoracio import BE, MILLORA, SINTESI
@@ -359,7 +367,8 @@ th{font-family:var(--font-m);font-size:7.5pt;letter-spacing:.12em;text-transform
 .ab{flex:1;height:17mm;border:.8pt solid #ccc;border-radius:1.5mm;background:#fcfbf9}
 
 .ft{margin-top:auto;padding-top:3mm;border-top:.6pt solid #ddd;font-size:7.5pt;
-  letter-spacing:.1em;text-transform:uppercase;color:#999}
+  letter-spacing:.1em;text-transform:uppercase;color:#999;display:flex;align-items:baseline;gap:6mm}
+.ft b{margin-left:auto;font-weight:400;color:#ff5710;letter-spacing:.06em}
 """
 
 def render():
@@ -368,11 +377,11 @@ def render():
              + page_prio("Prio 1") + page_prio("Prio 3") + page_prio("Prio 2")
              + "".join(page_internals(g, i + 1, len(pags_int))
                        for i, g in enumerate(pags_int)))
-    return """<!doctype html><html lang="ca"><head>%s
+    return numera("""<!doctype html><html lang="ca"><head>%s
 <title>Fitxes de treball · Seminari Pla Estratègic 2027</title>
 <style>:root{%s}
 %s
-%s</style></head><body>%s</body></html>""" % (HEAD_COMMON, TOKENS, fontface(), CSS, pages)
+%s</style></head><body>%s</body></html>""" % (HEAD_COMMON, TOKENS, fontface(), CSS, pages))
 
 if __name__ == "__main__":
     html = render()
