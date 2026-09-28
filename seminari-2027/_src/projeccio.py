@@ -140,13 +140,10 @@ def taula(b, idx_id):
         <button class="tb" data-act="back" type="button">Torna a la taula</button></div>
       <ol class="rl"></ol>
     </div>
-    <p class="tnote">Els grups ordenen les iniciatives <b>d'1 a %d</b>, on l'1 és la més important, i
-      <b>cada número s'ha de fer servir un sol cop</b>: si un grup en repeteix o se'n deixa, la seva suma
-      canvia i el seu vot passa a pesar més o menys que el dels altres. Els números repetits es marquen
-      en vermell i la fila de control diu si cada grup ha posat les %d posicions i si la suma quadra
-      (ha de donar %d). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
-      <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.
-      El rànquing orienta, però <b>les guanyadores són les que marqueu a la columna Final</b>.</p>
+    <p class="tnote">Cada grup ordena <b>d'1 a %d</b> i <b>cada número una sola vegada</b> — la fila de
+      control diu si hi són les %d posicions i si la suma quadra (%d). Es rànqueja pel total:
+      <b>com més baix, més prioritària</b>. <b>Desacord</b> marca on els grups no coincideixen.
+      Les guanyadores són les que marqueu a <b>Final</b>.</p>
   </div>""" % (nom_bloc(b), idx_id, b, len(k), OBJECTIU[b], altres, altres, files, nom_bloc(b),
                 len(k), len(k), len(k)*(len(k)+1)//2)).replace("{LLARGA}", " llarga" if len(k) > 10 else "")
 
@@ -512,31 +509,33 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .ct tfoot .gc.bad{color:#ff8a5c}
 .ct input.dup,.ct input.oor{border-color:#e0341f;background:rgba(224,52,31,.16);color:#ff9d8c}
 .tnote{margin-top:16px;font-size:12px;color:var(--dim);line-height:1.5;max-width:110ch}
-/* blocs llargs o pantalles baixes: s'apreta la taula perque hi capiga sencera */
-.ct.llarga td{padding:2px 8px}
-.ct.llarga input{padding:5px 4px;font-size:14px}
-.ct.llarga .md,.ct.llarga .fin{padding:5px 10px;font-size:11px;min-width:46px}
-@media(max-height:1000px){
+/* blocs llargs: les files es queden com sempre i l'espai surt de la resta */
+.ct.llarga th{padding-bottom:6px}
+.ct.llarga td{padding:4px 8px}
+.sl.taula .tnote{margin-top:12px}
+/* nomes si la pantalla es mes baixa que 1080p s'apreta de veritat */
+@media(max-height:1070px){
+  .ct.llarga td{padding:2px 8px}
+  .ct.llarga input{padding:5px 4px}
+  .ct.llarga .md,.ct.llarga .fin{padding:5px 10px;font-size:11px;min-width:46px}
+  .sl.taula .tnote{font-size:11px;margin-top:10px;line-height:1.4}
+}
+@media(max-height:960px){
   .ct.llarga{font-size:13px}
   .ct.llarga td{padding:1px 6px}
-  .ct.llarga td.nm .sp{display:none}
   .ct.llarga input{padding:3px 4px;font-size:13px;max-width:54px}
   .ct.llarga .md,.ct.llarga .fin{padding:3px 8px;font-size:10px;min-width:40px}
   .ct.llarga .tot,.ct.llarga .rk,.ct.llarga .dsc{font-size:13px}
   .ct.llarga tr.hi .rk{font-size:15px}
-  .sl.taula .tnote{font-size:10.5px;margin-top:10px;line-height:1.4}
+  .sl.taula .in{padding-top:16px;padding-bottom:46px}
 }
-@media(max-height:820px){
+@media(max-height:840px){
   .ct.llarga td{padding:0 6px}
+  .ct.llarga td.nm .sp{display:none}
   .ct.llarga input{padding:2px 4px}
   .ct.llarga .md,.ct.llarga .fin{padding:2px 7px}
-  .sl.taula .tnote{font-size:10px;margin-top:8px}
-  .sl.taula .in{padding-top:14px;padding-bottom:44px}
-}
-@media(max-height:750px){
-  .ct.llarga th{padding-bottom:6px}
-  .sl.taula .tnote{margin-top:5px}
-  .sl.taula .in{padding-top:10px;padding-bottom:38px}
+  .sl.taula .tnote{font-size:10px;margin-top:7px}
+  .sl.taula .in{padding-top:12px;padding-bottom:38px}
 }
 .sl.taula .navtau{display:none}
 .sl.taula .nav{display:none}
