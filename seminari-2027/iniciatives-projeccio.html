@@ -26,7 +26,6 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .bar{position:fixed;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;gap:14px;
   padding:14px 22px;border-bottom:1px solid var(--ln);background:var(--bg)}
 .bar img{height:19px}
-html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
 .tabs{display:flex;gap:6px;margin-left:8px}
 .tab{font-family:var(--font-m);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
   padding:7px 13px;border:1px solid var(--ln);border-radius:99px;color:var(--dim);transition:.2s;
@@ -117,9 +116,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
   padding:8px 14px;border:1px solid var(--ln);border-radius:99px;color:var(--dim);transition:.2s}
 .tb:hover{color:var(--fg);border-color:var(--fg)}
 .tb.warn:hover{color:#fff;background:#e0341f;border-color:#e0341f}
-.tmsg{flex:1 1 0;min-width:0;text-align:right;font-size:12px;letter-spacing:.04em;color:#ff8a5c;opacity:0;transition:opacity .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tmsg.on{opacity:1}
-.tsum{flex:0 1 auto;min-width:0;margin-left:14px;font-size:12px;color:var(--dim);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tsum{flex:0 1 auto;min-width:0;margin-left:auto;font-size:12px;color:var(--dim);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ct{width:100%;border-collapse:collapse;font-size:14px}
 .ct th{font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--dim);font-weight:400;text-align:left;padding:0 8px 10px;border-bottom:1px solid var(--ln);
@@ -340,7 +337,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <a class="tb" href="#s1">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
-      <span class="tmsg mono"></span><span class="tsum mono"></span>
+      <span class="tsum mono"></span>
       <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
       <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
     </div>
@@ -406,7 +403,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <a class="tb" href="#s19">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
-      <span class="tmsg mono"></span><span class="tsum mono"></span>
+      <span class="tsum mono"></span>
       <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
       <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
     </div>
@@ -488,7 +485,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <a class="tb" href="#s25">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
-      <span class="tmsg mono"></span><span class="tsum mono"></span>
+      <span class="tsum mono"></span>
       <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
       <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
     </div>
@@ -529,7 +526,7 @@ function load(t){
     [].slice.call(t.querySelectorAll('tbody tr')).forEach(function(r,i){
       var o=d[i]; if(!o) return;
       [].slice.call(r.querySelectorAll('input')).forEach(function(inp,j){
-        inp.value=(o.g&&o.g[j]!=null)?o.g[j]:''; inp.dataset.ok=inp.value});
+        inp.value=(o.g&&o.g[j]!=null)?o.g[j]:''});
       var md=r.querySelector('.md'); md.dataset.md=o.md||''; md.textContent=o.md||'—';
       var f=r.querySelector('.fin'); f.dataset.fin=o.fin||'0'; f.textContent=o.fin==='1'?'●':'○';
     });
@@ -638,36 +635,6 @@ function recalc(t){
 document.querySelectorAll('.ct').forEach(function(t){
   load(t); recalc(t);
   t.addEventListener('input',function(){recalc(t)});
-  /* en sortir de la casella, un numero ja fet servir a la mateixa columna es rebutja */
-  t.addEventListener('change',function(e){
-    var inp=e.target; if(inp.tagName!=='INPUT') return;
-    var n=+t.dataset.n, v=inp.value;
-    function avis(txt){
-      var m=t.parentNode.querySelector('.tmsg');
-      m.textContent=txt; m.classList.add('on');
-      clearTimeout(m._t); m._t=setTimeout(function(){m.classList.remove('on')},3200);
-    }
-    if(v===''){inp.dataset.ok='';recalc(t);return}
-    var num=+v;
-    if(!(num>=1&&num<=n)){
-      inp.value=inp.dataset.ok||'';
-      avis('Ha de ser un número entre 1 i '+n+'.');
-      recalc(t); return;
-    }
-    var g=inp.dataset.g, xoc=null;
-    [].slice.call(t.querySelectorAll('tbody tr')).forEach(function(r){
-      var o=r.querySelector('input[data-g="'+g+'"]');
-      if(o!==inp && o.value!=='' && +o.value===num) xoc=r;
-    });
-    if(xoc){
-      inp.value=inp.dataset.ok||'';
-      var nm=xoc.querySelector('.nm').childNodes[0].textContent;
-      avis('El ' + num + ' ja és de la ' + xoc.querySelector('.n').textContent + ' · ' +
-           (nm.length>26 ? nm.slice(0,26)+'…' : nm));
-      recalc(t); return;
-    }
-    inp.dataset.ok=v; recalc(t);
-  });
   t.addEventListener('click',function(e){
     var md=e.target.closest('button.md');
     if(md){var o={'':'M','M':'D','D':''}[md.dataset.md||''];
