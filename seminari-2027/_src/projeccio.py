@@ -274,8 +274,7 @@ def ip_mapa(ids):
     <div class="kick mono">Internal projects · tots, per funció</div>
     <h2 class="mtit">On és cada cosa <em>i de qui</em></h2>
     <div class="mgrid">%s</div>
-    <p class="tnote">Clica el nom d’una funció per anar al seu torn. Els projectes en taronja
-      encara estan per confirmar si són interns o pugen a estratègics.</p>
+    <p class="tnote">Clica el nom d’una funció per anar al seu torn.</p>
   </div>""" % cols
 
 
