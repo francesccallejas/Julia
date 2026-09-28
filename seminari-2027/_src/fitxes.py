@@ -106,8 +106,7 @@ def page_guia():
       <ol>
         <li>3 grups de 3 persones. Les iniciatives es projecten a pantalla, numerades igual
           que a la fitxa.</li>
-        <li><b>Oriol i Pere</b> marquen cada iniciativa com a <b>Must</b> o <b>Don't</b>
-          (al bloc de Diversificació, <b>Must</b> o <b>Other</b>).</li>
+        <li><b>Oriol i Pere</b> marquen cada iniciativa com a <b>Must</b> o <b>Don't</b>.</li>
         <li>Cada grup ordena <b>totes</b> les iniciatives, de més a menys important:
           <b>%s</b>.
           <b>Cada número es fa servir una sola vegada</b>; si se'n repeteix o se'n deixa cap,
@@ -159,7 +158,7 @@ def page_best():
 def page_prio(tag):
     x = sesh(tag)
     b = int(tag.split()[-1])
-    other = "Other" if b == 2 else "Don't"
+    other = "Don't"
     area = x["t"].split("·")[-1].strip()
     k = per_bloc(b)
     dense = len(k) > 10

@@ -98,7 +98,7 @@ def item(b, i, x, n):
 
 def taula(b, idx_id):
     k = per_bloc(b)
-    altres = "Other" if b == 2 else "Don't"
+    altres = "Don't"
     files = "".join(
         '<tr data-i="%d" data-kpi="%s"><td class="n mono">%02d</td>'
         '<td class="nm">%s<span class="sp mono">%s</span></td>'
