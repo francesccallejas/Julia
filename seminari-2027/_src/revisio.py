@@ -55,17 +55,23 @@ async def una_visible(pg, ids, tag):
 
 
 async def desbordament(pg, ids, w, h):
-    print("\n--- 3 · res que desbordi a %dx%d ---" % (w, h))
+    """Res no pot sobresortir de costat. Amunt i avall s'hi val: es fa scroll,
+    pero convé saber quines pantalles el necessiten a cada resolució."""
     await pg.set_viewport_size({"width": w, "height": h})
-    mal = []
+    ample, llarg = [], []
     for i in ids:
         await pg.goto(URL + "#" + i)
         await pg.wait_for_timeout(70)
         r = await pg.evaluate("""()=>{const s=document.querySelector('.sl:target')||document.querySelector('.sl');
-          return [s.id, s.scrollHeight-s.clientHeight, s.scrollWidth-s.clientWidth]}""")
-        if r[1] > 0 or r[2] > 0:
-            mal.append(r)
-    ok("cap pantalla amb scroll", not mal, mal)
+          return [s.id, s.scrollHeight-s.clientHeight, s.scrollWidth-s.clientWidth,
+                  s.className.replace('sl ','')]}""")
+        if r[2] > 0:
+            ample.append(r)
+        elif r[1] > 0:
+            llarg.append("%s (%s) +%d" % (r[0], r[3], r[1]))
+    print("\n--- 3 · %dx%d ---" % (w, h))
+    ok("res no sobresurt de costat", not ample, ample)
+    print("      amb scroll: %s" % (", ".join(llarg) if llarg else "cap"))
 
 
 async def navegacio(pg, ids, js):
