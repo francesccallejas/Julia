@@ -130,7 +130,8 @@ def taula(b, idx_id):
       canvia i el seu vot passa a pesar més o menys que el dels altres. Els números repetits es marquen
       en vermell i la fila de control diu si cada grup ha posat les %d posicions i si la suma quadra
       (ha de donar %d). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
-      <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.</p>
+      <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.
+      El rànquing orienta, però <b>les guanyadores són les que marqueu a la columna Final</b>.</p>
   </div>""" % (nom_bloc(b), idx_id, b, len(k), altres, altres, files, nom_bloc(b), len(k), len(k), len(k)*(len(k)+1)//2)
 
 # ------------------------------------------------------------------- pagina ---
@@ -296,8 +297,15 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .rw.top{border-color:var(--accent);background:rgba(255,87,16,.09)}
 .rw.top .rn{color:var(--accent);font-size:26px;font-weight:600}
 .rw.top .rt{font-size:21px}
-.rw.fin .rt em:after{content:" · seleccionada";color:var(--accent)}
-.rw.empty{justify-content:center;color:var(--dim);font-size:15px}
+.rw.empty,.rw.nota{justify-content:center;color:var(--dim);font-size:14.5px;
+  border-style:dashed;text-align:center}
+.rw.nota b{color:var(--accent)}
+.rsec{display:flex;align-items:baseline;gap:12px;padding:16px 4px 4px;
+  font-family:var(--font-m);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent)}
+.rsec:first-child{padding-top:0}
+.rsec i{font-style:normal;color:var(--dim);letter-spacing:.06em}
+.rsec+.rw.top{border-width:1.5px}
 .tb.go{border-color:var(--accent);color:var(--accent)}
 .tb.go:hover{background:var(--accent);color:#fff}
 .ct tfoot td{border-top:1px solid var(--ln);border-bottom:none;padding-top:10px;font-size:12px;color:var(--dim)}
@@ -306,7 +314,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .ct tfoot .gc{text-align:center;font-family:var(--font-m);font-size:12px;line-height:1.3}
 .ct tfoot .gc.ok{color:#4fbf9a}
 .ct tfoot .gc.bad{color:#ff8a5c}
-.ct input.dup{border-color:#e0341f;background:rgba(224,52,31,.16);color:#ff9d8c}
+.ct input.dup,.ct input.oor{border-color:#e0341f;background:rgba(224,52,31,.16);color:#ff9d8c}
 .tnote{margin-top:16px;font-size:12px;color:var(--dim);line-height:1.5;max-width:110ch}
 .sl.taula .navtau{display:none}
 .sl.taula .nav{display:none}
@@ -427,15 +435,31 @@ function winners(t){
             fin:r.querySelector('button.fin').dataset.fin==='1'};
   }).filter(function(o){return o.rk!=='—'})
     .sort(function(a,b){return (+a.rk)-(+b.rk)});
-  ol.innerHTML = rows.length
-    ? rows.map(function(o,i){
-        return '<li class="rw'+(i<5?' top':'')+(o.fin?' fin':'')+'">'
-          +'<span class="rn mono">'+o.rk+'</span>'
-          +'<span class="rt">'+o.nm+'<em>'+o.sp+'</em></span>'
-          +(o.md?'<span class="rm '+o.md+'">'+(o.md==='M'?'Must':other)+'</span>':'')
-          +'<span class="rp mono">'+o.tot+'</span></li>';
-      }).join('')
-    : '<li class="rw empty">Encara no hi ha cap iniciativa amb puntuacions.</li>';
+  function fila(o,gran){
+    return '<li class="rw'+(gran?' top':'')+'">'
+      +'<span class="rn mono">'+o.rk+'</span>'
+      +'<span class="rt">'+o.nm+'<em>'+o.sp+'</em></span>'
+      +(o.md?'<span class="rm '+o.md+'">'+(o.md==='M'?'Must':other)+'</span>':'')
+      +'<span class="rp mono">'+o.tot+'</span></li>';
+  }
+  var tria=rows.filter(function(o){return o.fin});
+  var resta=rows.filter(function(o){return !o.fin});
+  var h='';
+  if(!rows.length){
+    h='<li class="rw empty">Encara no hi ha cap iniciativa amb puntuacions.</li>';
+  } else if(!tria.length){
+    h='<li class="rw nota">Cap iniciativa marcada encara. Fes servir la columna '
+      +'<b>Final</b> de la taula per marcar les escollides.</li>'
+      +rows.map(function(o){return fila(o,false)}).join('');
+  } else {
+    h='<li class="rsec"><span>Escollides</span><i>'+tria.length+'</i></li>'
+      +tria.map(function(o){return fila(o,true)}).join('');
+    if(resta.length){
+      h+='<li class="rsec"><span>La resta, per ordre de prioritat</span><i>'+resta.length+'</i></li>'
+        +resta.map(function(o){return fila(o,false)}).join('');
+    }
+  }
+  ol.innerHTML=h;
   res.hidden=false; t.hidden=true;
   box.querySelector('.tnote').hidden=true;
   box.querySelectorAll('.tctl .tb').forEach(function(x){
@@ -463,11 +487,14 @@ function recalc(t){
       .sort(function(a,b){return a.tot-b.tot})
       .forEach(function(d,i){d.rk=i+1});
   /* duplicats per columna: una ordenacio ha de fer servir cada posicio un sol cop */
-  var cols=[[],[],[]];
+  var cols=[[],[],[]], fora=[0,0,0];
   rows.forEach(function(r){
     [].slice.call(r.querySelectorAll('input')).forEach(function(inp,g){
-      inp.classList.remove('dup');
-      if(inp.value!=='') cols[g].push({v:+inp.value,el:inp});
+      inp.classList.remove('dup','oor');
+      if(inp.value==='') return;
+      var v=+inp.value;
+      if(v<1||v>n){inp.classList.add('oor');fora[g]++;return}
+      cols[g].push({v:v,el:inp});
     });
   });
   var esperat=n*(n+1)/2;
@@ -479,10 +506,11 @@ function recalc(t){
     var suma=c.reduce(function(a,o){return a+o.v},0);
     var cell=t.querySelector('tfoot .gc[data-g="'+g+'"]');
     if(!cell) return;
-    if(!c.length){cell.textContent='—';cell.className='gc';return}
-    var complet=(c.length===n), net=(reps===0), quadra=(suma===esperat);
+    if(!c.length&&!fora[g]){cell.textContent='—';cell.className='gc';return}
+    var complet=(c.length===n), net=(reps===0&&!fora[g]), quadra=(suma===esperat);
     cell.innerHTML=c.length+' / '+n+'<br>'+suma+' de '+esperat
-      +(reps?'<br>'+reps+' repetits':'');
+      +(reps?'<br>'+reps+' repetits':'')
+      +(fora[g]?'<br>'+fora[g]+' fora de rang':'');
     cell.className='gc '+((complet&&net&&quadra)?'ok':'bad');
   });
 
@@ -491,7 +519,7 @@ function recalc(t){
     d.r.querySelector('.tot').textContent=d.tot===null?'—':d.tot;
     d.r.querySelector('.rk').textContent=d.rk?d.rk:'—';
     d.r.querySelector('.dsc').textContent=d.dsc===null?'—':d.dsc;
-    d.r.classList.toggle('hi',!!d.rk&&d.rk<=5);
+    d.r.classList.toggle('hi',d.r.querySelector('button.fin').dataset.fin==='1');
     d.r.classList.toggle('dis',d.dsc!==null&&d.dsc>=lim);
     if(d.n===3)done++;
     if(d.r.querySelector('.md').dataset.md==='M')must++;
