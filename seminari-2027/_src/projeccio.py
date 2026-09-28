@@ -8,7 +8,7 @@ cronòmetre són millores que s'hi afegeixen si el JavaScript s'executa.
 import io, os, sys, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from data import HEAD_COMMON, TOKENS, RESET, fontface, LOGO, T
-from iniciatives import I, BLOCS, per_bloc
+from iniciatives import I, BLOCS, per_bloc, OBJECTIU
 from data import ALL as SESSIONS
 
 OUT = "/home/user/Julia/seminari-2027"
@@ -51,12 +51,12 @@ def cover(b):
     return """<div class="in">
     <div class="kick mono">Dimarts 29 · %s → %s</div>
     <h1>Bloc <em>%s</em></h1>
-    <p class="lead">%d iniciatives a prioritzar</p>
+    <p class="lead">%d iniciatives a prioritzar · <b>en triarem %d</b></p>
     <div class="cbox">
       <div class="cb"><h3>Com ens organitzem</h3><ul class="com">%s</ul></div>
       <div class="cb"><h3>Timing</h3><ul class="fases">%s</ul></div>
     </div>
-  </div>""" % (ini, fi, nom_bloc(b), len(per_bloc(b)), com, fases)
+  </div>""" % (ini, fi, nom_bloc(b), len(per_bloc(b)), OBJECTIU[b], com, fases)
 
 def index(b, ids):
     k = per_bloc(b)
@@ -107,7 +107,7 @@ def taula(b, idx_id):
       <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
       <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
     </div>
-    <table class="ct" data-b="%d" data-n="%d" data-other="%s">
+    <table class="ct" data-b="%d" data-n="%d" data-obj="%d" data-other="%s">
       <thead><tr><th class="n">#</th><th>Iniciativa</th>
         <th class="g">G1</th><th class="g">G2</th><th class="g">G3</th>
         <th class="g">Total</th><th class="g">Rang</th><th class="g" title="Diferencia entre el grup que la posa mes amunt i el que la posa mes avall">Desacord</th>
@@ -132,7 +132,7 @@ def taula(b, idx_id):
       (ha de donar %d). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
       <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.
       El rànquing orienta, però <b>les guanyadores són les que marqueu a la columna Final</b>.</p>
-  </div>""" % (nom_bloc(b), idx_id, b, len(k), altres, altres, files, nom_bloc(b), len(k), len(k), len(k)*(len(k)+1)//2)
+  </div>""" % (nom_bloc(b), idx_id, b, len(k), OBJECTIU[b], altres, altres, files, nom_bloc(b), len(k), len(k), len(k)*(len(k)+1)//2)
 
 # ------------------------------------------------------------------- pagina ---
 CSS = """
@@ -177,6 +177,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .cover h1{font-size:clamp(44px,7vw,110px);font-weight:700;letter-spacing:-.035em;line-height:.95}
 .cover h1 em{font-style:normal;color:var(--accent)}
 .cover .lead{margin-top:20px;font-size:clamp(18px,2vw,28px);color:var(--dim)}
+.cover .lead b{color:var(--accent);font-weight:600}
 .cbox{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,64px);
   margin-top:clamp(26px,4vh,46px);padding-top:26px;border-top:1px solid var(--ln)}
 .cb h3{font-family:var(--font-m);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
@@ -245,6 +246,8 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
   padding:8px 14px;border:1px solid var(--ln);border-radius:99px;color:var(--dim);transition:.2s}
 .tb:hover{color:var(--fg);border-color:var(--fg)}
 .tb.warn:hover{color:#fff;background:#e0341f;border-color:#e0341f}
+.tsum.ok{color:#4fbf9a}
+.tsum.over{color:#ff8a5c}
 .tsum{flex:0 1 auto;min-width:0;margin-left:auto;font-size:12px;color:var(--dim);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ct{width:100%%;border-collapse:collapse;font-size:14px}
 .ct th{font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
@@ -305,6 +308,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
   color:var(--accent)}
 .rsec:first-child{padding-top:0}
 .rsec i{font-style:normal;color:var(--dim);letter-spacing:.06em}
+.rsec.over i{color:#ff8a5c}
 .rsec+.rw.top{border-width:1.5px}
 .tb.go{border-color:var(--accent);color:var(--accent)}
 .tb.go:hover{background:var(--accent);color:#fff}
@@ -433,8 +437,17 @@ function winners(t){
             sp:nm.querySelector('.sp')?nm.querySelector('.sp').textContent:'',
             md:r.querySelector('button.md').dataset.md||'',
             fin:r.querySelector('button.fin').dataset.fin==='1'};
-  }).filter(function(o){return o.rk!=='—'})
-    .sort(function(a,b){return (+a.rk)-(+b.rk)});
+  });
+  function perRang(a,b){
+    if(a.rk==='—'&&b.rk==='—') return 0;
+    if(a.rk==='—') return 1;
+    if(b.rk==='—') return -1;
+    return (+a.rk)-(+b.rk);
+  }
+  /* les marcades Final hi surten encara que no tinguin puntuacio: manen elles */
+  var tria=rows.filter(function(o){return o.fin}).sort(perRang);
+  var resta=rows.filter(function(o){return !o.fin&&o.rk!=='—'}).sort(perRang);
+  rows=rows.filter(function(o){return o.fin||o.rk!=='—'});
   function fila(o,gran){
     return '<li class="rw'+(gran?' top':'')+'">'
       +'<span class="rn mono">'+o.rk+'</span>'
@@ -442,17 +455,17 @@ function winners(t){
       +(o.md?'<span class="rm '+o.md+'">'+(o.md==='M'?'Must':other)+'</span>':'')
       +'<span class="rp mono">'+o.tot+'</span></li>';
   }
-  var tria=rows.filter(function(o){return o.fin});
-  var resta=rows.filter(function(o){return !o.fin});
   var h='';
   if(!rows.length){
     h='<li class="rw empty">Encara no hi ha cap iniciativa amb puntuacions.</li>';
   } else if(!tria.length){
     h='<li class="rw nota">Cap iniciativa marcada encara. Fes servir la columna '
       +'<b>Final</b> de la taula per marcar les escollides.</li>'
-      +rows.map(function(o){return fila(o,false)}).join('');
+      +resta.map(function(o){return fila(o,false)}).join('');
   } else {
-    h='<li class="rsec"><span>Escollides</span><i>'+tria.length+'</i></li>'
+    var obj=+t.dataset.obj;
+    h='<li class="rsec'+(tria.length>obj?' over':'')+'"><span>Escollides</span>'
+      +'<i>'+tria.length+' de '+obj+'</i></li>'
       +tria.map(function(o){return fila(o,true)}).join('');
     if(resta.length){
       h+='<li class="rsec"><span>La resta, per ordre de prioritat</span><i>'+resta.length+'</i></li>'
@@ -525,8 +538,10 @@ function recalc(t){
     if(d.r.querySelector('.md').dataset.md==='M')must++;
     if(d.r.querySelector('.fin').dataset.fin==='1')fin++;
   });
-  t.parentNode.querySelector('.tsum').textContent =
-    done+'/'+rows.length+' puntuades · '+must+' Must · '+fin+' final';
+  var obj=+t.dataset.obj, sum=t.parentNode.querySelector('.tsum');
+  sum.textContent = done+'/'+rows.length+' puntuades · '+must+' Must · '
+    +fin+'/'+obj+' escollides';
+  sum.className='tsum mono'+(fin===obj?' ok':(fin>obj?' over':''));
   save(t);
 }
 document.querySelectorAll('.ct').forEach(function(t){

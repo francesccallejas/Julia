@@ -145,6 +145,9 @@ I = [
   "People · Digital"),
 ]
 
+# Quantes iniciatives es vol seleccionar per bloc (objectiu, no limit dur)
+OBJECTIU = {1: 7, 2: 3, 3: 2}
+
 BLOCS = {1: ("Prio 1 · Auto", "11:30", "13:00"),
          2: ("Prio 2 · Diversificació", "14:45", "16:00"),
          3: ("Prio 3 · People", "13:00", "13:45")}

@@ -3,7 +3,7 @@
 import io, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from data import *
-from iniciatives import per_bloc, BLOCS
+from iniciatives import per_bloc, BLOCS, OBJECTIU
 
 OUT = "/home/user/Julia/seminari-2027"
 
@@ -126,7 +126,9 @@ def page_guia():
           la suma del grup canvia i el seu vot pesa més o menys que el dels altres.</li>
         <li>El facilitador passa les tres puntuacions a la <b>pantalla de consolidació</b>,
           que calcula el total, el rànquing i on hi ha més desacord entre grups.</li>
-        <li>Selecció final, amb el botó <b>Veure les guanyadores</b> projectat.</li>
+        <li>Selecció final, amb el botó <b>Veure les guanyadores</b> projectat. Objectiu:
+          <b>Auto 7 · Diversificació 3 · People 2</b> — és una guia per entrar amb un número
+          al cap, no un límit: a la sala en podeu marcar més o menys.</li>
       </ol>
     </div>
   </div>
@@ -203,7 +205,7 @@ def page_prio(tag):
 <div class="obj"><span class="mono">Objectiu</span><b>%s</b></div>
 <div class="two tight">%s%s</div>
 <table class="it{DENSE}">
-  <tr><th class="num">#</th><th>Iniciativa <span class="hint2">— %d a prioritzar</span></th>
+  <tr><th class="num">#</th><th>Iniciativa <span class="hint2">— %d a prioritzar, en triarem %d</span></th>
       <th class="pt">Punts</th>
       <th class="ms"><span class="who mono">Oriol / Pere</span>Must / %s</th></tr>
   %s
@@ -215,7 +217,7 @@ def page_prio(tag):
 %s
 </section>""" % (
         head("Dimarts 29 · %s" % x["s"], x["t"], "Iniciatives estratègiques 2027 · %s" % area, x),
-        x["obj"], timing_box(x), how_box(x, n=len(k)), len(k), other, files,
+        x["obj"], timing_box(x), how_box(x, n=len(k)), len(k), OBJECTIU[b], other, files,
         lines(2, 7), lines(2, 7), FOOT)).replace("{DENSE}", " dense" if dense else "")
 
 # -------------------------------------------------------------------- css ---
