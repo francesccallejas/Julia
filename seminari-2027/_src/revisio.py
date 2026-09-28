@@ -63,7 +63,7 @@ async def desbordament(pg, ids, w, h):
         await pg.wait_for_timeout(70)
         r = await pg.evaluate("""()=>{const s=document.querySelector('.sl:target')||document.querySelector('.sl');
           return [s.id, s.scrollHeight-s.clientHeight, s.scrollWidth-s.clientWidth]}""")
-        if r[1] > 2 or r[2] > 2:
+        if r[1] > 0 or r[2] > 0:
             mal.append(r)
     ok("cap pantalla amb scroll", not mal, mal)
 
@@ -414,8 +414,9 @@ async def main():
 
         ids = await estructura(pg)
         await una_visible(pg, ids, "amb JS")
-        await desbordament(pg, ids, 1920, 1080)
-        await desbordament(pg, ids, 1600, 900)
+        for w, h in ((1920, 1080), (1680, 1050), (1600, 900), (1440, 900),
+                     (1440, 810), (1366, 768), (1280, 800), (1280, 720)):
+            await desbordament(pg, ids, w, h)
         await pg.set_viewport_size({"width": 1920, "height": 1080})
         await navegacio(pg, ids, True)
         await teclat(pg, ids)
