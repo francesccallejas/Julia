@@ -197,10 +197,12 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
 .nav.prev{left:0}.nav.next{right:0}
 .nav span{position:absolute;top:50%%;transform:translateY(-50%%);font-size:26px;color:var(--dim)}
 .nav.prev span{left:20px}.nav.next span{right:20px}
-.navidx{position:fixed;left:50%%;bottom:46px;transform:translateX(-50%%);z-index:15;
-  font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--dim);border:1px solid var(--ln);border-radius:99px;padding:7px 15px;opacity:.65;transition:.2s}
-.navidx:hover{opacity:1;color:var(--fg);border-color:var(--fg)}
+.navbtns{position:fixed;left:50%%;bottom:44px;transform:translateX(-50%%);z-index:15;
+  display:flex;gap:8px}
+.navidx,.navtau{font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);border:1px solid var(--ln);border-radius:99px;padding:7px 15px;opacity:.65;
+  transition:.2s;white-space:nowrap;background:var(--bg)}
+.navidx:hover,.navtau:hover{opacity:1;color:var(--fg);border-color:var(--fg)}
 .sl.index .navidx{display:none}
 
 .in.wide{max-width:1760px}
@@ -268,10 +270,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
 .tnote{margin-top:18px;font-size:12.5px;color:var(--dim);line-height:1.5;max-width:110ch}
 .sl.taula .navtau{display:none}
 .sl.taula .nav{display:none}
-.navtau{position:fixed;left:50%%;bottom:46px;transform:translateX(calc(-50%% + 132px));z-index:15;
-  font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--dim);border:1px solid var(--ln);border-radius:99px;padding:7px 15px;opacity:.65;transition:.2s}
-.navtau:hover{opacity:1;color:var(--fg);border-color:var(--fg)}
+
 .sl.taula .in{padding-top:clamp(18px,2.5vh,34px)}
 @media(max-width:1400px){.ct{font-size:12.5px}.ct td.nm .sp{display:none}}
 .hint{position:fixed;left:50%%;bottom:16px;transform:translateX(-50%%);z-index:20;
@@ -316,8 +315,9 @@ def render():
             '<section id="%s" class="sl %s" data-b="%d">%s'
             '<a class="nav prev" href="#%s" aria-label="Anterior"><span>&#8592;</span></a>'
             '<a class="nav next" href="#%s" aria-label="Següent"><span>&#8594;</span></a>'
+            '<div class="navbtns">'
             '<a class="navidx" href="#%s">Índex del bloc</a>'
-            '<a class="navtau" href="#%s">Consolidació</a>'
+            '<a class="navtau" href="#%s">Consolidació</a></div>'
             '</section>' % (ids[n], cls, b, inner, prev, nxt, idx_of[b], tau_of[b]))
 
     tabs = "".join('<a class="tab" href="#%s" data-b="%d">%s <i class="mono">%d</i></a>'
