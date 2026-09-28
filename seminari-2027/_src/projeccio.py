@@ -88,7 +88,7 @@ def taula(b, idx_id):
       <a class="tb" href="#%s">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
-      <span class="tsum mono"></span>
+      <span class="tmsg mono"></span><span class="tsum mono"></span>
       <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
       <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
     </div>
@@ -208,19 +208,23 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
 .nav.prev span{left:20px}.nav.next span{right:20px}
 .navbtns{position:fixed;left:50%%;bottom:44px;transform:translateX(-50%%);z-index:15;
   display:flex;gap:8px}
-.navidx,.navtau{font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+.navcov,.navidx,.navtau{font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--dim);border:1px solid var(--ln);border-radius:99px;padding:7px 15px;opacity:.65;
   transition:.2s;white-space:nowrap;background:var(--bg)}
-.navidx:hover,.navtau:hover{opacity:1;color:var(--fg);border-color:var(--fg)}
+.navcov:hover,.navidx:hover,.navtau:hover{opacity:1;color:var(--fg);border-color:var(--fg)}
 .sl.index .navidx{display:none}
+.sl.cover .navcov{display:none}
 
 .in.wide{max-width:1760px}
-.tctl{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.tctl{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:nowrap}
+.tctl .tb{white-space:nowrap;flex:none}
 .tb{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   padding:8px 14px;border:1px solid var(--ln);border-radius:99px;color:var(--dim);transition:.2s}
 .tb:hover{color:var(--fg);border-color:var(--fg)}
 .tb.warn:hover{color:#fff;background:#e0341f;border-color:#e0341f}
-.tsum{margin-left:auto;font-size:12px;color:var(--dim);letter-spacing:.06em}
+.tmsg{flex:1 1 0;min-width:0;text-align:right;font-size:12px;letter-spacing:.04em;color:#ff8a5c;opacity:0;transition:opacity .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tmsg.on{opacity:1}
+.tsum{flex:0 1 auto;min-width:0;margin-left:14px;font-size:12px;color:var(--dim);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ct{width:100%%;border-collapse:collapse;font-size:14px}
 .ct th{font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--dim);font-weight:400;text-align:left;padding:0 8px 10px;border-bottom:1px solid var(--ln);
@@ -335,9 +339,10 @@ def render():
             '<a class="nav prev" href="#%s" aria-label="Anterior"><span>&#8592;</span></a>'
             '<a class="nav next" href="#%s" aria-label="Següent"><span>&#8594;</span></a>'
             '<div class="navbtns">'
+            '<a class="navcov" href="#%s">Portada del bloc</a>'
             '<a class="navidx" href="#%s">Índex del bloc</a>'
             '<a class="navtau" href="#%s">Consolidació</a></div>'
-            '</section>' % (ids[n], cls, b, inner, prev, nxt, idx_of[b], tau_of[b]))
+            '</section>' % (ids[n], cls, b, inner, prev, nxt, cov_of[b], idx_of[b], tau_of[b]))
 
     tabs = "".join('<a class="tab" href="#%s" data-b="%d">%s <i class="mono">%d</i></a>'
                    % (cov_of[b], b, nom_bloc(b), len(per_bloc(b))) for b in ORDRE)
@@ -370,7 +375,7 @@ function load(t){
     [].slice.call(t.querySelectorAll('tbody tr')).forEach(function(r,i){
       var o=d[i]; if(!o) return;
       [].slice.call(r.querySelectorAll('input')).forEach(function(inp,j){
-        inp.value=(o.g&&o.g[j]!=null)?o.g[j]:''});
+        inp.value=(o.g&&o.g[j]!=null)?o.g[j]:''; inp.dataset.ok=inp.value});
       var md=r.querySelector('.md'); md.dataset.md=o.md||''; md.textContent=o.md||'—';
       var f=r.querySelector('.fin'); f.dataset.fin=o.fin||'0'; f.textContent=o.fin==='1'?'●':'○';
     });
@@ -473,12 +478,42 @@ function recalc(t){
     if(d.r.querySelector('.fin').dataset.fin==='1')fin++;
   });
   t.parentNode.querySelector('.tsum').textContent =
-    done+' de '+rows.length+' amb les 3 puntuacions · '+must+' Must · '+fin+' seleccionades';
+    done+'/'+rows.length+' puntuades · '+must+' Must · '+fin+' final';
   save(t);
 }
 document.querySelectorAll('.ct').forEach(function(t){
   load(t); recalc(t);
   t.addEventListener('input',function(){recalc(t)});
+  /* en sortir de la casella, un numero ja fet servir a la mateixa columna es rebutja */
+  t.addEventListener('change',function(e){
+    var inp=e.target; if(inp.tagName!=='INPUT') return;
+    var n=+t.dataset.n, v=inp.value;
+    function avis(txt){
+      var m=t.parentNode.querySelector('.tmsg');
+      m.textContent=txt; m.classList.add('on');
+      clearTimeout(m._t); m._t=setTimeout(function(){m.classList.remove('on')},3200);
+    }
+    if(v===''){inp.dataset.ok='';recalc(t);return}
+    var num=+v;
+    if(!(num>=1&&num<=n)){
+      inp.value=inp.dataset.ok||'';
+      avis('Ha de ser un número entre 1 i '+n+'.');
+      recalc(t); return;
+    }
+    var g=inp.dataset.g, xoc=null;
+    [].slice.call(t.querySelectorAll('tbody tr')).forEach(function(r){
+      var o=r.querySelector('input[data-g="'+g+'"]');
+      if(o!==inp && o.value!=='' && +o.value===num) xoc=r;
+    });
+    if(xoc){
+      inp.value=inp.dataset.ok||'';
+      var nm=xoc.querySelector('.nm').childNodes[0].textContent;
+      avis('El ' + num + ' ja és de la ' + xoc.querySelector('.n').textContent + ' · ' +
+           (nm.length>26 ? nm.slice(0,26)+'…' : nm));
+      recalc(t); return;
+    }
+    inp.dataset.ok=v; recalc(t);
+  });
   t.addEventListener('click',function(e){
     var md=e.target.closest('button.md');
     if(md){var o={'':'M','M':'D','D':''}[md.dataset.md||''];

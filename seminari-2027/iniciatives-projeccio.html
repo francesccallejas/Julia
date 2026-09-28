@@ -103,19 +103,23 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
 .nav.prev span{left:20px}.nav.next span{right:20px}
 .navbtns{position:fixed;left:50%;bottom:44px;transform:translateX(-50%);z-index:15;
   display:flex;gap:8px}
-.navidx,.navtau{font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+.navcov,.navidx,.navtau{font-family:var(--font-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--dim);border:1px solid var(--ln);border-radius:99px;padding:7px 15px;opacity:.65;
   transition:.2s;white-space:nowrap;background:var(--bg)}
-.navidx:hover,.navtau:hover{opacity:1;color:var(--fg);border-color:var(--fg)}
+.navcov:hover,.navidx:hover,.navtau:hover{opacity:1;color:var(--fg);border-color:var(--fg)}
 .sl.index .navidx{display:none}
+.sl.cover .navcov{display:none}
 
 .in.wide{max-width:1760px}
-.tctl{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.tctl{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:nowrap}
+.tctl .tb{white-space:nowrap;flex:none}
 .tb{font-family:var(--font-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   padding:8px 14px;border:1px solid var(--ln);border-radius:99px;color:var(--dim);transition:.2s}
 .tb:hover{color:var(--fg);border-color:var(--fg)}
 .tb.warn:hover{color:#fff;background:#e0341f;border-color:#e0341f}
-.tsum{margin-left:auto;font-size:12px;color:var(--dim);letter-spacing:.06em}
+.tmsg{flex:1 1 0;min-width:0;text-align:right;font-size:12px;letter-spacing:.04em;color:#ff8a5c;opacity:0;transition:opacity .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tmsg.on{opacity:1}
+.tsum{flex:0 1 auto;min-width:0;margin-left:14px;font-size:12px;color:var(--dim);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ct{width:100%;border-collapse:collapse;font-size:14px}
 .ct th{font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--dim);font-weight:400;text-align:left;padding:0 8px 10px;border-bottom:1px solid var(--ln);
@@ -207,10 +211,10 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
     <h1>Bloc <em>Auto</em></h1>
     <p class="lead">15 iniciatives a prioritzar</p>
     <ul class="fases"><li><b class="mono">5′</b>Intro</li><li><b class="mono">40′</b>Treball en grup</li><li><b class="mono">5′</b>Bolcat a l'Excel</li><li><b class="mono">25′</b>Selecció final</li><li><b class="mono">15′</b>Coixí</li></ul>
-  </div><a class="nav prev" href="#s31" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s1" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s1" class="sl index" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s31" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s1" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s1" class="sl index" data-b="1"><div class="in">
     <div class="kick mono">Bloc Auto · totes les iniciatives</div>
     <div class="ig n15"><a class="ic" href="#s2"><span class="n mono">01</span><span class="t">Management Tools (ILM-PLM/PMI-Simulation tool)</span><span class="s mono">S.Alcaraz</span></a><a class="ic" href="#s3"><span class="n mono">02</span><span class="t">AI Adoption Plan</span><span class="s mono">F.Callejas</span></a><a class="ic" href="#s4"><span class="n mono">03</span><span class="t">Industry 4.0 (Phase 1 Aerospace, Phase 2 Others)</span><span class="s mono">F.Callejas</span></a><a class="ic" href="#s5"><span class="n mono">04</span><span class="t">Sales Performance (Pricing and Margin)</span><span class="s mono">F.Rebolledo</span></a><a class="ic" href="#s6"><span class="n mono">05</span><span class="t">Autonomy</span><span class="s mono">F.Rebolledo</span></a><a class="ic" href="#s7"><span class="n mono">06</span><span class="t">Plant Automation</span><span class="s mono">D. Mota</span></a><a class="ic" href="#s8"><span class="n mono">07</span><span class="t">Paraguay Greenfield Manufacturing Plant Implementation</span><span class="s mono">D. Mota</span></a><a class="ic" href="#s9"><span class="n mono">08</span><span class="t">Lean Manufacturing Operating Model Implementation</span><span class="s mono">D. Mota</span></a><a class="ic" href="#s10"><span class="n mono">09</span><span class="t">Manufacturing Footprint Optimization & Braiding Localization in Vietnam</span><span class="s mono">D. Mota</span></a><a class="ic" href="#s11"><span class="n mono">10</span><span class="t">Marketing at Relats</span><span class="s mono">J. Yi</span></a><a class="ic" href="#s12"><span class="n mono">11</span><span class="t">Product Management (PDM) & Portfolio Management</span><span class="s mono">J. Yi</span></a><a class="ic" href="#s13"><span class="n mono">12</span><span class="t">Geografic expansion. India.</span><span class="s mono">A. Martínez</span></a><a class="ic" href="#s14"><span class="n mono">13</span><span class="t">Risk Map & Mitigation</span><span class="s mono">F.Rebolledo</span></a><a class="ic" href="#s15"><span class="n mono">14</span><span class="t">SQA integration</span><span class="s mono">F. Millán</span></a><a class="ic" href="#s16"><span class="n mono">15</span><span class="t">Carton packaging reduction</span><span class="s mono">F. Millán</span></a></div>
-  </div><a class="nav prev" href="#s0" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s2" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s2" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s0" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s2" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s2" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">01</span>
       <div><div class="kick mono">Bloc Auto · 1 de 15</div><h2>Management Tools (ILM-PLM/PMI-Simulation tool)</h2>
         <div class="chips"><span class="ch pil">Mercat</span><span class="ch">S.Alcaraz</span><span class="ch dpt">RTC · Digital · Sales · QA</span></div></div></div>
@@ -218,7 +222,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="m">El LIMS opera como motor de evidencia del laboratorio; el PLM/PMI mantiene la definición de producto, los requisitos, la configuración y las decisiones. La integración acelera T2M con digital trazable desde el JTBD hasta el POC, la industrialización y la cualificación regional</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Reduccion del tiempo de prototipado y/o test. Disminución del tiempo requierido para pasar de la fase de diseño al prototipo físico funcional homologable por cliente.</p></div>
     </div>
-  </div><a class="nav prev" href="#s1" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s3" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s3" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s1" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s3" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s3" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">02</span>
       <div><div class="kick mono">Bloc Auto · 2 de 15</div><h2>AI Adoption Plan</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">F.Callejas</span><span class="ch dpt">All afected areas</span></div></div></div>
@@ -226,7 +230,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Implement all planned initiative with a detailes impact on the process and poeple. Follow initiatives with Deep focus on usage.</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Improve Efficiency broad on all areas by 20% · Bring agility in daily day tasks by 50% tasks · Improve detailes long manual processes by 20%</p></div>
     </div>
-  </div><a class="nav prev" href="#s2" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s4" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s4" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s2" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s4" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s4" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">03</span>
       <div><div class="kick mono">Bloc Auto · 3 de 15</div><h2>Industry 4.0 (Phase 1 Aerospace, Phase 2 Others)</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">F.Callejas</span><span class="ch dpt">Digital · Operations · Tech</span></div></div></div>
@@ -234,7 +238,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="m">Millorar tot el procés de Shopfloor on es tingui visibilitat de la traçabilitat, les OF per cada lloc de treball, l'asignació de la màquina al empleat, notificacions simplificades. Es coordinarà amb la millora analítica de planta seogns les dades pertinents</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="m">Millorar tot el procés de Shopfloor 30% · Digitalitzar Plantes (Visual Mgt) 100% procesos · Millorar tot el procés de traçabilitat 100% · Millorar procesos analítics de planta 40% · Ajudar aprendre millors decisións 50%</p></div>
     </div>
-  </div><a class="nav prev" href="#s3" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s5" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s5" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s3" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s5" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s5" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">04</span>
       <div><div class="kick mono">Bloc Auto · 4 de 15</div><h2>Sales Performance (Pricing and Margin)</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">F.Rebolledo</span><span class="ch dpt">Sales · Finance</span></div></div></div>
@@ -242,7 +246,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Implementació Política Preus i Marges</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">KPI = % Implementació · % Implementació % Report</p></div>
     </div>
-  </div><a class="nav prev" href="#s4" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s6" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s6" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s4" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s6" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s6" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">05</span>
       <div><div class="kick mono">Bloc Auto · 5 de 15</div><h2>Autonomy</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">F.Rebolledo</span><span class="ch dpt">All</span></div></div></div>
@@ -250,7 +254,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">DoA 5 Processos Clau & SLA</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">% Processos amb DoA & SLA</p></div>
     </div>
-  </div><a class="nav prev" href="#s5" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s7" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s7" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s5" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s7" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s7" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">06</span>
       <div><div class="kick mono">Bloc Auto · 6 de 15</div><h2>Plant Automation</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">D. Mota</span><span class="ch dpt">Industrial · Technical · Purchasing · Digital</span></div></div></div>
@@ -258,7 +262,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Automatitzar equips actuals</p></div>
       <div class="c kpi"><h3>KPI</h3><p class=""><span class="buit">Pendent de definir</span></p></div>
     </div>
-  </div><a class="nav prev" href="#s6" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s8" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s8" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s6" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s8" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s8" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">07</span>
       <div><div class="kick mono">Bloc Auto · 7 de 15</div><h2>Paraguay Greenfield Manufacturing Plant Implementation</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">D. Mota</span><span class="ch dpt">All</span></div></div></div>
@@ -266,7 +270,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Nova planta productiva a Paraguay</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">SOP End Q2</p></div>
     </div>
-  </div><a class="nav prev" href="#s7" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s9" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s9" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s7" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s9" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s9" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">08</span>
       <div><div class="kick mono">Bloc Auto · 8 de 15</div><h2>Lean Manufacturing Operating Model Implementation</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">D. Mota</span><span class="ch dpt">Industrial · Technical · Digital</span></div></div></div>
@@ -274,7 +278,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Definir, estandarditzar i implementar els principals processos productius de la companyia, alineant-los amb el staffing model i els principis de Lean Manufacturing.</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Process standardization per procès i fàbrica</p></div>
     </div>
-  </div><a class="nav prev" href="#s8" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s10" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s10" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s8" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s10" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s10" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">09</span>
       <div><div class="kick mono">Bloc Auto · 9 de 15</div><h2>Manufacturing Footprint Optimization & Braiding Localization in Vietnam</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">D. Mota</span><span class="ch dpt">Industrial · Technical · Finance</span></div></div></div>
@@ -282,7 +286,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="m">Definir una nova estratègia d’assignació de productes entre les plantes de producció actuals, assignant cada família de productes i procés productiu a la ubicació més competitiva en funció del cost total de fabricació i de la cadena de subministrament.</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Footprint strategy % · Annual savings per procès localitzat</p></div>
     </div>
-  </div><a class="nav prev" href="#s9" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s11" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s11" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s9" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s11" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s11" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">10</span>
       <div><div class="kick mono">Bloc Auto · 10 de 15</div><h2>Marketing at Relats</h2>
         <div class="chips"><span class="ch pil">Mercat</span><span class="ch">J. Yi</span><span class="ch dpt">Sales · Marketing & Digital · CEO · Regional D.</span></div></div></div>
@@ -290,7 +294,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="m">Re-define the Marketing mandate at home & its ownership; Define the Marketing System and Process Arquitecture. Normally shall include: 1. Marketing intelligence · 2. Segmentation & Target-account management · 3. Product Marketing & Value proposition · 4. Pricing & RfQs · 5. Campaing & Channel management · 6. Lead-to-Opportunity management · 7. Customer feedback & learnings</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">1. Define the main mission and outputs to deliver. 2. Re-define the ownership and co-ownership of important tasks. 3. Stablish the System & Process Arquitecture.</p></div>
     </div>
-  </div><a class="nav prev" href="#s10" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s12" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s12" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s10" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s12" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s12" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">11</span>
       <div><div class="kick mono">Bloc Auto · 11 de 15</div><h2>Product Management (PDM) & Portfolio Management</h2>
         <div class="chips"><span class="ch pil">Mercat</span><span class="ch">J. Yi</span></div></div></div>
@@ -298,7 +302,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="s">Within the Marketing scope, the portfolio management is important to determine what products to create and optimize, which products to sell to what industries & applications and at what price level. 2 Objectives: 1) Stablish new product demand input & its assessment for approval system; 2) create the Product Roadmap for Existing & New products acc. to industries or Auto-applications.</p></div>
       <div class="c kpi"><h3>KPI</h3><p class=""><span class="buit">Pendent de definir</span></p></div>
     </div>
-  </div><a class="nav prev" href="#s11" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s13" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s13" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s11" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s13" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s13" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">12</span>
       <div><div class="kick mono">Bloc Auto · 12 de 15</div><h2>Geografic expansion. India.</h2>
         <div class="chips"><span class="ch pil">Mercat</span><span class="ch">A. Martínez</span><span class="ch dpt">Sales · Technical</span></div></div></div>
@@ -306,7 +310,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Market research and validation with main global customers and other strategic ones in the area.</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Market analysis with figures (volumes & products).</p></div>
     </div>
-  </div><a class="nav prev" href="#s12" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s14" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s14" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s12" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s14" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s14" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">13</span>
       <div><div class="kick mono">Bloc Auto · 13 de 15</div><h2>Risk Map & Mitigation</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">F.Rebolledo</span><span class="ch dpt">Purchasing · Digital</span></div></div></div>
@@ -314,7 +318,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Evolución de la matriz ya creada hacia un modelo digital y hacia una gestión efectiva - convertir el análisis en decisiones y reducción verificable del riesgo.</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Matix risk operative; action plans defined and implemented</p></div>
     </div>
-  </div><a class="nav prev" href="#s13" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s15" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s15" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s13" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s15" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s15" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">14</span>
       <div><div class="kick mono">Bloc Auto · 14 de 15</div><h2>SQA integration</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">F. Millán</span><span class="ch dpt">Purchasing · HHRR · Quality · Operations</span></div></div></div>
@@ -322,7 +326,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Integración de SQA en Compras con prioridades, recursos y KPIs propios</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">SQA transference done</p></div>
     </div>
-  </div><a class="nav prev" href="#s14" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s16" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s16" class="sl item" data-b="1"><div class="in">
+  </div><a class="nav prev" href="#s14" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s16" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s16" class="sl item" data-b="1"><div class="in">
     <div class="ihd"><span class="big mono">15</span>
       <div><div class="kick mono">Bloc Auto · 15 de 15</div><h2>Carton packaging reduction</h2>
         <div class="chips"><span class="ch pil">Excel·lència operativa</span><span class="ch">F. Millán</span><span class="ch dpt">Purchasing · Technical · Sales · Operations · Quality</span></div></div></div>
@@ -330,13 +334,13 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Reducción del volumen de compra</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">% of total spend related to Ls reduced.</p></div>
     </div>
-  </div><a class="nav prev" href="#s15" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s17" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s17" class="sl taula" data-b="1"><div class="in wide">
+  </div><a class="nav prev" href="#s15" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s17" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s17" class="sl taula" data-b="1"><div class="in wide">
     <div class="kick mono">Bloc Auto · consolidació de les puntuacions</div>
     <div class="tctl">
       <a class="tb" href="#s1">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
-      <span class="tsum mono"></span>
+      <span class="tmsg mono"></span><span class="tsum mono"></span>
       <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
       <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
     </div>
@@ -364,15 +368,15 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       en vermell i la fila de control diu si cada grup ha posat les 15 posicions i si la suma quadra
       (ha de donar 120). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
       <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.</p>
-  </div><a class="nav prev" href="#s16" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s18" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s18" class="sl cover" data-b="3"><div class="in">
+  </div><a class="nav prev" href="#s16" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s18" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s18" class="sl cover" data-b="3"><div class="in">
     <div class="kick mono">Dimarts 29 · 13:00 → 13:45</div>
     <h1>Bloc <em>People</em></h1>
     <p class="lead">3 iniciatives a prioritzar</p>
     <ul class="fases"><li><b class="mono">5′</b>Intro</li><li><b class="mono">20′</b>Treball en grup</li><li><b class="mono">5′</b>Bolcat a l'Excel</li><li><b class="mono">15′</b>Selecció final</li></ul>
-  </div><a class="nav prev" href="#s17" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s19" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s19" class="sl index" data-b="3"><div class="in">
+  </div><a class="nav prev" href="#s17" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s19" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s18">Portada del bloc</a><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s19" class="sl index" data-b="3"><div class="in">
     <div class="kick mono">Bloc People · totes les iniciatives</div>
     <div class="ig n3"><a class="ic" href="#s20"><span class="n mono">01</span><span class="t">RWF: Knowledge Management</span><span class="s mono">N.Espejo</span></a><a class="ic" href="#s21"><span class="n mono">02</span><span class="t">RWF: Staffing model / Regionalization HQ-Plants empowerment</span><span class="s mono">N.Espejo</span></a><a class="ic" href="#s22"><span class="n mono">03</span><span class="t">People Infrastructure & Digitalization</span><span class="s mono">N.Espejo / F. Callejas</span></a></div>
-  </div><a class="nav prev" href="#s18" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s20" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s20" class="sl item" data-b="3"><div class="in">
+  </div><a class="nav prev" href="#s18" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s20" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s18">Portada del bloc</a><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s20" class="sl item" data-b="3"><div class="in">
     <div class="ihd"><span class="big mono">01</span>
       <div><div class="kick mono">Bloc People · 1 de 3</div><h2>RWF: Knowledge Management</h2>
         <div class="chips"><span class="ch pil">People</span><span class="ch">N.Espejo</span><span class="ch dpt">People · All areas</span></div></div></div>
@@ -380,7 +384,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Reduce dependency on individuals Knowledge · Locate Knowledge · Facilitate People's development vs skill matrix</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">% critical positions skill matrix & assessment done · % total positions skill matrix & assessment done</p></div>
     </div>
-  </div><a class="nav prev" href="#s19" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s21" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s21" class="sl item" data-b="3"><div class="in">
+  </div><a class="nav prev" href="#s19" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s21" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s18">Portada del bloc</a><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s21" class="sl item" data-b="3"><div class="in">
     <div class="ihd"><span class="big mono">02</span>
       <div><div class="kick mono">Bloc People · 2 de 3</div><h2>RWF: Staffing model / Regionalization HQ-Plants empowerment</h2>
         <div class="chips"><span class="ch pil">People</span><span class="ch">N.Espejo</span><span class="ch dpt">People · All areas</span></div></div></div>
@@ -388,7 +392,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="m">Ensure right capabilities are in place across HQ and plants, avoiding automatic growth. Transfer selected activities from HQ to plants. Analyze potential Hubs per area (i.e. Digital…). HQ RACI and DOA's</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">% HQ cost vs sales · % HC vs sales (HQ and plants, and per function) · % HQ HC vs total HC</p></div>
     </div>
-  </div><a class="nav prev" href="#s20" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s22" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s22" class="sl item" data-b="3"><div class="in">
+  </div><a class="nav prev" href="#s20" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s22" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s18">Portada del bloc</a><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s22" class="sl item" data-b="3"><div class="in">
     <div class="ihd"><span class="big mono">03</span>
       <div><div class="kick mono">Bloc People · 3 de 3</div><h2>People Infrastructure & Digitalization</h2>
         <div class="chips"><span class="ch pil">People</span><span class="ch">N.Espejo / F. Callejas</span><span class="ch dpt">People · Digital</span></div></div></div>
@@ -396,13 +400,13 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Create a single source of reliable and standarized people data and processes that support Company Growth. Generate Digital/AI Analytics that enable realiable and on time reporting</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Time to fill needed positions: % modules / data digitalized; excel reduction; reduce reportong cycle time</p></div>
     </div>
-  </div><a class="nav prev" href="#s21" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s23" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s23" class="sl taula" data-b="3"><div class="in wide">
+  </div><a class="nav prev" href="#s21" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s23" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s18">Portada del bloc</a><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s23" class="sl taula" data-b="3"><div class="in wide">
     <div class="kick mono">Bloc People · consolidació de les puntuacions</div>
     <div class="tctl">
       <a class="tb" href="#s19">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
-      <span class="tsum mono"></span>
+      <span class="tmsg mono"></span><span class="tsum mono"></span>
       <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
       <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
     </div>
@@ -430,15 +434,15 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       en vermell i la fila de control diu si cada grup ha posat les 3 posicions i si la suma quadra
       (ha de donar 6). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
       <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.</p>
-  </div><a class="nav prev" href="#s22" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s24" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s24" class="sl cover" data-b="2"><div class="in">
+  </div><a class="nav prev" href="#s22" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s24" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s18">Portada del bloc</a><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s24" class="sl cover" data-b="2"><div class="in">
     <div class="kick mono">Dimarts 29 · 14:45 → 16:00</div>
     <h1>Bloc <em>Diversificació</em></h1>
     <p class="lead">5 iniciatives a prioritzar</p>
     <ul class="fases"><li><b class="mono">5′</b>Intro</li><li><b class="mono">30′</b>Treball en grup</li><li><b class="mono">5′</b>Bolcat a l'Excel</li><li><b class="mono">20′</b>Selecció final</li><li><b class="mono">15′</b>Coixí</li></ul>
-  </div><a class="nav prev" href="#s23" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s25" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s25" class="sl index" data-b="2"><div class="in">
+  </div><a class="nav prev" href="#s23" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s25" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s24">Portada del bloc</a><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s25" class="sl index" data-b="2"><div class="in">
     <div class="kick mono">Bloc Diversificació · totes les iniciatives</div>
     <div class="ig n5"><a class="ic" href="#s26"><span class="n mono">01</span><span class="t">Innovation Hub from JTBD to POC</span><span class="s mono">S.Alcaraz</span></a><a class="ic" href="#s27"><span class="n mono">02</span><span class="t">Campaigns, Brand and Lead Generation.</span><span class="s mono">F.Callejas</span></a><a class="ic" href="#s28"><span class="n mono">03</span><span class="t">Diversification. Expand to other markets (Aerospace, Defense, Rail, Data centers, BESS, Bus&Trucks).</span><span class="s mono">A. Martínez</span></a><a class="ic" href="#s29"><span class="n mono">04</span><span class="t">BPM</span><span class="s mono">A. Martínez</span></a><a class="ic" href="#s30"><span class="n mono">05</span><span class="t">Diversification Supplier Ecosystem</span><span class="s mono">F. Millán</span></a></div>
-  </div><a class="nav prev" href="#s24" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s26" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s26" class="sl item" data-b="2"><div class="in">
+  </div><a class="nav prev" href="#s24" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s26" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s24">Portada del bloc</a><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s26" class="sl item" data-b="2"><div class="in">
     <div class="ihd"><span class="big mono">01</span>
       <div><div class="kick mono">Bloc Diversificació · 1 de 5</div><h2>Innovation Hub from JTBD to POC</h2>
         <div class="chips"><span class="ch pil">Mercat</span><span class="ch">S.Alcaraz</span><span class="ch dpt">RTC · RRHH · Marketing</span></div></div></div>
@@ -446,7 +450,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="m">Desarrollo de nuevas tecnologias, materiales y simulación. Así como evolución de “textiles que protegen” a “arquitecturas textiles que protegen, detectan su degradación y generan evidencia accionable”, sin comprometer la función pasiva ni aumentar innecesariamente la carga de certificación</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Incremento valor/proyecto. Proyectos / equipo hub. % productos con nuevas tecnologias del hub</p></div>
     </div>
-  </div><a class="nav prev" href="#s25" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s27" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s27" class="sl item" data-b="2"><div class="in">
+  </div><a class="nav prev" href="#s25" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s27" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s24">Portada del bloc</a><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s27" class="sl item" data-b="2"><div class="in">
     <div class="ihd"><span class="big mono">02</span>
       <div><div class="kick mono">Bloc Diversificació · 2 de 5</div><h2>Campaigns, Brand and Lead Generation.</h2>
         <div class="chips"><span class="ch pil">Mercat</span><span class="ch">F.Callejas</span><span class="ch dpt">Industrial · Technical · Purchasing · Digital</span></div></div></div>
@@ -454,7 +458,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Specific campaigs on Diversification and Auto on specific products to gaing brand awareenes.</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Lead gen grow by 10% · Revenue form campaigs grow by 10%</p></div>
     </div>
-  </div><a class="nav prev" href="#s26" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s28" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s28" class="sl item" data-b="2"><div class="in">
+  </div><a class="nav prev" href="#s26" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s28" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s24">Portada del bloc</a><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s28" class="sl item" data-b="2"><div class="in">
     <div class="ihd"><span class="big mono">03</span>
       <div><div class="kick mono">Bloc Diversificació · 3 de 5</div><h2>Diversification. Expand to other markets (Aerospace, Defense, Rail, Data centers, BESS, Bus&Trucks).</h2>
         <div class="chips"><span class="ch pil">Mercat</span><span class="ch">A. Martínez</span><span class="ch dpt">Marketing · Technical · Operations</span></div></div></div>
@@ -462,7 +466,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Industry/BU Business plan - Analysis, strategy and action plan.</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Business plan for each industry</p></div>
     </div>
-  </div><a class="nav prev" href="#s27" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s29" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s29" class="sl item" data-b="2"><div class="in">
+  </div><a class="nav prev" href="#s27" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s29" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s24">Portada del bloc</a><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s29" class="sl item" data-b="2"><div class="in">
     <div class="ihd"><span class="big mono">04</span>
       <div><div class="kick mono">Bloc Diversificació · 4 de 5</div><h2>BPM</h2>
         <div class="chips"><span class="ch pil">Mercat</span><span class="ch">A. Martínez</span><span class="ch dpt">Sales · Technical</span></div></div></div>
@@ -470,7 +474,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Launch product at the market. Market analysis for the different technologies (Aerogel, Mica, ‘Kentoy’)</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Volume quoted. · Nº of technical workshops. · Market analysis for Aerogel and Mica.</p></div>
     </div>
-  </div><a class="nav prev" href="#s28" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s30" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s30" class="sl item" data-b="2"><div class="in">
+  </div><a class="nav prev" href="#s28" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s30" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s24">Portada del bloc</a><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s30" class="sl item" data-b="2"><div class="in">
     <div class="ihd"><span class="big mono">05</span>
       <div><div class="kick mono">Bloc Diversificació · 5 de 5</div><h2>Diversification Supplier Ecosystem</h2>
         <div class="chips"><span class="ch pil">Mercat</span><span class="ch">F. Millán</span><span class="ch dpt">Purchasing · Technical · Sales</span></div></div></div>
@@ -478,13 +482,13 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       <div class="c"><h3>Objectiu concret</h3><p class="">Identificación de capacidades y proveedores necesarios para penetración en nuevos mercados. Gap analysis entre la base de suministro actual y los requisitos de cada sector.</p></div>
       <div class="c kpi"><h3>KPI</h3><p class="">Gap analisys done</p></div>
     </div>
-  </div><a class="nav prev" href="#s29" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s31" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s31" class="sl taula" data-b="2"><div class="in wide">
+  </div><a class="nav prev" href="#s29" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s31" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s24">Portada del bloc</a><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s31" class="sl taula" data-b="2"><div class="in wide">
     <div class="kick mono">Bloc Diversificació · consolidació de les puntuacions</div>
     <div class="tctl">
       <a class="tb" href="#s25">Índex del bloc</a>
       <button class="tb" data-act="sort" type="button">Ordena per prioritat</button>
       <button class="tb" data-act="orig" type="button">Ordre de la fitxa</button>
-      <span class="tsum mono"></span>
+      <span class="tmsg mono"></span><span class="tsum mono"></span>
       <button class="tb go" data-act="win" type="button">Veure les guanyadores</button>
       <button class="tb warn" data-act="reset" type="button">Buida-ho</button>
     </div>
@@ -512,7 +516,7 @@ html[data-theme="dark"] .bar img{filter:brightness(0) invert(1);opacity:.9}
       en vermell i la fila de control diu si cada grup ha posat les 5 posicions i si la suma quadra
       (ha de donar 15). Es rànqueja pel total, <b>com més baix més prioritària</b>, i la columna
       <b>Desacord</b> marca en taronja on els grups no coincideixen — són les que cal discutir.</p>
-  </div><a class="nav prev" href="#s30" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s0" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section></div>
+  </div><a class="nav prev" href="#s30" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s0" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s24">Portada del bloc</a><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section></div>
 <div class="hint">← → navegar · G índex · 1 2 3 blocs · T tema · F pantalla completa</div>
 
 <script>
@@ -525,7 +529,7 @@ function load(t){
     [].slice.call(t.querySelectorAll('tbody tr')).forEach(function(r,i){
       var o=d[i]; if(!o) return;
       [].slice.call(r.querySelectorAll('input')).forEach(function(inp,j){
-        inp.value=(o.g&&o.g[j]!=null)?o.g[j]:''});
+        inp.value=(o.g&&o.g[j]!=null)?o.g[j]:''; inp.dataset.ok=inp.value});
       var md=r.querySelector('.md'); md.dataset.md=o.md||''; md.textContent=o.md||'—';
       var f=r.querySelector('.fin'); f.dataset.fin=o.fin||'0'; f.textContent=o.fin==='1'?'●':'○';
     });
@@ -628,12 +632,42 @@ function recalc(t){
     if(d.r.querySelector('.fin').dataset.fin==='1')fin++;
   });
   t.parentNode.querySelector('.tsum').textContent =
-    done+' de '+rows.length+' amb les 3 puntuacions · '+must+' Must · '+fin+' seleccionades';
+    done+'/'+rows.length+' puntuades · '+must+' Must · '+fin+' final';
   save(t);
 }
 document.querySelectorAll('.ct').forEach(function(t){
   load(t); recalc(t);
   t.addEventListener('input',function(){recalc(t)});
+  /* en sortir de la casella, un numero ja fet servir a la mateixa columna es rebutja */
+  t.addEventListener('change',function(e){
+    var inp=e.target; if(inp.tagName!=='INPUT') return;
+    var n=+t.dataset.n, v=inp.value;
+    function avis(txt){
+      var m=t.parentNode.querySelector('.tmsg');
+      m.textContent=txt; m.classList.add('on');
+      clearTimeout(m._t); m._t=setTimeout(function(){m.classList.remove('on')},3200);
+    }
+    if(v===''){inp.dataset.ok='';recalc(t);return}
+    var num=+v;
+    if(!(num>=1&&num<=n)){
+      inp.value=inp.dataset.ok||'';
+      avis('Ha de ser un número entre 1 i '+n+'.');
+      recalc(t); return;
+    }
+    var g=inp.dataset.g, xoc=null;
+    [].slice.call(t.querySelectorAll('tbody tr')).forEach(function(r){
+      var o=r.querySelector('input[data-g="'+g+'"]');
+      if(o!==inp && o.value!=='' && +o.value===num) xoc=r;
+    });
+    if(xoc){
+      inp.value=inp.dataset.ok||'';
+      var nm=xoc.querySelector('.nm').childNodes[0].textContent;
+      avis('El ' + num + ' ja és de la ' + xoc.querySelector('.n').textContent + ' · ' +
+           (nm.length>26 ? nm.slice(0,26)+'…' : nm));
+      recalc(t); return;
+    }
+    inp.dataset.ok=v; recalc(t);
+  });
   t.addEventListener('click',function(e){
     var md=e.target.closest('button.md');
     if(md){var o={'':'M','M':'D','D':''}[md.dataset.md||''];
