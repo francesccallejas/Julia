@@ -181,10 +181,10 @@ def page_prio(tag):
     area = x["t"].split("·")[-1].strip()
     k = per_bloc(b)
     dense = len(k) > 10
-    h = 7.0 if dense else 13
+    h = 6.8 if dense else 13
     files = "".join(
         '<tr style="height:%.1fmm"><td class="num mono">%02d</td><td class="nm">%s'
-        '<span class="sp mono">%s</span></td><td class="ms"></td><td class="pt"></td></tr>'
+        '<span class="sp mono">%s</span></td><td class="pt"></td><td class="ms"></td></tr>'
         % (h, i + 1, it[0], it[3]) for i, it in enumerate(k))
     return ("""<section class="page">
 %s
@@ -196,7 +196,8 @@ def page_prio(tag):
 <div class="two tight">%s%s</div>
 <table class="it{DENSE}">
   <tr><th class="num">#</th><th>Iniciativa <span class="hint2">— %d a prioritzar</span></th>
-      <th class="ms">Must / %s</th><th class="pt">Punts</th></tr>
+      <th class="pt">Punts</th>
+      <th class="ms"><span class="who mono">Oriol / Pere</span>Must / %s</th></tr>
   %s
 </table>
 <div class="two">
@@ -207,7 +208,7 @@ def page_prio(tag):
 </section>""" % (
         head("Dimarts 29 · %s" % x["s"], x["t"], "Iniciatives estratègiques 2027 · %s" % area, x),
         x["obj"], timing_box(x), how_box(x), len(k), other, files,
-        lines(2, 8), lines(2, 8), FOOT)).replace("{DENSE}", " dense" if dense else "")
+        lines(2, 7), lines(2, 7), FOOT)).replace("{DENSE}", " dense" if dense else "")
 
 # -------------------------------------------------------------------- css ---
 CSS = """
@@ -271,11 +272,13 @@ th{font-family:var(--font-m);font-size:7.5pt;letter-spacing:.12em;text-transform
 .it .nm{font-size:9pt;font-weight:600;line-height:1.2;padding-right:3mm;vertical-align:middle}
 .it .nm .sp{display:block;font-size:7.5pt;font-weight:400;color:#888;margin-top:.5mm}
 .hint2{font-family:var(--font);text-transform:none;letter-spacing:0;color:#aaa;font-size:8pt}
+.it .who{display:block;font-size:6.5pt;letter-spacing:.14em;color:#ff5710;margin-bottom:.8mm;text-transform:uppercase}
 .it .ms{width:26mm;border-left:.6pt solid #eee}
 .it .pt{width:16mm;border-left:.6pt solid #eee}
 .vt .g{width:18mm}.vt .v{width:26mm;border-left:.6pt solid #eee}
 .vt .w{width:22mm;border-left:.6pt solid #eee}
-.it,.vt{margin-bottom:4mm}
+.it{margin-bottom:3mm}
+.vt{margin-bottom:4mm}
 .mini th{font-size:7pt;padding-bottom:1mm}
 .mini td{font-size:9pt;padding:1.4mm 0;border-bottom:.6pt solid #eee}
 .mini .t{width:24mm;color:#666;font-size:8.5pt}
