@@ -3,6 +3,7 @@
 import io, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from data import *
+from iniciatives import per_bloc, BLOCS
 
 OUT = "/home/user/Julia/seminari-2027"
 
@@ -175,9 +176,17 @@ def page_vots():
 
 def page_prio(tag):
     x = sesh(tag)
-    other = "Other" if tag == "Prio 2" else "Don't"
+    b = int(tag.split()[-1])
+    other = "Other" if b == 2 else "Don't"
     area = x["t"].split("·")[-1].strip()
-    return """<section class="page">
+    k = per_bloc(b)
+    dense = len(k) > 10
+    h = 7.0 if dense else 13
+    files = "".join(
+        '<tr style="height:%.1fmm"><td class="num mono">%02d</td><td class="nm">%s'
+        '<span class="sp mono">%s</span></td><td class="ms"></td><td class="pt"></td></tr>'
+        % (h, i + 1, it[0], it[3]) for i, it in enumerate(k))
+    return ("""<section class="page">
 %s
 <div class="meta">
   <div class="fld"><span class="mono">Grup</span><div class="fl"></div></div>
@@ -185,8 +194,9 @@ def page_prio(tag):
 </div>
 <div class="obj"><span class="mono">Objectiu</span><b>%s</b></div>
 <div class="two tight">%s%s</div>
-<table class="it">
-  <tr><th class="num">#</th><th>Iniciativa</th><th class="ms">Must / %s</th><th class="pt">Punts</th></tr>
+<table class="it{DENSE}">
+  <tr><th class="num">#</th><th>Iniciativa <span class="hint2">— %d a prioritzar</span></th>
+      <th class="ms">Must / %s</th><th class="pt">Punts</th></tr>
   %s
 </table>
 <div class="two">
@@ -196,10 +206,8 @@ def page_prio(tag):
 %s
 </section>""" % (
         head("Dimarts 29 · %s" % x["s"], x["t"], "Iniciatives estratègiques 2027 · %s" % area, x),
-        x["obj"], timing_box(x), how_box(x), other,
-        "".join('<tr><td class="num mono">%02d</td><td></td><td class="ms"></td><td class="pt"></td></tr>'
-                % i for i in range(1, 16)),
-        lines(2, 8), lines(2, 8), FOOT)
+        x["obj"], timing_box(x), how_box(x), len(k), other, files,
+        lines(2, 8), lines(2, 8), FOOT)).replace("{DENSE}", " dense" if dense else "")
 
 # -------------------------------------------------------------------- css ---
 CSS = """
@@ -257,7 +265,12 @@ th{font-family:var(--font-m);font-size:7.5pt;letter-spacing:.12em;text-transform
   color:#777;text-align:left;padding:0 0 1.5mm;border-bottom:1.2pt solid #111;font-weight:400}
 .it td{border-bottom:.6pt solid #ccc;height:7.6mm}
 .vt td{border-bottom:.6pt solid #ccc;height:9.2mm}
-.it .num,.vt .num{width:9mm;color:#aaa;font-size:8pt;text-align:center}
+.it .num,.vt .num{width:9mm;color:#aaa;font-size:8pt;text-align:center;vertical-align:middle}
+.it.dense .nm{font-size:8.3pt;line-height:1.15}
+.it.dense .nm .sp{font-size:7pt}
+.it .nm{font-size:9pt;font-weight:600;line-height:1.2;padding-right:3mm;vertical-align:middle}
+.it .nm .sp{display:block;font-size:7.5pt;font-weight:400;color:#888;margin-top:.5mm}
+.hint2{font-family:var(--font);text-transform:none;letter-spacing:0;color:#aaa;font-size:8pt}
 .it .ms{width:26mm;border-left:.6pt solid #eee}
 .it .pt{width:16mm;border-left:.6pt solid #eee}
 .vt .g{width:18mm}.vt .v{width:26mm;border-left:.6pt solid #eee}
