@@ -16,7 +16,7 @@ def stop(x, d, first):
     if x["timing"]:
         det.append('<div class="dt"><h4>Timing</h4><ol>%s</ol></div>' % "".join("<li>%s</li>" % t for t in x["timing"]))
     if x["how"]:
-        det.append('<div class="dt"><h4>Com</h4><ul>%s</ul></div>' % "".join("<li>%s</li>" % t for t in x["how"]))
+        det.append('<div class="dt"><h4>Com</h4><ul>%s</ul></div>' % "".join("<li>%s</li>" % t for t in how_text(x)))
     return """<div class="stop k-%s" style="width:%.0fpx;--c:%s">
   <div class="node"><i></i><span class="mono nt">%s</span></div>
   <div class="card">

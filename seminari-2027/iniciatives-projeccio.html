@@ -56,11 +56,19 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .cover h1{font-size:clamp(44px,7vw,110px);font-weight:700;letter-spacing:-.035em;line-height:.95}
 .cover h1 em{font-style:normal;color:var(--accent)}
 .cover .lead{margin-top:20px;font-size:clamp(18px,2vw,28px);color:var(--dim)}
-.fases{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(26px,4vh,46px);
-  padding-top:24px;border-top:1px solid var(--ln)}
-.fases li{display:flex;align-items:baseline;gap:9px;padding:9px 16px;border:1px solid var(--ln);
-  border-radius:99px;font-size:14px;color:var(--dim)}
-.fases b{font-size:16px;color:var(--accent)}
+.cbox{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,64px);
+  margin-top:clamp(26px,4vh,46px);padding-top:26px;border-top:1px solid var(--ln)}
+.cb h3{font-family:var(--font-m);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px}
+.com{list-style:none;display:grid;gap:11px}
+.com li{position:relative;padding-left:26px;font-size:clamp(15px,1.35vw,20px);line-height:1.35;
+  color:var(--fg)}
+.com li:before{content:"";position:absolute;left:0;top:.62em;width:13px;height:1px;background:var(--accent)}
+.fases{list-style:none;display:grid;gap:9px}
+.fases li{display:flex;align-items:baseline;gap:12px;padding:9px 16px;border:1px solid var(--ln);
+  border-radius:99px;font-size:clamp(13px,1.05vw,15px);color:var(--dim)}
+.fases b{flex:none;width:46px;font-size:clamp(15px,1.2vw,17px);color:var(--accent);text-align:right}
+@media(max-width:1000px){.cbox{grid-template-columns:1fr;gap:26px}}
 
 .ig{display:grid;gap:10px;grid-template-columns:repeat(3,1fr)}
 .ig.n3,.ig.n5{grid-template-columns:repeat(2,1fr)}
@@ -207,7 +215,10 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
     <div class="kick mono">Dimarts 29 · 11:30 → 13:00</div>
     <h1>Bloc <em>Auto</em></h1>
     <p class="lead">15 iniciatives a prioritzar</p>
-    <ul class="fases"><li><b class="mono">5′</b>Intro</li><li><b class="mono">40′</b>Treball en grup</li><li><b class="mono">5′</b>Bolcat a l'Excel</li><li><b class="mono">25′</b>Selecció final</li><li><b class="mono">15′</b>Coixí</li></ul>
+    <div class="cbox">
+      <div class="cb"><h3>Com ens organitzem</h3><ul class="com"><li>3 grups de 3 persones</li><li>Oriol i Pere marquen cada iniciativa com a Must o Don't</li><li>Cada grup ordena totes les iniciatives d'1 a 15, de més a menys important</li><li>Cada número es fa servir una sola vegada</li></ul></div>
+      <div class="cb"><h3>Timing</h3><ul class="fases"><li><b class="mono">5′</b>Intro</li><li><b class="mono">40′</b>Treball en grup</li><li><b class="mono">5′</b>Bolcat a l'Excel</li><li><b class="mono">25′</b>Selecció final</li><li><b class="mono">15′</b>Coixí</li></ul></div>
+    </div>
   </div><a class="nav prev" href="#s31" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s1" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s0">Portada del bloc</a><a class="navidx" href="#s1">Índex del bloc</a><a class="navtau" href="#s17">Consolidació</a></div></section><section id="s1" class="sl index" data-b="1"><div class="in">
     <div class="kick mono">Bloc Auto · totes les iniciatives</div>
     <div class="ig n15"><a class="ic" href="#s2"><span class="n mono">01</span><span class="t">Management Tools (ILM-PLM/PMI-Simulation tool)</span><span class="s mono">S.Alcaraz</span></a><a class="ic" href="#s3"><span class="n mono">02</span><span class="t">AI Adoption Plan</span><span class="s mono">F.Callejas</span></a><a class="ic" href="#s4"><span class="n mono">03</span><span class="t">Industry 4.0 (Phase 1 Aerospace, Phase 2 Others)</span><span class="s mono">F.Callejas</span></a><a class="ic" href="#s5"><span class="n mono">04</span><span class="t">Sales Performance (Pricing and Margin)</span><span class="s mono">F.Rebolledo</span></a><a class="ic" href="#s6"><span class="n mono">05</span><span class="t">Autonomy</span><span class="s mono">F.Rebolledo</span></a><a class="ic" href="#s7"><span class="n mono">06</span><span class="t">Plant Automation</span><span class="s mono">D. Mota</span></a><a class="ic" href="#s8"><span class="n mono">07</span><span class="t">Paraguay Greenfield Manufacturing Plant Implementation</span><span class="s mono">D. Mota</span></a><a class="ic" href="#s9"><span class="n mono">08</span><span class="t">Lean Manufacturing Operating Model Implementation</span><span class="s mono">D. Mota</span></a><a class="ic" href="#s10"><span class="n mono">09</span><span class="t">Manufacturing Footprint Optimization & Braiding Localization in Vietnam</span><span class="s mono">D. Mota</span></a><a class="ic" href="#s11"><span class="n mono">10</span><span class="t">Marketing at Relats</span><span class="s mono">J. Yi</span></a><a class="ic" href="#s12"><span class="n mono">11</span><span class="t">Product Management (PDM) & Portfolio Management</span><span class="s mono">J. Yi</span></a><a class="ic" href="#s13"><span class="n mono">12</span><span class="t">Geografic expansion. India.</span><span class="s mono">A. Martínez</span></a><a class="ic" href="#s14"><span class="n mono">13</span><span class="t">Risk Map & Mitigation</span><span class="s mono">F.Rebolledo</span></a><a class="ic" href="#s15"><span class="n mono">14</span><span class="t">SQA integration</span><span class="s mono">F. Millán</span></a><a class="ic" href="#s16"><span class="n mono">15</span><span class="t">Carton packaging reduction</span><span class="s mono">F. Millán</span></a></div>
@@ -369,7 +380,10 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
     <div class="kick mono">Dimarts 29 · 13:00 → 13:45</div>
     <h1>Bloc <em>People</em></h1>
     <p class="lead">3 iniciatives a prioritzar</p>
-    <ul class="fases"><li><b class="mono">5′</b>Intro</li><li><b class="mono">20′</b>Treball en grup</li><li><b class="mono">5′</b>Bolcat a l'Excel</li><li><b class="mono">15′</b>Selecció final</li></ul>
+    <div class="cbox">
+      <div class="cb"><h3>Com ens organitzem</h3><ul class="com"><li>3 grups de 3 persones</li><li>Oriol i Pere marquen cada iniciativa com a Must o Don't</li><li>Cada grup ordena totes les iniciatives d'1 a 3, de més a menys important</li><li>Cada número es fa servir una sola vegada</li></ul></div>
+      <div class="cb"><h3>Timing</h3><ul class="fases"><li><b class="mono">5′</b>Intro</li><li><b class="mono">20′</b>Treball en grup</li><li><b class="mono">5′</b>Bolcat a l'Excel</li><li><b class="mono">15′</b>Selecció final</li></ul></div>
+    </div>
   </div><a class="nav prev" href="#s17" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s19" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s18">Portada del bloc</a><a class="navidx" href="#s19">Índex del bloc</a><a class="navtau" href="#s23">Consolidació</a></div></section><section id="s19" class="sl index" data-b="3"><div class="in">
     <div class="kick mono">Bloc People · totes les iniciatives</div>
     <div class="ig n3"><a class="ic" href="#s20"><span class="n mono">01</span><span class="t">RWF: Knowledge Management</span><span class="s mono">N.Espejo</span></a><a class="ic" href="#s21"><span class="n mono">02</span><span class="t">RWF: Staffing model / Regionalization HQ-Plants empowerment</span><span class="s mono">N.Espejo</span></a><a class="ic" href="#s22"><span class="n mono">03</span><span class="t">People Infrastructure & Digitalization</span><span class="s mono">N.Espejo / F. Callejas</span></a></div>
@@ -435,7 +449,10 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
     <div class="kick mono">Dimarts 29 · 14:45 → 16:00</div>
     <h1>Bloc <em>Diversificació</em></h1>
     <p class="lead">5 iniciatives a prioritzar</p>
-    <ul class="fases"><li><b class="mono">5′</b>Intro</li><li><b class="mono">30′</b>Treball en grup</li><li><b class="mono">5′</b>Bolcat a l'Excel</li><li><b class="mono">20′</b>Selecció final</li><li><b class="mono">15′</b>Coixí</li></ul>
+    <div class="cbox">
+      <div class="cb"><h3>Com ens organitzem</h3><ul class="com"><li>3 grups de 3 persones</li><li>Oriol i Pere marquen cada iniciativa com a Must o Other</li><li>Cada grup ordena totes les iniciatives d'1 a 5, de més a menys important</li><li>Cada número es fa servir una sola vegada</li></ul></div>
+      <div class="cb"><h3>Timing</h3><ul class="fases"><li><b class="mono">5′</b>Intro</li><li><b class="mono">30′</b>Treball en grup</li><li><b class="mono">5′</b>Bolcat a l'Excel</li><li><b class="mono">20′</b>Selecció final</li><li><b class="mono">15′</b>Coixí</li></ul></div>
+    </div>
   </div><a class="nav prev" href="#s23" aria-label="Anterior"><span>&#8592;</span></a><a class="nav next" href="#s25" aria-label="Següent"><span>&#8594;</span></a><div class="navbtns"><a class="navcov" href="#s24">Portada del bloc</a><a class="navidx" href="#s25">Índex del bloc</a><a class="navtau" href="#s31">Consolidació</a></div></section><section id="s25" class="sl index" data-b="2"><div class="in">
     <div class="kick mono">Bloc Diversificació · totes les iniciatives</div>
     <div class="ig n5"><a class="ic" href="#s26"><span class="n mono">01</span><span class="t">Innovation Hub from JTBD to POC</span><span class="s mono">S.Alcaraz</span></a><a class="ic" href="#s27"><span class="n mono">02</span><span class="t">Campaigns, Brand and Lead Generation.</span><span class="s mono">F.Callejas</span></a><a class="ic" href="#s28"><span class="n mono">03</span><span class="t">Diversification. Expand to other markets (Aerospace, Defense, Rail, Data centers, BESS, Bus&Trucks).</span><span class="s mono">A. Martínez</span></a><a class="ic" href="#s29"><span class="n mono">04</span><span class="t">BPM</span><span class="s mono">A. Martínez</span></a><a class="ic" href="#s30"><span class="n mono">05</span><span class="t">Diversification Supplier Ecosystem</span><span class="s mono">F. Millán</span></a></div>

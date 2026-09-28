@@ -14,7 +14,7 @@ def screen(x, d, i, n):
     if x["timing"]:
         cols.append('<div class="c"><h4>Timing</h4><ol>%s</ol></div>' % "".join("<li>%s</li>" % t for t in x["timing"]))
     if x["how"]:
-        cols.append('<div class="c"><h4>Com ho fem</h4><ul>%s</ul></div>' % "".join("<li>%s</li>" % t for t in x["how"]))
+        cols.append('<div class="c"><h4>Com ho fem</h4><ul>%s</ul></div>' % "".join("<li>%s</li>" % t for t in how_text(x)))
     return """<section class="sc k-%s" id="s-%d-%d" data-s="%d" data-e="%d" data-day="%d" style="--c:%s">
   <div class="scin">
     <div class="meta">

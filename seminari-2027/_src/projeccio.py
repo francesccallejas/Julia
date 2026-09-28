@@ -9,6 +9,7 @@ import io, os, sys, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from data import HEAD_COMMON, TOKENS, RESET, fontface, LOGO, T
 from iniciatives import I, BLOCS, per_bloc
+from data import ALL as SESSIONS
 
 OUT = "/home/user/Julia/seminari-2027"
 
@@ -33,15 +34,29 @@ def chips(x):
     return "".join(out)
 
 # --------------------------------------------------------------- pantalles ---
+def how_list(b):
+    """El 'com ho fem' del bloc, tal com surt de l'agenda, amb el XX resolt."""
+    tag = "Prio %d" % b
+    for x in SESSIONS:
+        if x["tag"] == tag:
+            n = str(len(per_bloc(b)))
+            return [h.replace("d'1 a XX", "d'1 a " + n).replace("D'1 a XX", "D'1 a " + n)
+                    for h in x["how"]]
+    return []
+
 def cover(b):
     _, ini, fi = BLOCS[b]
     fases = "".join('<li><b class="mono">%d′</b>%s</li>' % (m, t) for t, m in FASES[b])
+    com = "".join("<li>%s</li>" % h for h in how_list(b))
     return """<div class="in">
     <div class="kick mono">Dimarts 29 · %s → %s</div>
     <h1>Bloc <em>%s</em></h1>
     <p class="lead">%d iniciatives a prioritzar</p>
-    <ul class="fases">%s</ul>
-  </div>""" % (ini, fi, nom_bloc(b), len(per_bloc(b)), fases)
+    <div class="cbox">
+      <div class="cb"><h3>Com ens organitzem</h3><ul class="com">%s</ul></div>
+      <div class="cb"><h3>Timing</h3><ul class="fases">%s</ul></div>
+    </div>
+  </div>""" % (ini, fi, nom_bloc(b), len(per_bloc(b)), com, fases)
 
 def index(b, ids):
     k = per_bloc(b)
@@ -161,11 +176,19 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .cover h1{font-size:clamp(44px,7vw,110px);font-weight:700;letter-spacing:-.035em;line-height:.95}
 .cover h1 em{font-style:normal;color:var(--accent)}
 .cover .lead{margin-top:20px;font-size:clamp(18px,2vw,28px);color:var(--dim)}
-.fases{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(26px,4vh,46px);
-  padding-top:24px;border-top:1px solid var(--ln)}
-.fases li{display:flex;align-items:baseline;gap:9px;padding:9px 16px;border:1px solid var(--ln);
-  border-radius:99px;font-size:14px;color:var(--dim)}
-.fases b{font-size:16px;color:var(--accent)}
+.cbox{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,64px);
+  margin-top:clamp(26px,4vh,46px);padding-top:26px;border-top:1px solid var(--ln)}
+.cb h3{font-family:var(--font-m);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px}
+.com{list-style:none;display:grid;gap:11px}
+.com li{position:relative;padding-left:26px;font-size:clamp(15px,1.35vw,20px);line-height:1.35;
+  color:var(--fg)}
+.com li:before{content:"";position:absolute;left:0;top:.62em;width:13px;height:1px;background:var(--accent)}
+.fases{list-style:none;display:grid;gap:9px}
+.fases li{display:flex;align-items:baseline;gap:12px;padding:9px 16px;border:1px solid var(--ln);
+  border-radius:99px;font-size:clamp(13px,1.05vw,15px);color:var(--dim)}
+.fases b{flex:none;width:46px;font-size:clamp(15px,1.2vw,17px);color:var(--accent);text-align:right}
+@media(max-width:1000px){.cbox{grid-template-columns:1fr;gap:26px}}
 
 .ig{display:grid;gap:10px;grid-template-columns:repeat(3,1fr)}
 .ig.n3,.ig.n5{grid-template-columns:repeat(2,1fr)}

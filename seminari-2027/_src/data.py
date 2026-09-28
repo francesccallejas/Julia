@@ -32,21 +32,21 @@ def ses(s, e, t, kind, fac, sub=None, obj=None, timing=None, how=None, tag=None)
                 timing=timing or [], how=how or [], tag=tag)
 
 PRIO_TIMING = ["5′ · Intro",
-               "40′ · Treball en grup — PR & OR assignen Must / Don't",
+               "40′ · Treball en grup — Oriol i Pere assignen Must / Don't",
                "5′ · Bolcat de la informació a l'Excel",
                "25′ · Selecció final d'iniciatives"]
 PRIO3_TIMING = ["5′ · Intro",
-                "20′ · Treball en grup — PR & OR assignen Must / Don't",
+                "20′ · Treball en grup — Oriol i Pere assignen Must / Don't",
                 "5′ · Bolcat de la informació a l'Excel",
                 "15′ · Selecció final d'iniciatives"]
 PRIO2_TIMING = ["5′ · Intro",
-                "30′ · Treball en grup — PR & OR assignen Must / Don't",
+                "30′ · Treball en grup — Oriol i Pere assignen Must / Don't",
                 "5′ · Bolcat de la informació a l'Excel",
                 "20′ · Selecció final d'iniciatives"]
 PRIO_HOW = ["3 grups de 3 persones",
-            "PR & OR marquen Must & Don't",
-            "Es puntuen totes les iniciatives d'1 a XX",
-            "D'1 a XX, de més a menys important"]
+            "Oriol i Pere marquen cada iniciativa com a Must o Don't",
+            "Cada grup ordena totes les iniciatives d'1 a XX, de més a menys important",
+            "Cada número es fa servir una sola vegada"]
 
 DAY1 = [
     ses("08:30", "09:00", "Arribada", M, "Hotel", "Esmorzar i cafès disponibles des de les 8.30"),
@@ -69,9 +69,10 @@ DAY1 = [
     ses("13:45", "14:45", "Dinar · buffet", M, "Hotel"),
     ses("14:45", "16:00", "Bloc Prio 2 · Diversificació", H, "OR", "Iniciatives estratègiques 2027",
         obj="Prioritzar totes les iniciatives", timing=PRIO2_TIMING,
-        how=["3 grups de 3 persones", "PR & OR marquen Must & Other",
-             "Es puntuen totes les iniciatives d'1 a XX",
-             "D'1 a XX, de més a menys important"], tag="Prio 2"),
+        how=["3 grups de 3 persones",
+             "Oriol i Pere marquen cada iniciativa com a Must o Other",
+             "Cada grup ordena totes les iniciatives d'1 a XX, de més a menys important",
+             "Cada número es fa servir una sola vegada"], tag="Prio 2"),
     ses("16:00", "18:00", "Speaker motivacional", S, "NE", "Xerrada + dinàmica de grup"),
     ses("18:00", "18:15", "Break", M, "Hotel"),
     ses("18:15", "20:00", "Caminada", S, "Hotel"),
@@ -130,6 +131,17 @@ def totals(sessions):
     for x in sessions:
         out[x["kind"]] = out.get(x["kind"], 0) + dur(x)
     return out
+
+def how_text(x):
+    """El 'com ho fem' amb el XX resolt segons les iniciatives que té el bloc."""
+    if not x["tag"] or not x["tag"].startswith("Prio"):
+        return x["how"]
+    try:
+        from iniciatives import per_bloc
+        n = len(per_bloc(int(x["tag"].split()[-1])))
+    except Exception:
+        return x["how"]
+    return [h.replace("d'1 a XX", "d'1 a %d" % n) for h in x["how"]]
 
 def slack(x):
     """Minuts del bloc que el timing no reparteix: marge previst per si s'allarga."""

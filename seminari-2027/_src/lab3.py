@@ -15,7 +15,7 @@ def card(x, d):
     if x["timing"]:
         det.append('<div class="dt"><h4>Timing</h4><ol>%s</ol></div>' % "".join("<li>%s</li>" % t for t in x["timing"]))
     if x["how"]:
-        det.append('<div class="dt"><h4>Com ho fem</h4><ul>%s</ul></div>' % "".join("<li>%s</li>" % t for t in x["how"]))
+        det.append('<div class="dt"><h4>Com ho fem</h4><ul>%s</ul></div>' % "".join("<li>%s</li>" % t for t in how_text(x)))
     return """<article class="cd k-%s%s" data-k="%s" data-d="%d" style="--c:%s">
   <div class="cdt"><span class="mono tm">%s<i>→</i>%s</span><span class="mono du">%s</span></div>
   %s<h3>%s</h3>%s

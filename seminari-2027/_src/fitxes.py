@@ -30,9 +30,12 @@ def timing_box(x):
     extra = ('<li class="sl">+%d′ · Coixí</li>' % sl) if sl > 0 else ""
     return ('<div class="tbox"><h4>Timing</h4><ol>%s%s</ol></div>' % (items, extra))
 
-def how_box(x, title="Com ho fem"):
+def how_box(x, title="Com ho fem", n=None):
+    items = x["how"]
+    if n:
+        items = [h.replace("d'1 a XX", "d'1 a %d" % n) for h in items]
     return ('<div class="tbox"><h4>%s</h4><ul>%s</ul></div>'
-            % (title, "".join("<li>%s</li>" % t for t in x["how"])))
+            % (title, "".join("<li>%s</li>" % t for t in items)))
 
 def head(kicker, title, sub, x=None):
     when = ('<span class="when mono">%s → %s · %s</span>' % (x["s"], x["e"], hm(dur(x)))) if x else ""
@@ -113,12 +116,17 @@ def page_guia():
     </div>
     <div class="tbox"><h4>Priorització de Blocs 1, 2, 3</h4>
       <ol>
-        <li>3 grups de 3 persones.</li>
-        <li>PR i OR marquen cada iniciativa com a <b>Must</b> o <b>Don't</b>
+        <li>3 grups de 3 persones. Les iniciatives es projecten a pantalla, numerades igual
+          que a la fitxa.</li>
+        <li><b>Oriol i Pere</b> marquen cada iniciativa com a <b>Must</b> o <b>Don't</b>
           (al bloc de Diversificació, <b>Must</b> o <b>Other</b>).</li>
-        <li>Els grups puntuen <b>totes</b> les iniciatives d'1 a XX, de més a menys important.</li>
-        <li>El facilitador consolida les puntuacions a l'Excel.</li>
-        <li>Selecció final de les iniciatives.</li>
+        <li>Cada grup ordena <b>totes</b> les iniciatives, de més a menys important:
+          <b>Auto d'1 a 15 · Diversificació d'1 a 5 · People d'1 a 3</b>.
+          <b>Cada número es fa servir una sola vegada</b>; si se'n repeteix o se'n deixa cap,
+          la suma del grup canvia i el seu vot pesa més o menys que el dels altres.</li>
+        <li>El facilitador passa les tres puntuacions a la <b>pantalla de consolidació</b>,
+          que calcula el total, el rànquing i on hi ha més desacord entre grups.</li>
+        <li>Selecció final, amb el botó <b>Veure les guanyadores</b> projectat.</li>
       </ol>
     </div>
   </div>
@@ -207,7 +215,7 @@ def page_prio(tag):
 %s
 </section>""" % (
         head("Dimarts 29 · %s" % x["s"], x["t"], "Iniciatives estratègiques 2027 · %s" % area, x),
-        x["obj"], timing_box(x), how_box(x), len(k), other, files,
+        x["obj"], timing_box(x), how_box(x, n=len(k)), len(k), other, files,
         lines(2, 7), lines(2, 7), FOOT)).replace("{DENSE}", " dense" if dense else "")
 
 # -------------------------------------------------------------------- css ---
@@ -249,7 +257,7 @@ body{font-family:var(--font);color:#111;background:#fff;font-size:10pt;line-heig
   color:#ff5710;margin-bottom:2.5mm}
 .tbox h4 .hint{color:#999;letter-spacing:.04em;text-transform:none;font-size:8pt}
 .tbox ol,.tbox ul{list-style:none;display:block}
-.tbox li{position:relative;padding-left:5mm;font-size:9pt;color:#333;margin-bottom:1.2mm;line-height:1.3}
+.tbox li{position:relative;padding-left:5mm;font-size:8.5pt;color:#333;margin-bottom:1mm;line-height:1.28}
 .tbox ol{counter-reset:n}.tbox ol li{counter-increment:n}
 .tbox ol li:before{content:counter(n);position:absolute;left:0;top:0;font-family:var(--font-m);
   font-size:7.5pt;color:#ff5710}

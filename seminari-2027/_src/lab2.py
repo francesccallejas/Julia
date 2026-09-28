@@ -16,7 +16,7 @@ def payload():
             out.append(dict(id="d%ds%d" % (d["n"], i), day=d["n"], s=x["s"], e=x["e"],
                             dur=hm(dur(x)), t=x["t"], sub=x["sub"] or "", fac=x["fac"],
                             kind=x["kind"], kl=KINDS[x["kind"]]["label"], tag=x["tag"] or "",
-                            obj=x["obj"] or "", timing=x["timing"], how=x["how"]))
+                            obj=x["obj"] or "", timing=x["timing"], how=how_text(x)))
     return out
 
 def col(d):

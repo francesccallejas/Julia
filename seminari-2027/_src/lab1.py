@@ -20,7 +20,7 @@ def block(x, i, dn):
                 ('<p class="slack mono">+%d′ · Coixí</p>' % sl) if sl > 0 else ""))
         if x["how"]:
             parts.append('<div class="dt"><h4>Com ho fem</h4><ul>%s</ul></div>' %
-                         "".join("<li>%s</li>" % t for t in x["how"]))
+                         "".join("<li>%s</li>" % t for t in how_text(x)))
         det = '<div class="det"><div class="detin">%s</div></div>' % "".join(parts)
     head = ("""<div class="hdl">%s<h3>%s</h3>%s</div>"""
             """<div class="hdr"><span class="fac mono">%s</span>%s</div>""") % (
