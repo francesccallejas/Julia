@@ -141,14 +141,19 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .tsum{flex:0 1 auto;min-width:0;margin-left:auto;font-size:12px;color:var(--dim);letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ct{width:100%;border-collapse:collapse;font-size:14px}
 .ct th{font-family:var(--font-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--dim);font-weight:400;text-align:left;padding:0 8px 10px;border-bottom:1px solid var(--ln);
+  color:var(--dim);font-weight:400;text-align:left;padding:0 8px 14px;border-bottom:1px solid var(--ln);
   vertical-align:bottom}
 .ct th.g,.ct td.g{text-align:center}
+.ct thead th{position:sticky;top:0;z-index:4;background:var(--bg)}
+.ct tfoot td{position:sticky;bottom:0;z-index:4;background:var(--bg);
+  border-top:1px solid var(--ln);border-bottom:0}
+.ct tfoot .fsum{text-align:right;padding-right:0}
+.ct tfoot .fsum .tsum{margin-left:0}
 .ct th.n{width:36px}
 .ct th.g{width:94px;text-align:center}
 .ct th.md{width:132px}
 .ct th.md .who{display:block;font-size:9px;color:var(--accent);margin-bottom:3px;letter-spacing:.14em}
-.ct td{padding:5px 8px;border-bottom:1px solid var(--ln);vertical-align:middle}
+.ct td{padding:10px 8px;border-bottom:1px solid var(--ln);vertical-align:middle}
 .ct td.n{color:var(--dim);font-size:12px}
 .ct td.nm{font-weight:600;line-height:1.2;letter-spacing:-.01em}
 .ct td.nm .sp{display:block;font-size:10.5px;font-weight:400;color:var(--dim);margin-top:2px}
@@ -221,7 +226,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
 .sl.wrap .nav,.sl.wrap .navbtns,.sl.wrap .navtau{display:none}
 .stage:has(.sl.wrap:target) ~ .hint{display:none}
 .sl.taula .in{padding-top:16px;padding-bottom:34px}
-@media(max-width:1400px){.ct{font-size:12.5px}.ct td.nm .sp{display:none}}
+@media(max-width:1150px){.ct{font-size:13px}.ct td.nm .sp{display:none}}
 
 /* --- valoració 2026 --- */
 .vcols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3.5vw,58px);
@@ -594,7 +599,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
       <tfoot><tr>
         <td></td><td class="fl">Control per grup <span class="fh">posades · suma</span></td>
         <td class="gc" data-g="0">—</td><td class="gc" data-g="1">—</td><td class="gc" data-g="2">—</td>
-        <td colspan="5"></td>
+        <td colspan="5" class="fsum"><span class="tsum mono"></span></td>
       </tr></tfoot>
     </table>
     <div class="res" hidden>
@@ -663,7 +668,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
       <tfoot><tr>
         <td></td><td class="fl">Control per grup <span class="fh">posades · suma</span></td>
         <td class="gc" data-g="0">—</td><td class="gc" data-g="1">—</td><td class="gc" data-g="2">—</td>
-        <td colspan="5"></td>
+        <td colspan="5" class="fsum"><span class="tsum mono"></span></td>
       </tr></tfoot>
     </table>
     <div class="res" hidden>
@@ -748,7 +753,7 @@ body{background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;
       <tfoot><tr>
         <td></td><td class="fl">Control per grup <span class="fh">posades · suma</span></td>
         <td class="gc" data-g="0">—</td><td class="gc" data-g="1">—</td><td class="gc" data-g="2">—</td>
-        <td colspan="5"></td>
+        <td colspan="5" class="fsum"><span class="tsum mono"></span></td>
       </tr></tfoot>
     </table>
     <div class="res" hidden>
@@ -992,10 +997,11 @@ function recalc(t){
     if(d.r.querySelector('.md').dataset.md==='M')must++;
     if(d.r.querySelector('.fin').dataset.fin==='1')fin++;
   });
-  var obj=+t.dataset.obj, sum=t.parentNode.querySelector('.tsum');
-  sum.textContent = done+'/'+rows.length+' puntuades · '+must+' Must · '
-    +fin+'/'+obj+' escollides';
-  sum.className='tsum mono'+(fin===obj?' ok':(fin>obj?' over':''));
+  var obj=+t.dataset.obj;
+  var txt=done+'/'+rows.length+' puntuades · '+must+' Must · '+fin+'/'+obj+' escollides';
+  var cls='tsum mono'+(fin===obj?' ok':(fin>obj?' over':''));
+  t.parentNode.querySelectorAll('.tsum').forEach(function(sum){
+    sum.textContent=txt; sum.className=cls;});
   save(t);
 }
 document.querySelectorAll('.ct').forEach(function(t){
