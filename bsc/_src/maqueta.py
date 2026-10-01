@@ -12,7 +12,7 @@ sys.path.insert(0, AQUI)
 sys.path.insert(0, os.path.join(AQUI, "..", "..", "seminari-2027", "_src"))
 
 from data import HEAD_COMMON, TOKENS, RESET, fontface, LOGO, T   # marca Relats
-from dades import MESOS, FINS, KPIS, GRAELLA, TROBALLES
+from dades import MESOS, FINS, KPIS, GRAELLA, TROBALLES, PERSPECTIVES
 
 OUT = os.path.join(AQUI, "..")
 
@@ -216,6 +216,7 @@ def targeta(k):
 
     avis = ('<p class="avis">%s</p>' % k["alerta"]) if k.get("alerta") else ""
     nota = ('<p class="nota">%s</p>' % k["nota"]) if k.get("nota") else ""
+    nomp = next(n for i, n, _, _, _ in PERSPECTIVES if i == k["persp"])
     return """<article class="kpi %s">
       <header><span class="area mono">%s</span>
         <span class="badge mono" title="%s">%s %s</span></header>
@@ -246,6 +247,30 @@ def mini_card(k):
       %s%s
     </article>""" % (e, k["area"], GLIF[e], k["nom"], fmt(v, k["unitat"]),
                      fmt(o, k["unitat"]), mini(k), av)
+
+
+def banda(pid, nom, mena, pregunta, cos, n, tot):
+    k = [x for x in (KPIS + GRAELLA) if x.get("persp") == pid]
+    cnt = {"ok": 0, "risc": 0, "fora": 0, "nodata": 0}
+    for x in k:
+        i, v, o = ultim(x)
+        cnt[estat(v, o, x["sentit"])] += 1
+    resum = " · ".join(
+        "%d %s" % (cnt[e], t) for e, t in
+        (("ok", "en objectiu"), ("risc", "al límit"), ("fora", "fora")) if cnt[e])
+    return """<section class="banda %s">
+      <div class="phd">
+        <div><span class="pn mono">%02d · %s</span><h4>%s</h4>
+          <p class="pq">%s</p></div>
+        <div class="pr"><span class="pc mono">%s</span><p>%s</p></div>
+      </div>
+      <div class="mgrid">%s</div>
+    </section>""" % (pid, n, mena, nom, pregunta, resum, cos,
+                     "".join(mini_card(x) for x in k))
+
+
+def fletxa(txt):
+    return '<div class="fl"><span class="mono">%s</span></div>' % txt
 
 
 def troballa(t):
@@ -367,6 +392,26 @@ p.sub{color:var(--dim);margin-bottom:20px;max-width:82ch;font-size:14.5px}
 .sw.obj{background:none;border-top:2px dashed #8c8f93;height:0;width:16px;border-radius:0}
 .sw.fut{background:#f1eee9;border:1px solid var(--ln)}
 
+.banda{position:relative;background:var(--card);border:1px solid var(--ln);border-radius:16px;
+  padding:20px 22px;border-left:5px solid var(--ln)}
+.banda.fin{border-left-color:#14181c}
+.banda.cli{border-left-color:var(--accent)}
+.banda.pro{border-left-color:#2f5d50}
+.banda.per{border-left-color:#8a7f72}
+.phd{display:flex;align-items:flex-start;gap:28px;flex-wrap:wrap;
+  padding-bottom:15px;margin-bottom:16px;border-bottom:1px solid var(--ln)}
+.pn{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.banda.fin .pn,.banda.cli .pn{color:var(--accent)}
+.phd h4{font-size:clamp(19px,2vw,25px);font-weight:700;letter-spacing:-.025em;margin:5px 0 3px}
+.pq{font-size:14px;color:var(--dim)}
+.phd .pr{margin-left:auto;max-width:42ch;text-align:right}
+.pc{display:inline-block;font-size:11px;letter-spacing:.06em;color:var(--ink);
+  border:1px solid var(--ln);border-radius:99px;padding:5px 12px;margin-bottom:7px}
+.phd .pr p{font-size:12.5px;color:var(--dim);line-height:1.45}
+@media(max-width:820px){.phd .pr{margin-left:0;text-align:left}}
+.fl{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 0;color:var(--dim)}
+.fl span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+.fl:before,.fl:after{content:"";height:1px;width:clamp(30px,8vw,120px);background:var(--ln)}
 .mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 @media(max-width:1100px){.mgrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.mgrid{grid-template-columns:1fr}}
@@ -398,8 +443,9 @@ ol.tr{list-style:none;display:grid;gap:10px;counter-reset:t}
 .tr p b{font-weight:600;color:var(--ink)}
 .tr p{font-size:13px;color:var(--dim);line-height:1.45}
 
-.passos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
-@media(max-width:860px){.passos{grid-template-columns:1fr}}
+.passos{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+@media(max-width:1150px){.passos{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.passos{grid-template-columns:1fr}}
 .pas{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:18px 20px}
 .pas .n{font-family:var(--font-m);font-size:11px;color:var(--accent);letter-spacing:.14em}
 .pas h4{margin:8px 0 7px;font-size:15.5px;font-weight:600;letter-spacing:-.012em}
@@ -434,10 +480,12 @@ def render():
 <section class="hero">
   <div class="kick">Revisió del dashboard · octubre 2026</div>
   <h2>El que falta a dalt <em>i per què</em></h2>
-  <p>El dashboard actual té unes quaranta targetes, totes amb el mateix gràfic. Això és el
-    que proposem canviar: una franja de capçalera que respongui «com anem?» en tres segons,
-    i una manera de pintar cada KPI que ensenyi la desviació en comptes d'amagar-la. Les
-    xifres d'aquesta pàgina són les vostres, llegides del dashboard del dia 1 d'octubre.</p>
+  <p>El dashboard actual té unes quaranta targetes, totes amb el mateix gràfic i agrupades
+    per departament. Això és el que proposem canviar: una franja de capçalera que respongui
+    «com anem?» en tres segons, <b>els indicadors reagrupats en les quatre perspectives d'un
+    scorecard</b> i una manera de pintar cada KPI que ensenyi la desviació en comptes
+    d'amagar-la. Les xifres d'aquesta pàgina són les vostres, llegides del dashboard del dia
+    1 d'octubre.</p>
 
   <div class="estat">
     <b>Setembre 2026 · 9 de 12 mesos</b>
@@ -475,10 +523,13 @@ def render():
   </figure>
 </div>
 
-<h3 class="sec">3 · Com quedaria la graella</h3>
-<p class="sub">La resta de KPIs, en petit i tots iguals, perquè es puguin comparar d'una
-  ullada: valor, objectiu i els dotze mesos pintats. Qui vulgui el detall hi clica.</p>
-<div class="mgrid">%s</div>
+<h3 class="sec">3 · El scorecard en quatre perspectives</h3>
+<p class="sub">Aquí hi ha el canvi de fons. Els mateixos setze KPIs, sense afegir-ne cap,
+  però agrupats com un <i>Balanced Scorecard</i> i no per departament: <b>les persones fan
+  funcionar els processos, els processos es noten al client, i el client acaba al compte de
+  resultats</b>. Es llegeix <b>de baix a dalt</b> — i així el dashboard deixa de dir només
+  què passa i comença a dir per què.</p>
+%s
 
 <h3 class="sec">4 · El que hem trobat revisant-lo</h3>
 <p class="sub">Per ordre de gravetat. Els tres primers són de dades i convé tancar-los abans
@@ -491,11 +542,15 @@ def render():
     <p>Decidir què vol dir «Yearly Actual», unificar-ho a totes les targetes i corregir els
       sentits invertits i els duplicats.</p>
     <p class="q">Mig dia · sense tocar cap gràfic</p></div>
-  <div class="pas"><span class="n">PAS 2</span><h4>Posar la franja de capçalera</h4>
+  <div class="pas"><span class="n">PAS 2</span><h4>Reagrupar en quatre perspectives</h4>
+    <p>Moure les targetes que ja existeixen a quatre seccions. <b>Cap dada nova i cap gràfic
+      nou</b>: és reordenar. Les vistes per departament es queden com a pestanyes de darrere.</p>
+    <p class="q">Dues hores · només arrossegar</p></div>
+  <div class="pas"><span class="n">PAS 3</span><h4>Posar la franja de capçalera</h4>
     <p>Les sis targetes de dalt amb les <b>Trend</b> i <b>Progress</b> que Metabase ja porta.
       No cal res a mida.</p>
     <p class="q">Mitja jornada · Metabase estàndard</p></div>
-  <div class="pas"><span class="n">PAS 3</span><h4>Repintar les targetes</h4>
+  <div class="pas"><span class="n">PAS 4</span><h4>Repintar les targetes</h4>
     <p>Treure la barra anual de l'eix mensual, pintar la desviació a la barra i amagar els
       mesos no tancats. Es pot fer bloc a bloc.</p>
     <p class="q">Per fases · un departament cada cop</p></div>
@@ -514,7 +569,9 @@ def render():
         "".join(targeta(k) for k in KPIS),
         b64("ebit-original.png"),
         detall(next(k for k in KPIS if k["id"] == "ebit")),
-        "".join(mini_card(k) for k in GRAELLA),
+        fletxa("fa possible ↑").join(
+            banda(pid, nom, mena, preg, cos, 4 - i, 4)
+            for i, (pid, nom, mena, preg, cos) in enumerate(PERSPECTIVES)),
         "".join(troballa(t) for t in TROBALLES))
 
 

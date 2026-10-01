@@ -120,6 +120,26 @@ p.sub{color:var(--dim);margin-bottom:20px;max-width:82ch;font-size:14.5px}
 .sw.obj{background:none;border-top:2px dashed #8c8f93;height:0;width:16px;border-radius:0}
 .sw.fut{background:#f1eee9;border:1px solid var(--ln)}
 
+.banda{position:relative;background:var(--card);border:1px solid var(--ln);border-radius:16px;
+  padding:20px 22px;border-left:5px solid var(--ln)}
+.banda.fin{border-left-color:#14181c}
+.banda.cli{border-left-color:var(--accent)}
+.banda.pro{border-left-color:#2f5d50}
+.banda.per{border-left-color:#8a7f72}
+.phd{display:flex;align-items:flex-start;gap:28px;flex-wrap:wrap;
+  padding-bottom:15px;margin-bottom:16px;border-bottom:1px solid var(--ln)}
+.pn{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.banda.fin .pn,.banda.cli .pn{color:var(--accent)}
+.phd h4{font-size:clamp(19px,2vw,25px);font-weight:700;letter-spacing:-.025em;margin:5px 0 3px}
+.pq{font-size:14px;color:var(--dim)}
+.phd .pr{margin-left:auto;max-width:42ch;text-align:right}
+.pc{display:inline-block;font-size:11px;letter-spacing:.06em;color:var(--ink);
+  border:1px solid var(--ln);border-radius:99px;padding:5px 12px;margin-bottom:7px}
+.phd .pr p{font-size:12.5px;color:var(--dim);line-height:1.45}
+@media(max-width:820px){.phd .pr{margin-left:0;text-align:left}}
+.fl{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 0;color:var(--dim)}
+.fl span{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+.fl:before,.fl:after{content:"";height:1px;width:clamp(30px,8vw,120px);background:var(--ln)}
 .mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 @media(max-width:1100px){.mgrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.mgrid{grid-template-columns:1fr}}
@@ -151,8 +171,9 @@ ol.tr{list-style:none;display:grid;gap:10px;counter-reset:t}
 .tr p b{font-weight:600;color:var(--ink)}
 .tr p{font-size:13px;color:var(--dim);line-height:1.45}
 
-.passos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
-@media(max-width:860px){.passos{grid-template-columns:1fr}}
+.passos{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+@media(max-width:1150px){.passos{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.passos{grid-template-columns:1fr}}
 .pas{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:18px 20px}
 .pas .n{font-family:var(--font-m);font-size:11px;color:var(--accent);letter-spacing:.14em}
 .pas h4{margin:8px 0 7px;font-size:15.5px;font-weight:600;letter-spacing:-.012em}
@@ -175,18 +196,20 @@ footer.fi{margin-top:60px;padding-top:22px;border-top:1px solid var(--ln);
 <section class="hero">
   <div class="kick">Revisió del dashboard · octubre 2026</div>
   <h2>El que falta a dalt <em>i per què</em></h2>
-  <p>El dashboard actual té unes quaranta targetes, totes amb el mateix gràfic. Això és el
-    que proposem canviar: una franja de capçalera que respongui «com anem?» en tres segons,
-    i una manera de pintar cada KPI que ensenyi la desviació en comptes d'amagar-la. Les
-    xifres d'aquesta pàgina són les vostres, llegides del dashboard del dia 1 d'octubre.</p>
+  <p>El dashboard actual té unes quaranta targetes, totes amb el mateix gràfic i agrupades
+    per departament. Això és el que proposem canviar: una franja de capçalera que respongui
+    «com anem?» en tres segons, <b>els indicadors reagrupats en les quatre perspectives d'un
+    scorecard</b> i una manera de pintar cada KPI que ensenyi la desviació en comptes
+    d'amagar-la. Les xifres d'aquesta pàgina són les vostres, llegides del dashboard del dia
+    1 d'octubre.</p>
 
   <div class="estat">
     <b>Setembre 2026 · 9 de 12 mesos</b>
     <span class="p"><i class="d ok"></i>13 en objectiu</span>
-    <span class="p"><i class="d risc"></i>1 al límit</span>
+    <span class="p"><i class="d risc"></i>2 al límit</span>
     <span class="p"><i class="d fora"></i>1 fora</span>
     <span class="p"><i class="d nd"></i>0 sense dada</span>
-    <span class="ara">15 KPIs en aquesta maqueta</span>
+    <span class="ara">16 KPIs en aquesta maqueta</span>
   </div>
 </section>
 
@@ -312,10 +335,75 @@ footer.fi{margin-top:60px;padding-top:22px;border-top:1px solid var(--ln);
   </figure>
 </div>
 
-<h3 class="sec">3 · Com quedaria la graella</h3>
-<p class="sub">La resta de KPIs, en petit i tots iguals, perquè es puguin comparar d'una
-  ullada: valor, objectiu i els dotze mesos pintats. Qui vulgui el detall hi clica.</p>
-<div class="mgrid"><article class="mini ok">
+<h3 class="sec">3 · El scorecard en quatre perspectives</h3>
+<p class="sub">Aquí hi ha el canvi de fons. Els mateixos setze KPIs, sense afegir-ne cap,
+  però agrupats com un <i>Balanced Scorecard</i> i no per departament: <b>les persones fan
+  funcionar els processos, els processos es noten al client, i el client acaba al compte de
+  resultats</b>. Es llegeix <b>de baix a dalt</b> — i així el dashboard deixa de dir només
+  què passa i comença a dir per què.</p>
+<section class="banda fin">
+      <div class="phd">
+        <div><span class="pn mono">04 · Resultat</span><h4>Financera</h4>
+          <p class="pq">Què n'espera l'accionista</p></div>
+        <div class="pr"><span class="pc mono">3 en objectiu · 1 fora</span><p>El que acaba al compte de resultats. No es mou directament: es mou perquè es mouen les tres de sota.</p></div>
+      </div>
+      <div class="mgrid"><article class="mini ok">
+      <header><span class="area mono">Finance</span>
+        <span class="badge mono">✓</span></header>
+      <h4>Sales Turnover</h4>
+      <div class="mv">95M€<i>vs 80M€</i></div>
+      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="129.2" y="39.2" width="12.5" height="22.8" rx="1.5" fill="#c0392b"/><rect x="150.0" y="20.9" width="12.5" height="41.1" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,53.1 31.2,53.1 52.1,51.7 72.9,43.9 93.8,34.4 114.6,34.4 135.4,34.4 156.2,25.5 177.1,25.5 197.9,16.4 218.7,2.7 239.6,-29.2"/></svg>
+    </article><article class="mini fora">
+      <header><span class="area mono">Finance</span>
+        <span class="badge mono">✕</span></header>
+      <h4>EBIT</h4>
+      <div class="mv">12,26M€<i>vs 19,1M€</i></div>
+      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="38.4" width="12.5" height="23.6" rx="1.5" fill="#1f7a5c"/><rect x="25.0" y="37.3" width="12.5" height="24.7" rx="1.5" fill="#1f7a5c"/><rect x="45.8" y="34.4" width="12.5" height="27.6" rx="1.5" fill="#1f7a5c"/><rect x="66.7" y="36.2" width="12.5" height="25.8" rx="1.5" fill="#c0392b"/><rect x="87.5" y="28.8" width="12.5" height="33.2" rx="1.5" fill="#1f7a5c"/><rect x="108.3" y="32.5" width="12.5" height="29.5" rx="1.5" fill="#1f7a5c"/><rect x="129.2" y="23.2" width="12.5" height="38.8" rx="1.5" fill="#1f7a5c"/><rect x="150.0" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="34.4" width="12.5" height="27.6" rx="1.5" fill="#c0392b"/><polyline class="obj" points="10.4,39.5 31.2,39.5 52.1,37.3 72.9,32.5 93.8,37.3 114.6,34.8 135.4,34.8 156.2,19.0 177.1,19.0 197.9,18.1 218.7,32.8 239.6,28.3"/></svg>
+    </article><article class="mini ok">
+      <header><span class="area mono">Finance</span>
+        <span class="badge mono">✓</span></header>
+      <h4>Cash Conversion Ratio</h4>
+      <div class="mv">88%<i>vs 84%</i></div>
+      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="23.6" width="12.5" height="38.4" rx="1.5" fill="#c98a00"/><rect x="25.0" y="23.1" width="12.5" height="38.9" rx="1.5" fill="#1f7a5c"/><rect x="45.8" y="22.6" width="12.5" height="39.4" rx="1.5" fill="#1f7a5c"/><rect x="66.7" y="21.6" width="12.5" height="40.4" rx="1.5" fill="#1f7a5c"/><rect x="87.5" y="21.1" width="12.5" height="40.9" rx="1.5" fill="#1f7a5c"/><rect x="108.3" y="20.6" width="12.5" height="41.4" rx="1.5" fill="#c98a00"/><rect x="129.2" y="22.6" width="12.5" height="39.4" rx="1.5" fill="#c98a00"/><rect x="150.0" y="21.1" width="12.5" height="40.9" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,22.1 31.2,25.1 52.1,22.6 72.9,21.6 93.8,21.6 114.6,20.1 135.4,21.1 156.2,21.6 177.1,20.6 197.9,20.1 218.7,20.1 239.6,20.1"/></svg>
+    </article><article class="mini ok">
+      <header><span class="area mono">Finance</span>
+        <span class="badge mono">✓</span></header>
+      <h4>SG&A</h4>
+      <div class="mv">4,24M€<i>vs 6,5M€</i></div>
+      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#c0392b"/><rect x="25.0" y="34.9" width="12.5" height="27.1" rx="1.5" fill="#1f7a5c"/><rect x="45.8" y="25.8" width="12.5" height="36.2" rx="1.5" fill="#c0392b"/><rect x="66.7" y="33.7" width="12.5" height="28.3" rx="1.5" fill="#1f7a5c"/><rect x="87.5" y="24.8" width="12.5" height="37.2" rx="1.5" fill="#c0392b"/><rect x="108.3" y="45.7" width="12.5" height="16.3" rx="1.5" fill="#1f7a5c"/><rect x="129.2" y="44.6" width="12.5" height="17.4" rx="1.5" fill="#1f7a5c"/><rect x="150.0" y="44.0" width="12.5" height="18.0" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,28.0 31.2,30.1 52.1,30.1 72.9,32.3 93.8,32.3 114.6,32.3 135.4,32.3 156.2,34.4 177.1,34.4 197.9,35.2 218.7,36.5 239.6,36.5"/></svg>
+    </article></div>
+    </section><div class="fl"><span class="mono">fa possible ↑</span></div><section class="banda cli">
+      <div class="phd">
+        <div><span class="pn mono">03 · Resultat</span><h4>Client i mercat</h4>
+          <p class="pq">Què en nota el client</p></div>
+        <div class="pr"><span class="pc mono">3 en objectiu</span><p>El que el client veu i paga. És la frontissa: aquí es nota si els processos funcionen, i d'aquí surten els ingressos.</p></div>
+      </div>
+      <div class="mgrid"><article class="mini ok">
+      <header><span class="area mono">Sales</span>
+        <span class="badge mono">✓</span></header>
+      <h4>Hit Rate</h4>
+      <div class="mv">21%<i>vs 20%</i></div>
+      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="26.5" width="12.5" height="35.5" rx="1.5" fill="#c0392b"/><rect x="25.0" y="24.6" width="12.5" height="37.4" rx="1.5" fill="#1f7a5c"/><rect x="45.8" y="22.6" width="12.5" height="39.4" rx="1.5" fill="#1f7a5c"/><rect x="66.7" y="20.6" width="12.5" height="41.4" rx="1.5" fill="#1f7a5c"/><rect x="87.5" y="20.6" width="12.5" height="41.4" rx="1.5" fill="#1f7a5c"/><rect x="108.3" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><rect x="129.2" y="20.6" width="12.5" height="41.4" rx="1.5" fill="#1f7a5c"/><rect x="150.0" y="20.6" width="12.5" height="41.4" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="20.6" width="12.5" height="41.4" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,24.6 31.2,24.6 52.1,24.6 72.9,24.6 93.8,24.6 114.6,24.6 135.4,22.6 156.2,22.6 177.1,22.6 197.9,22.6 218.7,22.6 239.6,22.6"/></svg>
+    </article><article class="mini ok">
+      <header><span class="area mono">Operations</span>
+        <span class="badge mono">✓</span></header>
+      <h4>Average Delivery Delay / OTD</h4>
+      <div class="mv">260K€<i>vs 280K€</i></div>
+      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="25.9" width="12.5" height="36.1" rx="1.5" fill="#1f7a5c"/><rect x="25.0" y="26.1" width="12.5" height="35.9" rx="1.5" fill="#c0392b"/><rect x="45.8" y="28.3" width="12.5" height="33.7" rx="1.5" fill="#1f7a5c"/><rect x="66.7" y="28.5" width="12.5" height="33.5" rx="1.5" fill="#c0392b"/><rect x="87.5" y="28.9" width="12.5" height="33.1" rx="1.5" fill="#1f7a5c"/><rect x="108.3" y="29.5" width="12.5" height="32.5" rx="1.5" fill="#c0392b"/><rect x="129.2" y="30.1" width="12.5" height="31.9" rx="1.5" fill="#c98a00"/><rect x="150.0" y="30.5" width="12.5" height="31.5" rx="1.5" fill="#c0392b"/><rect x="170.8" y="30.7" width="12.5" height="31.3" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,18.7 31.2,30.7 52.1,28.3 72.9,34.3 93.8,28.9 114.6,31.3 135.4,31.3 156.2,36.5 177.1,28.3 197.9,31.9 218.7,31.9 239.6,31.9"/></svg>
+    </article><article class="mini ok">
+      <header><span class="area mono">Quality</span>
+        <span class="badge mono">✓</span></header>
+      <h4>% Customer NCs / Delivered batches</h4>
+      <div class="mv">1,45%<i>vs 1,5%</i></div>
+      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="23.8" width="12.5" height="38.2" rx="1.5" fill="#1f7a5c"/><rect x="25.0" y="24.3" width="12.5" height="37.7" rx="1.5" fill="#1f7a5c"/><rect x="45.8" y="25.0" width="12.5" height="37.0" rx="1.5" fill="#1f7a5c"/><rect x="66.7" y="25.8" width="12.5" height="36.2" rx="1.5" fill="#1f7a5c"/><rect x="87.5" y="26.3" width="12.5" height="35.7" rx="1.5" fill="#1f7a5c"/><rect x="108.3" y="27.1" width="12.5" height="34.9" rx="1.5" fill="#1f7a5c"/><rect x="129.2" y="26.3" width="12.5" height="35.7" rx="1.5" fill="#1f7a5c"/><rect x="150.0" y="26.3" width="12.5" height="35.7" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="25.0" width="12.5" height="37.0" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,18.7 31.2,18.7 52.1,18.7 72.9,21.2 93.8,21.2 114.6,21.2 135.4,21.2 156.2,23.8 177.1,23.8 197.9,23.8 218.7,23.8 239.6,23.8"/></svg>
+    </article></div>
+    </section><div class="fl"><span class="mono">fa possible ↑</span></div><section class="banda pro">
+      <div class="phd">
+        <div><span class="pn mono">02 · Palanca</span><h4>Processos</h4>
+          <p class="pq">Què hem de fer bé per dins</p></div>
+        <div class="pr"><span class="pc mono">4 en objectiu · 1 al límit</span><p>On es treballa de debò. Si aquests es mouen, els de sobre es mouen sols al cap d'uns mesos.</p></div>
+      </div>
+      <div class="mgrid"><article class="mini ok">
       <header><span class="area mono">Operations</span>
         <span class="badge mono">✓</span></header>
       <h4>Inventory</h4>
@@ -334,23 +422,30 @@ footer.fi{margin-top:60px;padding-top:22px;border-top:1px solid var(--ln);
       <div class="mv">14,6%<i>vs 13,5%</i></div>
       <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="24.0" width="12.5" height="38.0" rx="1.5" fill="#1f7a5c"/><rect x="25.0" y="22.8" width="12.5" height="39.2" rx="1.5" fill="#1f7a5c"/><rect x="45.8" y="21.6" width="12.5" height="40.4" rx="1.5" fill="#1f7a5c"/><rect x="66.7" y="20.7" width="12.5" height="41.3" rx="1.5" fill="#1f7a5c"/><rect x="87.5" y="19.5" width="12.5" height="42.5" rx="1.5" fill="#1f7a5c"/><rect x="108.3" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><rect x="129.2" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><rect x="150.0" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,26.4 31.2,26.4 52.1,26.4 72.9,26.4 93.8,26.4 114.6,26.4 135.4,21.9 156.2,21.9 177.1,21.9 197.9,21.9 218.7,20.7 239.6,20.7"/></svg>
     </article><article class="mini ok">
-      <header><span class="area mono">Finance</span>
-        <span class="badge mono">✓</span></header>
-      <h4>SG&A</h4>
-      <div class="mv">4,24M€<i>vs 6,5M€</i></div>
-      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#c0392b"/><rect x="25.0" y="34.9" width="12.5" height="27.1" rx="1.5" fill="#1f7a5c"/><rect x="45.8" y="25.8" width="12.5" height="36.2" rx="1.5" fill="#c0392b"/><rect x="66.7" y="33.7" width="12.5" height="28.3" rx="1.5" fill="#1f7a5c"/><rect x="87.5" y="24.8" width="12.5" height="37.2" rx="1.5" fill="#c0392b"/><rect x="108.3" y="45.7" width="12.5" height="16.3" rx="1.5" fill="#1f7a5c"/><rect x="129.2" y="44.6" width="12.5" height="17.4" rx="1.5" fill="#1f7a5c"/><rect x="150.0" y="44.0" width="12.5" height="18.0" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,28.0 31.2,30.1 52.1,30.1 72.9,32.3 93.8,32.3 114.6,32.3 135.4,32.3 156.2,34.4 177.1,34.4 197.9,35.2 218.7,36.5 239.6,36.5"/></svg>
-    </article><article class="mini ok">
-      <header><span class="area mono">Quality</span>
-        <span class="badge mono">✓</span></header>
-      <h4>% Customer NCs / Delivered batches</h4>
-      <div class="mv">1,45%<i>vs 1,5%</i></div>
-      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="23.8" width="12.5" height="38.2" rx="1.5" fill="#1f7a5c"/><rect x="25.0" y="24.3" width="12.5" height="37.7" rx="1.5" fill="#1f7a5c"/><rect x="45.8" y="25.0" width="12.5" height="37.0" rx="1.5" fill="#1f7a5c"/><rect x="66.7" y="25.8" width="12.5" height="36.2" rx="1.5" fill="#1f7a5c"/><rect x="87.5" y="26.3" width="12.5" height="35.7" rx="1.5" fill="#1f7a5c"/><rect x="108.3" y="27.1" width="12.5" height="34.9" rx="1.5" fill="#1f7a5c"/><rect x="129.2" y="26.3" width="12.5" height="35.7" rx="1.5" fill="#1f7a5c"/><rect x="150.0" y="26.3" width="12.5" height="35.7" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="25.0" width="12.5" height="37.0" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,18.7 31.2,18.7 52.1,18.7 72.9,21.2 93.8,21.2 114.6,21.2 135.4,21.2 156.2,23.8 177.1,23.8 197.9,23.8 218.7,23.8 239.6,23.8"/></svg>
-    </article><article class="mini ok">
       <header><span class="area mono">Quality</span>
         <span class="badge mono">✓</span></header>
       <h4>% Total CoPQ / total sales</h4>
       <div class="mv">1,45%<i>vs 1,5%</i></div>
       <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="23.8" width="12.5" height="38.2" rx="1.5" fill="#1f7a5c"/><rect x="25.0" y="24.3" width="12.5" height="37.7" rx="1.5" fill="#1f7a5c"/><rect x="45.8" y="25.0" width="12.5" height="37.0" rx="1.5" fill="#1f7a5c"/><rect x="66.7" y="25.8" width="12.5" height="36.2" rx="1.5" fill="#1f7a5c"/><rect x="87.5" y="26.3" width="12.5" height="35.7" rx="1.5" fill="#1f7a5c"/><rect x="108.3" y="27.1" width="12.5" height="34.9" rx="1.5" fill="#1f7a5c"/><rect x="129.2" y="26.3" width="12.5" height="35.7" rx="1.5" fill="#1f7a5c"/><rect x="150.0" y="26.3" width="12.5" height="35.7" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="25.0" width="12.5" height="37.0" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,18.7 31.2,18.7 52.1,18.7 72.9,21.2 93.8,21.2 114.6,21.2 135.4,21.2 156.2,23.8 177.1,23.8 197.9,23.8 218.7,23.8 239.6,23.8"/></svg><p class="bess">Mateixa sèrie i mateix objectiu que la de dalt, però al dashboard surt tota vermella i l'altra tota verda.</p>
+    </article><article class="mini risc">
+      <header><span class="area mono">Purchasing</span>
+        <span class="badge mono">!</span></header>
+      <h4>AVR payment days – DMP MP</h4>
+      <div class="mv">25 dies<i>vs 24 dies</i></div>
+      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#c0392b"/><rect x="25.0" y="29.5" width="12.5" height="32.5" rx="1.5" fill="#c0392b"/><rect x="45.8" y="31.7" width="12.5" height="30.3" rx="1.5" fill="#c98a00"/><rect x="66.7" y="31.7" width="12.5" height="30.3" rx="1.5" fill="#c98a00"/><rect x="87.5" y="34.9" width="12.5" height="27.1" rx="1.5" fill="#1f7a5c"/><rect x="108.3" y="34.9" width="12.5" height="27.1" rx="1.5" fill="#1f7a5c"/><rect x="129.2" y="34.9" width="12.5" height="27.1" rx="1.5" fill="#1f7a5c"/><rect x="150.0" y="34.9" width="12.5" height="27.1" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="34.9" width="12.5" height="27.1" rx="1.5" fill="#c98a00"/><polyline class="obj" points="10.4,32.8 31.2,32.8 52.1,32.8 72.9,32.8 93.8,33.8 114.6,33.8 135.4,34.9 156.2,34.9 177.1,36.0 197.9,38.2 218.7,38.2 239.6,38.2"/></svg>
+    </article></div>
+    </section><div class="fl"><span class="mono">fa possible ↑</span></div><section class="banda per">
+      <div class="phd">
+        <div><span class="pn mono">01 · Palanca</span><h4>Persones i capacitats</h4>
+          <p class="pq">De què depèn que tot l'anterior passi</p></div>
+        <div class="pr"><span class="pc mono">3 en objectiu · 1 al límit</span><p>L'arrel. És el que més triga a donar fruit i el primer que es deixa de mirar quan hi ha pressa.</p></div>
+      </div>
+      <div class="mgrid"><article class="mini ok">
+      <header><span class="area mono">HR</span>
+        <span class="badge mono">✓</span></header>
+      <h4>Headcount + 3rd party</h4>
+      <div class="mv">1.380<i>vs 1.450</i></div>
+      <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="22.2" width="12.5" height="39.8" rx="1.5" fill="#c98a00"/><rect x="25.0" y="22.2" width="12.5" height="39.8" rx="1.5" fill="#c98a00"/><rect x="45.8" y="22.1" width="12.5" height="39.9" rx="1.5" fill="#c98a00"/><rect x="66.7" y="22.1" width="12.5" height="39.9" rx="1.5" fill="#c98a00"/><rect x="87.5" y="22.1" width="12.5" height="39.9" rx="1.5" fill="#c98a00"/><rect x="108.3" y="22.0" width="12.5" height="40.0" rx="1.5" fill="#c98a00"/><rect x="129.2" y="22.1" width="12.5" height="39.9" rx="1.5" fill="#c98a00"/><rect x="150.0" y="21.4" width="12.5" height="40.6" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="20.8" width="12.5" height="41.2" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,22.3 31.2,22.3 52.1,22.3 72.9,22.3 93.8,22.6 114.6,22.3 135.4,22.3 156.2,20.2 177.1,18.7 197.9,18.7 218.7,18.7 239.6,18.7"/></svg>
     </article><article class="mini ok">
       <header><span class="area mono">HR</span>
         <span class="badge mono">✓</span></header>
@@ -370,6 +465,7 @@ footer.fi{margin-top:60px;padding-top:22px;border-top:1px solid var(--ln);
       <div class="mv">95%<i>vs 92%</i></div>
       <svg class="mn" viewBox="0 0 250 78" preserveAspectRatio="none" aria-hidden="true"><rect class="fut" x="187.5" y="0" width="62.5" height="62"/><rect x="4.2" y="25.9" width="12.5" height="36.1" rx="1.5" fill="#c0392b"/><rect x="25.0" y="26.8" width="12.5" height="35.2" rx="1.5" fill="#c0392b"/><rect x="45.8" y="23.6" width="12.5" height="38.4" rx="1.5" fill="#c0392b"/><rect x="66.7" y="21.8" width="12.5" height="40.2" rx="1.5" fill="#c98a00"/><rect x="87.5" y="20.9" width="12.5" height="41.1" rx="1.5" fill="#c98a00"/><rect x="108.3" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><rect x="129.2" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><rect x="150.0" y="18.7" width="12.5" height="43.3" rx="1.5" fill="#1f7a5c"/><rect x="170.8" y="19.1" width="12.5" height="42.9" rx="1.5" fill="#1f7a5c"/><polyline class="obj" points="10.4,21.4 31.2,21.4 52.1,20.9 72.9,20.5 93.8,20.5 114.6,20.5 135.4,20.5 156.2,20.5 177.1,20.5 197.9,19.6 218.7,19.6 239.6,19.1"/></svg>
     </article></div>
+    </section>
 
 <h3 class="sec">4 · El que hem trobat revisant-lo</h3>
 <p class="sub">Per ordre de gravetat. Els tres primers són de dades i convé tancar-los abans
@@ -382,11 +478,15 @@ footer.fi{margin-top:60px;padding-top:22px;border-top:1px solid var(--ln);
     <p>Decidir què vol dir «Yearly Actual», unificar-ho a totes les targetes i corregir els
       sentits invertits i els duplicats.</p>
     <p class="q">Mig dia · sense tocar cap gràfic</p></div>
-  <div class="pas"><span class="n">PAS 2</span><h4>Posar la franja de capçalera</h4>
+  <div class="pas"><span class="n">PAS 2</span><h4>Reagrupar en quatre perspectives</h4>
+    <p>Moure les targetes que ja existeixen a quatre seccions. <b>Cap dada nova i cap gràfic
+      nou</b>: és reordenar. Les vistes per departament es queden com a pestanyes de darrere.</p>
+    <p class="q">Dues hores · només arrossegar</p></div>
+  <div class="pas"><span class="n">PAS 3</span><h4>Posar la franja de capçalera</h4>
     <p>Les sis targetes de dalt amb les <b>Trend</b> i <b>Progress</b> que Metabase ja porta.
       No cal res a mida.</p>
     <p class="q">Mitja jornada · Metabase estàndard</p></div>
-  <div class="pas"><span class="n">PAS 3</span><h4>Repintar les targetes</h4>
+  <div class="pas"><span class="n">PAS 4</span><h4>Repintar les targetes</h4>
     <p>Treure la barra anual de l'eix mensual, pintar la desviació a la barra i amagar els
       mesos no tancats. Es pot fer bloc a bloc.</p>
     <p class="q">Per fases · un departament cada cop</p></div>

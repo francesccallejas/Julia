@@ -19,7 +19,7 @@ FINS = 9  # mesos amb dada real
 
 # sentit: "amunt" = com més alt millor · "avall" = com més baix millor
 KPIS = [
- dict(id="turnover", nom="Sales Turnover", area="Finance", unitat="M€",
+ dict(id="turnover", persp="fin", nom="Sales Turnover", area="Finance", unitat="M€",
       tipus="acumulat", sentit="amunt",
       serie=[None, None, None, None, None, None, 50, 90, 95],
       objectiu=[19.6, 19.6, 22.6, 39.6, 60.6, 60.6, 60.6, 80, 80, 100, 130, 200],
@@ -27,7 +27,7 @@ KPIS = [
       nota="Sèrie acumulada. Només juliol, agost i setembre porten etiqueta al "
            "dashboard; la resta de mesos no es poden llegir."),
 
- dict(id="ebit", nom="EBIT", area="Finance", unitat="M€",
+ dict(id="ebit", persp="fin", nom="EBIT", area="Finance", unitat="M€",
       tipus="mensual", sentit="amunt",
       serie=[10.5, 11, 12.26, 11.48, 14.76, 13.1, 17.26, 19.26, 12.26],
       objectiu=[10, 10, 11, 13.1, 11, 12.1, 12.1, 19.1, 19.1, 19.5, 13, 15],
@@ -35,19 +35,19 @@ KPIS = [
       alerta="L'objectiu anual (20M€) no quadra amb la sèrie: nou mesos ja sumen "
              "121,9M€. O els mesos no són EBIT mensual, o l'objectiu anual no és anual."),
 
- dict(id="cash", nom="Cash Conversion Ratio", area="Finance", unitat="%",
+ dict(id="cash", persp="fin", nom="Cash Conversion Ratio", area="Finance", unitat="%",
       tipus="ratio", sentit="amunt",
       serie=[78, 79, 80, 82, 83, 84, 80, 83, 88],
       objectiu=[81, 75, 80, 82, 82, 85, 83, 82, 84, 85, 85, 85],
       anual=85, ytd=None),
 
- dict(id="hit", nom="Hit Rate", area="Sales", unitat="%",
+ dict(id="hit", persp="cli", nom="Hit Rate", area="Sales", unitat="%",
       tipus="ratio", sentit="amunt",
       serie=[18, 19, 20, 21, 21, 22, 21, 21, 21],
       objectiu=[19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20],
       anual=22, ytd=None),
 
- dict(id="otd", nom="Average Delivery Delay / OTD", area="Operations", unitat="K€",
+ dict(id="otd", persp="cli", nom="Average Delivery Delay / OTD", area="Operations", unitat="K€",
       tipus="mensual", sentit="avall",
       serie=[300, 298, 280, 278, 275, 270, 265, 262, 260],
       objectiu=[360, 260, 280, 230, 275, 255, 255, 212, 280, 250, 250, 250],
@@ -55,7 +55,7 @@ KPIS = [
       alerta="Un retard de lliurament mesurat en euros: o el títol o la unitat "
              "estan equivocats."),
 
- dict(id="hc", nom="Headcount + 3rd party", area="HR", unitat="",
+ dict(id="hc", persp="per", nom="Headcount + 3rd party", area="HR", unitat="",
       tipus="nivell", sentit="avall",
       serie=[1332, 1333, 1334, 1335, 1336, 1337, 1335, 1360, 1380],
       objectiu=[1330, 1330, 1330, 1330, 1320, 1330, 1330, 1400, 1450, 1450, 1450, 1450],
@@ -66,35 +66,39 @@ KPIS = [
 
 # Petites múltiples de la secció Quality / Operations, per ensenyar la graella
 GRAELLA = [
- dict(nom="Inventory", area="Operations", unitat="%", sentit="avall",
+ dict(nom="Inventory", persp="pro", area="Operations", unitat="%", sentit="avall",
       serie=[18, 17.5, 17, 16.5, 16, 15.5, 16.5, 16.5, 16.5],
       objectiu=[18.35, 18.5, 18.5, 18.5, 18.5, 19, 19, 20, 20, 21, 24, 25]),
- dict(nom="Premium Freight", area="Operations", unitat="K",
+ dict(nom="Premium Freight", persp="pro", area="Operations", unitat="K",
       sentit="avall",
       serie=[632, 615, 598, 581, 570, 558, 600, 580, 580],
       objectiu=[781, 681, 481, 570, 530, 580, 535, 595, 585, 564, 564, 564]),
- dict(nom="Performance MOD & MOI", area="Operations", unitat="%", sentit="amunt",
+ dict(nom="Performance MOD & MOI", persp="pro", area="Operations", unitat="%", sentit="amunt",
       serie=[12.79, 13.21, 13.62, 13.9, 14.32, 14.6, 14.6, 14.6, 14.6],
       objectiu=[12, 12, 12, 12, 12, 12, 13.5, 13.5, 13.5, 13.5, 13.9, 13.9]),
- dict(nom="SG&A", area="Finance", unitat="M€", sentit="avall",
+ dict(nom="SG&A", persp="fin", area="Finance", unitat="M€", sentit="avall",
       serie=[10.2, 6.38, 8.53, 6.66, 8.76, 3.84, 4.09, 4.24, None],
       objectiu=[8, 7.5, 7.5, 7, 7, 7, 7, 6.5, 6.5, 6.3, 6, 6]),
- dict(nom="% Customer NCs / Delivered batches", area="Quality", unitat="%",
+ dict(nom="% Customer NCs / Delivered batches", persp="cli", area="Quality", unitat="%",
       sentit="avall",
       serie=[1.5, 1.48, 1.45, 1.42, 1.4, 1.37, 1.4, 1.4, 1.45],
       objectiu=[1.7, 1.7, 1.7, 1.6, 1.6, 1.6, 1.6, 1.5, 1.5, 1.5, 1.5, 1.5]),
- dict(nom="% Total CoPQ / total sales", area="Quality", unitat="%", sentit="avall",
+ dict(nom="% Total CoPQ / total sales", persp="pro", area="Quality", unitat="%", sentit="avall",
       serie=[1.5, 1.48, 1.45, 1.42, 1.4, 1.37, 1.4, 1.4, 1.45],
       objectiu=[1.7, 1.7, 1.7, 1.6, 1.6, 1.6, 1.6, 1.5, 1.5, 1.5, 1.5, 1.5],
       bessona="Mateixa sèrie i mateix objectiu que la de dalt, "
               "però al dashboard surt tota vermella i l'altra tota verda."),
- dict(nom="Absenteism from work", area="HR", unitat="%", sentit="avall",
+ dict(nom="Absenteism from work", persp="per", area="HR", unitat="%", sentit="avall",
       serie=[3.9, 3.8, 3.7, 3.8, 4.1, 4, 3.8, 3.9, 3.9],
       objectiu=[4.3, 4.3, 4.3, 4.1, 4.1, 4.1, 4.1, 4, 4, 4, 4, 4]),
- dict(nom="Digital Tool Adoption", area="Digital", unitat="%", sentit="amunt",
+ dict(nom="Digital Tool Adoption", persp="per", area="Digital", unitat="%", sentit="amunt",
       serie=[70, 71, 70, 73, 73, 72, 73, 72, 72],
       objectiu=[72, 72, 72, 73, 73, 74, 74, 75, 75, 75, 75, 75]),
- dict(nom="Innovation projects in portfolio", area="RTC", unitat="%", sentit="amunt",
+ dict(nom="AVR payment days – DMP MP", persp="pro", area="Purchasing", unitat=" dies",
+      sentit="avall",
+      serie=[40, 30, 28, 28, 25, 25, 25, 25, 25],
+      objectiu=[27, 27, 27, 27, 26, 26, 25, 25, 24, 22, 22, 22]),
+ dict(nom="Innovation projects in portfolio", persp="per", area="RTC", unitat="%", sentit="amunt",
       serie=[80, 78, 85, 89, 91, 96, 96, 96, 95],
       objectiu=[90, 90, 91, 92, 92, 92, 92, 92, 92, 94, 94, 95]),
 ]
@@ -155,4 +159,21 @@ TROBALLES = [
   "Hi ha unes 24 etiquetes per gràfic, moltes girades 90°, per unes 40 "
   "targetes. I l'estat es juga tot a vermell/verd, que un 8% dels homes no "
   "distingeix bé."),
+]
+
+
+# Les quatre perspectives d'un Balanced Scorecard, de dalt a baix. Es llegeix al
+# revés: les de baix fan possibles les de dalt.
+PERSPECTIVES = [
+ ("fin", "Financera", "Resultat", "Què n'espera l'accionista",
+  "El que acaba al compte de resultats. No es mou directament: es mou perquè es mouen "
+  "les tres de sota."),
+ ("cli", "Client i mercat", "Resultat", "Què en nota el client",
+  "El que el client veu i paga. És la frontissa: aquí es nota si els processos funcionen, "
+  "i d'aquí surten els ingressos."),
+ ("pro", "Processos", "Palanca", "Què hem de fer bé per dins",
+  "On es treballa de debò. Si aquests es mouen, els de sobre es mouen sols al cap d'uns mesos."),
+ ("per", "Persones i capacitats", "Palanca", "De què depèn que tot l'anterior passi",
+  "L'arrel. És el que més triga a donar fruit i el primer que es deixa de mirar quan hi ha "
+  "pressa."),
 ]
