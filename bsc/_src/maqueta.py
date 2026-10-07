@@ -220,14 +220,16 @@ def targeta(k):
     return """<article class="kpi %s">
       <header><span class="area mono">%s</span>
         <span class="badge mono" title="%s">%s %s</span></header>
+      <span class="mb mono">%s</span>
       <h3>%s</h3>
       <div class="big">%s<span class="peu">%s</span></div>
       <div class="bar">%s<span class="sota mono">%s</span></div>
       <p class="comp">%s %s</p>
       <div class="spark">%s<span class="sl mono">gen → set</span></div>
       %s%s
-    </article>""" % (e, k["area"], NOM_ESTAT[e], GLIF[e], NOM_ESTAT[e], k["nom"],
-                     gran, peu, bar, sota, comp, var,
+    </article>""" % (e, nomp, NOM_ESTAT[e], GLIF[e], NOM_ESTAT[e],
+                     "Progress · 6×3" if k["tipus"] == "acumulat" else "Trend · 4×3",
+                     k["nom"], gran, peu, bar, sota, comp, var,
                      spark(k["serie"], k["objectiu"]), avis, nota)
 
 
@@ -275,7 +277,8 @@ def fletxa(txt):
 
 def troballa(t):
     mena, titol, cos = t
-    etq = {"critic": "Crític", "dades": "Dades", "disseny": "Disseny"}[mena]
+    etq = {"critic": "Crític", "dades": "Dades", "disseny": "Disseny",
+           "nou": "Novetat"}[mena]
     return ('<li class="tr %s"><span class="tag mono">%s</span>'
             '<div><b>%s</b><p>%s</p></div></li>' % (mena, etq, titol, cos))
 
@@ -327,6 +330,7 @@ h3.sec{margin:52px 0 6px;font-size:clamp(19px,2vw,26px);font-weight:700;letter-s
 p.sub{color:var(--dim);margin-bottom:20px;max-width:82ch;font-size:14.5px}
 
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(min-width:1500px){.grid{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.grid{grid-template-columns:1fr}}
 
@@ -342,6 +346,7 @@ p.sub{color:var(--dim);margin-bottom:20px;max-width:82ch;font-size:14.5px}
 .risc .badge{color:var(--risc);border-color:var(--risc);background:rgba(201,138,0,.08)}
 .fora .badge{color:var(--fora);border-color:var(--fora);background:rgba(192,57,43,.07)}
 .nodata .badge{color:var(--dim);border-color:var(--ln)}
+.mb{align-self:flex-start;font-size:9.5px;letter-spacing:.08em;color:var(--dim);border:1px solid var(--ln);border-radius:5px;padding:2px 7px;margin-bottom:9px}
 .kpi h3{font-size:15px;font-weight:600;letter-spacing:-.012em;margin-bottom:10px}
 .big{font-size:clamp(32px,3.4vw,44px);font-weight:700;letter-spacing:-.04em;line-height:1;
   display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
@@ -371,6 +376,11 @@ p.sub{color:var(--dim);margin-bottom:20px;max-width:82ch;font-size:14.5px}
 
 .cmp{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
 @media(max-width:980px){.cmp{grid-template-columns:1fr}}
+.franja{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:16px 18px}
+.franja figcaption{font-family:var(--font-m);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+.franja figcaption b{color:var(--ink);font-weight:400}
+.franja img{width:100%;height:auto;display:block;border-radius:8px}
 .cmp figure{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:16px 18px}
 .cmp figcaption{font-family:var(--font-m);font-size:10.5px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;gap:8px;align-items:center}
@@ -435,6 +445,8 @@ ol.tr{list-style:none;display:grid;gap:10px;counter-reset:t}
 .tr.critic{border-left-color:var(--fora)}
 .tr.dades{border-left-color:var(--risc)}
 .tr.disseny{border-left-color:var(--accent)}
+.tr.nou{border-left-color:var(--ok)}
+.tr.nou .tag{color:var(--ok)}
 .tag{flex:none;width:62px;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
   padding-top:3px}
 .tr.critic .tag{color:var(--fora)}.tr.dades .tag{color:var(--risc)}
@@ -484,8 +496,8 @@ def render():
     per departament. Això és el que proposem canviar: una franja de capçalera que respongui
     «com anem?» en tres segons, <b>els indicadors reagrupats en les quatre perspectives d'un
     scorecard</b> i una manera de pintar cada KPI que ensenyi la desviació en comptes
-    d'amagar-la. Les xifres d'aquesta pàgina són les vostres, llegides del dashboard del dia
-    1 d'octubre.</p>
+    d'amagar-la. Les xifres d'aquesta pàgina són les vostres, llegides del dashboard del
+    <b>7 d'octubre</b>.</p>
 
   <div class="estat">
     <b>Setembre 2026 · 9 de 12 mesos</b>
@@ -498,16 +510,33 @@ def render():
 </section>
 
 <h3 class="sec">1 · La franja que falta</h3>
-<p class="sub">Sis targetes, no quatre: Revenue i Turnover són el mateix, i en canvi hi falten
-  el KPI de client (OTD) i el de cost (Headcount). Cada targeta diu el valor, on hauria de ser,
-  quant s'hi ha mogut respecte del mes anterior i com ha anat l'any. El color va acompanyat
-  d'un símbol, perquè no depengui només del vermell i el verd.</p>
+<p class="sub">Les quatre que ja teniu, més el KPI de client (OTD) i el de cost (Headcount),
+  que són els que falten per completar les quatre perspectives. Cada targeta diu el valor,
+  <b>on hauria de ser a aquestes altures</b>, quant s'hi ha mogut des del mes passat i com ha
+  anat l'any. El color va acompanyat d'un símbol, perquè no depengui només del vermell i el
+  verd. Sota el títol hi ha la <b>visualització de Metabase i la mida al grid</b>, perquè es
+  pugui muntar directament.</p>
+<p class="sub"><b>Fixa't en les dues primeres.</b> Sales Turnover i Revenue són de costat i
+  diuen coses diferents: 95M€ sobre 200M€ i 120M€ sobre 150M€. Això avui queda amagat
+  perquè cap de les dues ensenya la proporció; posades així, salta a la vista.</p>
 <div class="grid">%s</div>
 
-<h3 class="sec">2 · Una targeta de detall, abans i després</h3>
+<h3 class="sec">2 · La franja que ja heu posat, i què li falta</h3>
+<p class="sub">Des de l'1 d'octubre hi ha quatre targetes a dalt. El pas és el bo. El que els
+  falta és el que fa que una franja de capçalera serveixi: <b>on hauríem d'anar a aquestes
+  altures de l'any</b>, <b>quant s'ha mogut des del mes passat</b> i <b>la forma de l'any</b>.
+  Un punt vermell diu que anem malament, però no de quant ni des de quan.</p>
+<figure class="franja"><figcaption>Avui <b>· quatre Text cards</b></figcaption>
+  <img src="%s" alt="La franja Top KPI tal com és avui"></figure>
+<p class="sub" style="margin-top:18px">A dalt d'aquesta pàgina hi ha la mateixa informació
+  amb <b>Progress</b> i <b>Trend</b>, que Metabase ja porta. Mateixes dades, mateixes
+  consultes, cap desenvolupament.</p>
+
+<h3 class="sec">2b · Una targeta de detall, abans i després</h3>
 <p class="sub">El mateix KPI, les mateixes dades. A l'esquerra, tal com surt avui. A la dreta,
   amb la desviació pintada a la barra, la promesa a sobre, els mesos no tancats en gris i
-  només tres etiquetes en comptes de vint-i-quatre.</p>
+  només tres etiquetes en comptes de vint-i-quatre. El gràfic de la dreta és un
+  <b>Combo (Bar + Line)</b> de Metabase, de 8 × 5 al grid.</p>
 <div class="cmp">
   <figure><figcaption>Avui <b>· Metabase</b></figcaption>
     <img src="%s" alt="La targeta d'EBIT tal com surt avui al dashboard"></figure>
@@ -567,7 +596,7 @@ def render():
         HEAD_COMMON, CSS % (TOKENS, RESET), fontface(), LOGO,
         cnt["ok"], cnt["risc"], cnt["fora"], cnt["nodata"], len(tots),
         "".join(targeta(k) for k in KPIS),
-        b64("ebit-original.png"),
+        b64("topkpi-original.png"), b64("ebit-original.png"),
         detall(next(k for k in KPIS if k["id"] == "ebit")),
         fletxa("fa possible ↑").join(
             banda(pid, nom, mena, preg, cos, 4 - i, 4)

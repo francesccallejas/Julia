@@ -27,6 +27,15 @@ KPIS = [
       nota="Sèrie acumulada. Només juliol, agost i setembre porten etiqueta al "
            "dashboard; la resta de mesos no es poden llegir."),
 
+ dict(id="revenue", persp="fin", nom="Revenue", area="Finance", unitat="M€",
+      tipus="acumulat", sentit="amunt",
+      serie=[None]*8 + [120],
+      objectiu=[None]*8 + [130] + [None, None, 150],
+      anual=150, ytd=120,
+      alerta="Al costat del Sales Turnover, que marca 95M€ amb un objectiu anual de "
+             "200M€. Dues xifres d'ingressos a la mateixa franja amb objectius diferents: "
+             "cal dir què mesura cadascuna."),
+
  dict(id="ebit", persp="fin", nom="EBIT", area="Finance", unitat="M€",
       tipus="mensual", sentit="amunt",
       serie=[10.5, 11, 12.26, 11.48, 14.76, 13.1, 17.26, 19.26, 12.26],
@@ -105,6 +114,22 @@ GRAELLA = [
 
 # El que s'ha trobat revisant el dashboard, per ordre de gravetat
 TROBALLES = [
+ ("nou", "La franja Top KPI ja hi és, i es nota",
+  "Des de l'1 d'octubre hi ha quatre targetes a dalt. És el pas bo. El que els falta és "
+  "el que fa que una franja funcioni: <b>on hauríem d'anar a aquestes altures</b>, "
+  "<b>quant s'ha mogut</b> i <b>la forma de l'any</b>. Ara són tres línies de text amb un "
+  "punt de color, i el punt no diu de quant."),
+
+ ("nou", "Dos ingressos diferents, de costat",
+  "<b>Revenue</b> marca 120M€ amb objectiu anual de 150M€ i <b>Sales Turnover</b> 95M€ amb "
+  "objectiu de 200M€, a la mateixa franja. Si són coses diferents, el títol ho ha de dir; "
+  "si no, un dels dos sobra. És la primera cosa que es llegeix del scorecard."),
+
+ ("nou", "El DMI ja està arreglat",
+  "La targeta de maduresa digital ara ensenya Baseline 2,52 · Mid-Year 2,57 · Current 2,6 · "
+  "Yearly 2,62. Aquest és exactament el format que haurien de tenir les altres: la "
+  "referència, on som i on anem."),
+
  ("critic", "«Yearly Actual» no és anual",
   "A EBIT, SG&A, Hit Rate, Headcount, Cash Conversion, OTD i Inventory la "
   "columna mostra el valor de <b>setembre</b>, no cap xifra anual. A Sales "
@@ -154,6 +179,11 @@ TROBALLES = [
  ("disseny", "Les barres no informen",
   "A Headcount, de 1.332 a 1.380 hi ha un 3,6%: totes les barres es veuen "
   "igual. Tota la informació la carrega l'etiqueta i el gràfic fa de decoració."),
+
+ ("dades", "La franja i el gràfic no diuen el mateix",
+  "La targeta Top KPI de l'EBIT diu que l'objectiu de setembre és 19,5M€; al gràfic de "
+  "sota, el setembre surt amb 19,1M€ i el 19,5M€ queda a l'octubre. Val la pena comprovar "
+  "d'on surt cadascun: si la franja i el detall no quadren, es perd la confiança en tots dos."),
 
  ("disseny", "Mil números i només color",
   "Hi ha unes 24 etiquetes per gràfic, moltes girades 90°, per unes 40 "
