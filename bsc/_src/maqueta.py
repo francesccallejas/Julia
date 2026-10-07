@@ -18,8 +18,8 @@ OUT = os.path.join(AQUI, "..")
 
 OK, RISC, FORA = "#1f7a5c", "#c98a00", "#c0392b"
 GLIF = {"ok": "✓", "risc": "!", "fora": "✕", "nodata": "–"}
-NOM_ESTAT = {"ok": "en objectiu", "risc": "al límit", "fora": "fora d'objectiu",
-             "nodata": "sense dada"}
+NOM_ESTAT = {"ok": "on target", "risc": "at risk", "fora": "off target",
+             "nodata": "no data"}
 
 
 # ------------------------------------------------------------------ calcul ---
@@ -27,7 +27,7 @@ def estat(v, o, sentit):
     if v is None or o in (None, 0):
         return "nodata"
     d = (v - o) / abs(o)
-    if sentit == "avall":
+    if sentit == "down":
         d = -d
     return "ok" if d >= 0 else ("risc" if d >= -0.05 else "fora")
 
@@ -44,13 +44,13 @@ def fmt(v, unitat):
     if v is None:
         return "—"
     if unitat == "":
-        return "{:,.0f}".format(v).replace(",", ".") if abs(v) >= 1000 else "%g" % v
+        return "{:,.0f}".format(v) if abs(v) >= 1000 else "%g" % v
     s = ("%.2f" % v).rstrip("0").rstrip(".") if abs(v) < 100 else "%g" % round(v, 1)
-    return s.replace(".", ",") + unitat
+    return s + unitat
 
 
 def pct(v):
-    return ("%+.1f" % v).replace(".", ",") + "%"
+    return ("%+.1f" % v) + "%"
 
 
 def desviacio(v, o, sentit):
@@ -58,10 +58,10 @@ def desviacio(v, o, sentit):
     if v is None or not o:
         return ""
     d = (v - o) / abs(o) * 100
-    bo = d >= 0 if sentit == "amunt" else d <= 0
-    quant = ("%.1f" % abs(d)).rstrip("0").rstrip(".").replace(".", ",")
-    cap = "per sobre" if d >= 0 else "per sota"
-    return ('<span class="dv %s">%s%% %s de l\u2019objectiu</span>'
+    bo = d >= 0 if sentit == "up" else d <= 0
+    quant = ("%.1f" % abs(d)).rstrip("0").rstrip(".")
+    cap = "above" if d >= 0 else "below"
+    return ('<span class="dv %s">%s%% %s target</span>'
             % ("bo" if bo else "mal", quant, cap))
 
 
@@ -129,7 +129,7 @@ def detall(k, w=760, h=270):
         for f in (0, .5, 1))
 
     futur = ('<rect class="fut" x="%.1f" y="%d" width="%.1f" height="%d"/>'
-             '<text class="futl" x="%.1f" y="%d">no tancat</text>'
+             '<text class="futl" x="%.1f" y="%d">not closed</text>'
              % (ml + FINS * pas, mt, pw - FINS * pas, ph,
                 ml + FINS * pas + 8, mt + 14))
 
@@ -191,28 +191,28 @@ def mini(k, w=250, h=78):
 # ------------------------------------------------------------------ blocs ---
 def targeta(k):
     i, v, o = ultim(k)
-    if k["tipus"] == "acumulat":
-        gran, peu = fmt(k["ytd"], k["unitat"]), "acumulat fins a setembre"
+    if k["tipus"] == "cumulative":
+        gran, peu = fmt(k["ytd"], k["unitat"]), "year to date, through September"
         e = estat(k["ytd"], o, k["sentit"])
-        comp = ("<b>%s</b> del pla anual · a setembre tocava <b>%s</b> · %s"
+        comp = ("<b>%s</b> of the yearly plan · September pace was <b>%s</b> · %s"
                 % (("%.0f%%" % (k["ytd"] / k["anual"] * 100)), fmt(o, k["unitat"]),
                    desviacio(k["ytd"], o, k["sentit"])))
         bar = bullet(k["ytd"], o, k["sentit"], escala=k["anual"])
-        sota = "sobre %s anual" % fmt(k["anual"], k["unitat"])
+        sota = "of %s yearly" % fmt(k["anual"], k["unitat"])
     else:
-        gran, peu = fmt(v, k["unitat"]), "setembre · últim mes tancat"
+        gran, peu = fmt(v, k["unitat"]), "September · last closed month"
         e = estat(v, o, k["sentit"])
-        comp = "objectiu del mes <b>%s</b> · %s" % (fmt(o, k["unitat"]),
+        comp = "month target <b>%s</b> · %s" % (fmt(o, k["unitat"]),
                                                     desviacio(v, o, k["sentit"]))
         bar = bullet(v, o, k["sentit"])
-        sota = "objectiu del mes"
+        sota = "month target"
 
     prev = next((serie for serie in [k["serie"][i - 1]] if i and serie is not None), None)
     var = ""
     if prev:
         dm = (v - prev) / abs(prev) * 100
         fletxa = "↑" if dm > 0 else ("↓" if dm < 0 else "→")
-        var = '<span class="mom">%s %s vs agost</span>' % (fletxa, pct(dm).lstrip("+"))
+        var = '<span class="mom">%s %s vs August</span>' % (fletxa, pct(dm).lstrip("+"))
 
     avis = ('<p class="avis">%s</p>' % k["alerta"]) if k.get("alerta") else ""
     nota = ('<p class="nota">%s</p>' % k["nota"]) if k.get("nota") else ""
@@ -225,10 +225,10 @@ def targeta(k):
       <div class="big">%s<span class="peu">%s</span></div>
       <div class="bar">%s<span class="sota mono">%s</span></div>
       <p class="comp">%s %s</p>
-      <div class="spark">%s<span class="sl mono">gen → set</span></div>
+      <div class="spark">%s<span class="sl mono">Jan → Sep</span></div>
       %s%s
     </article>""" % (e, nomp, NOM_ESTAT[e], GLIF[e], NOM_ESTAT[e],
-                     "Progress · 6×3" if k["tipus"] == "acumulat" else "Trend · 4×3",
+                     "Progress · 6×3" if k["tipus"] == "cumulative" else "Trend · 4×3",
                      k["nom"], gran, peu, bar, sota, comp, var,
                      spark(k["serie"], k["objectiu"]), avis, nota)
 
@@ -259,7 +259,7 @@ def banda(pid, nom, mena, pregunta, cos, n, tot):
         cnt[estat(v, o, x["sentit"])] += 1
     resum = " · ".join(
         "%d %s" % (cnt[e], t) for e, t in
-        (("ok", "en objectiu"), ("risc", "al límit"), ("fora", "fora")) if cnt[e])
+        (("ok", "on target"), ("risc", "at risk"), ("fora", "off target")) if cnt[e])
     return """<section class="banda %s">
       <div class="phd">
         <div><span class="pn mono">%02d · %s</span><h4>%s</h4>
@@ -277,8 +277,8 @@ def fletxa(txt):
 
 def troballa(t):
     mena, titol, cos = t
-    etq = {"critic": "Crític", "dades": "Dades", "disseny": "Disseny",
-           "nou": "Novetat"}[mena]
+    etq = {"critic": "Critical", "dades": "Data", "disseny": "Design",
+           "nou": "New"}[mena]
     return ('<li class="tr %s"><span class="tag mono">%s</span>'
             '<div><b>%s</b><p>%s</p></div></li>' % (mena, etq, titol, cos))
 
@@ -476,120 +476,120 @@ def render():
         i, v, o = ultim(k)
         cnt[estat(v, o, k["sentit"])] += 1
 
-    return """<!doctype html><html lang="ca"><head>%s
-<title>Relats BSC · maqueta de proposta</title>
+    return """<!doctype html><html lang="en"><head>%s
+<title>Relats BSC · design proposal</title>
 <style>%s
 %s</style></head><body>
 
 <div class="top"><div class="in">
   <img src="%s" alt="Relats">
   <h1>Relats BSC · Balance Score Card</h1>
-  <span class="prop">Maqueta · proposta</span>
+  <span class="prop">Mock-up · proposal</span>
 </div></div>
 
 <div class="wrap">
 
 <section class="hero">
-  <div class="kick">Revisió del dashboard · octubre 2026</div>
-  <h2>El que falta a dalt <em>i per què</em></h2>
-  <p>El dashboard actual té unes quaranta targetes, totes amb el mateix gràfic i agrupades
-    per departament. Això és el que proposem canviar: una franja de capçalera que respongui
-    «com anem?» en tres segons, <b>els indicadors reagrupats en les quatre perspectives d'un
-    scorecard</b> i una manera de pintar cada KPI que ensenyi la desviació en comptes
-    d'amagar-la. Les xifres d'aquesta pàgina són les vostres, llegides del dashboard del
-    <b>7 d'octubre</b>.</p>
+  <div class="kick">Dashboard review · October 2026</div>
+  <h2>What the top is missing <em>and why</em></h2>
+  <p>The dashboard carries around forty cards, all drawn with the same chart and grouped by
+    department. This is what we propose changing: a header strip that answers &ldquo;how are
+    we doing?&rdquo; in three seconds, <b>the indicators regrouped into the four perspectives
+    of a scorecard</b>, and a way of drawing each KPI that shows the variance instead of
+    hiding it. Every figure on this page is yours, read from the dashboard of
+    <b>7 October</b>.</p>
 
   <div class="estat">
-    <b>Setembre 2026 · 9 de 12 mesos</b>
-    <span class="p"><i class="d ok"></i>%d en objectiu</span>
-    <span class="p"><i class="d risc"></i>%d al límit</span>
-    <span class="p"><i class="d fora"></i>%d fora</span>
-    <span class="p"><i class="d nd"></i>%d sense dada</span>
-    <span class="ara">%d KPIs en aquesta maqueta</span>
+    <b>September 2026 · 9 of 12 months</b>
+    <span class="p"><i class="d ok"></i>%d on target</span>
+    <span class="p"><i class="d risc"></i>%d at risk</span>
+    <span class="p"><i class="d fora"></i>%d off target</span>
+    <span class="p"><i class="d nd"></i>%d no data</span>
+    <span class="ara">%d KPIs in this mock-up</span>
   </div>
 </section>
 
-<h3 class="sec">1 · La franja que falta</h3>
-<p class="sub">Les quatre que ja teniu, més el KPI de client (OTD) i el de cost (Headcount),
-  que són els que falten per completar les quatre perspectives. Cada targeta diu el valor,
-  <b>on hauria de ser a aquestes altures</b>, quant s'hi ha mogut des del mes passat i com ha
-  anat l'any. El color va acompanyat d'un símbol, perquè no depengui només del vermell i el
-  verd. Sota el títol hi ha la <b>visualització de Metabase i la mida al grid</b>, perquè es
-  pugui muntar directament.</p>
-<p class="sub"><b>Fixa't en les dues primeres.</b> Sales Turnover i Revenue són de costat i
-  diuen coses diferents: 95M€ sobre 200M€ i 120M€ sobre 150M€. Això avui queda amagat
-  perquè cap de les dues ensenya la proporció; posades així, salta a la vista.</p>
+<h3 class="sec">1 · The header strip</h3>
+<p class="sub">The four you already have, plus the customer KPI (OTD) and the cost one
+  (Headcount), which are what the four perspectives still need. Each card gives the value,
+  <b>where it should be by now</b>, how far it moved since last month and the shape of the
+  year. Colour always comes with a symbol, so status never rides on red and green alone.
+  Under the title you'll find the <b>Metabase visualization and its grid size</b>, so it can
+  be built straight away.</p>
+<p class="sub"><b>Look at the first two.</b> Sales Turnover and Revenue sit side by side and
+  say different things: 95M€ of 200M€, and 120M€ of 150M€. Today that stays hidden because
+  neither shows the proportion; placed like this, it jumps out.</p>
 <div class="grid">%s</div>
 
-<h3 class="sec">2 · La franja que ja heu posat, i què li falta</h3>
-<p class="sub">Des de l'1 d'octubre hi ha quatre targetes a dalt. El pas és el bo. El que els
-  falta és el que fa que una franja de capçalera serveixi: <b>on hauríem d'anar a aquestes
-  altures de l'any</b>, <b>quant s'ha mogut des del mes passat</b> i <b>la forma de l'any</b>.
-  Un punt vermell diu que anem malament, però no de quant ni des de quan.</p>
-<figure class="franja"><figcaption>Avui <b>· quatre Text cards</b></figcaption>
-  <img src="%s" alt="La franja Top KPI tal com és avui"></figure>
-<p class="sub" style="margin-top:18px">A dalt d'aquesta pàgina hi ha la mateixa informació
-  amb <b>Progress</b> i <b>Trend</b>, que Metabase ja porta. Mateixes dades, mateixes
-  consultes, cap desenvolupament.</p>
+<h3 class="sec">2 · The strip you already built, and what it's missing</h3>
+<p class="sub">Four cards went in at the top on 1 October. That is the right move. What they
+  are missing is what makes a header strip earn its place: <b>where we should be at this
+  point in the year</b>, <b>how far it moved since last month</b> and <b>the shape of the
+  year</b>. A red dot says we are behind, but not by how much, nor since when.</p>
+<figure class="franja"><figcaption>Today <b>· four Text cards</b></figcaption>
+  <img src="%s" alt="The Top KPI strip as it is today"></figure>
+<p class="sub" style="margin-top:18px">At the top of this page is the same information built
+  with <b>Progress</b> and <b>Trend</b>, which Metabase already ships. Same data, same
+  queries, nothing custom.</p>
 
-<h3 class="sec">2b · Una targeta de detall, abans i després</h3>
-<p class="sub">El mateix KPI, les mateixes dades. A l'esquerra, tal com surt avui. A la dreta,
-  amb la desviació pintada a la barra, la promesa a sobre, els mesos no tancats en gris i
-  només tres etiquetes en comptes de vint-i-quatre. El gràfic de la dreta és un
-  <b>Combo (Bar + Line)</b> de Metabase, de 8 × 5 al grid.</p>
+<h3 class="sec">2b · One detail card, before and after</h3>
+<p class="sub">Same KPI, same data. On the left, as it looks today. On the right, with the
+  variance painted onto the bar, the commitment drawn over it, the months not yet closed in
+  grey, and three labels instead of twenty-four. The chart on the right is a Metabase
+  <b>Combo (Bar + Line)</b>, 8 × 5 on the grid.</p>
 <div class="cmp">
-  <figure><figcaption>Avui <b>· Metabase</b></figcaption>
-    <img src="%s" alt="La targeta d'EBIT tal com surt avui al dashboard"></figure>
-  <figure class="ara"><figcaption>Proposta <b>· mateixes dades</b></figcaption>
+  <figure><figcaption>Today <b>· Metabase</b></figcaption>
+    <img src="%s" alt="The EBIT card as it looks on the dashboard today"></figure>
+  <figure class="ara"><figcaption>Proposal <b>· same data</b></figcaption>
     %s
     <div class="llegenda">
-      <span><i class="sw ok"></i>per sobre de l'objectiu</span>
-      <span><i class="sw risc"></i>fins a un 5%% per sota</span>
-      <span><i class="sw fora"></i>més d'un 5%% per sota</span>
-      <span><i class="sw obj"></i>objectiu del mes</span>
-      <span><i class="sw fut"></i>mes no tancat</span>
+      <span><i class="sw ok"></i>at or above target</span>
+      <span><i class="sw risc"></i>up to 5%% below</span>
+      <span><i class="sw fora"></i>more than 5%% below</span>
+      <span><i class="sw obj"></i>month target</span>
+      <span><i class="sw fut"></i>month not closed</span>
     </div>
   </figure>
 </div>
 
-<h3 class="sec">3 · El scorecard en quatre perspectives</h3>
-<p class="sub">Aquí hi ha el canvi de fons. Els mateixos setze KPIs, sense afegir-ne cap,
-  però agrupats com un <i>Balanced Scorecard</i> i no per departament: <b>les persones fan
-  funcionar els processos, els processos es noten al client, i el client acaba al compte de
-  resultats</b>. Es llegeix <b>de baix a dalt</b> — i així el dashboard deixa de dir només
-  què passa i comença a dir per què.</p>
+<h3 class="sec">3 · The scorecard in four perspectives</h3>
+<p class="sub">This is the substantive change. The same seventeen KPIs, none added, grouped
+  the way a <i>Balanced Scorecard</i> works rather than by department: <b>people make the
+  processes run, the processes show up at the customer, and the customer lands in the
+  P&amp;L</b>. It reads <b>bottom up</b> &mdash; and that is how the dashboard stops saying
+  only what is happening and starts saying why.</p>
 %s
 
-<h3 class="sec">4 · El que hem trobat revisant-lo</h3>
-<p class="sub">Per ordre de gravetat. Els tres primers són de dades i convé tancar-los abans
-  de tocar res del disseny: un scorecard que es contradiu a si mateix perd la sala.</p>
+<h3 class="sec">4 · What the review found</h3>
+<p class="sub">Worst first. The three marked Critical are data problems and worth closing
+  before touching any design: a scorecard that contradicts itself loses the room.</p>
 <ol class="tr">%s</ol>
 
-<h3 class="sec">5 · Per on començaríem</h3>
+<h3 class="sec">5 · Where we would start</h3>
 <div class="passos">
-  <div class="pas"><span class="n">PAS 1</span><h4>Arreglar les contradiccions</h4>
-    <p>Decidir què vol dir «Yearly Actual», unificar-ho a totes les targetes i corregir els
-      sentits invertits i els duplicats.</p>
-    <p class="q">Mig dia · sense tocar cap gràfic</p></div>
-  <div class="pas"><span class="n">PAS 2</span><h4>Reagrupar en quatre perspectives</h4>
-    <p>Moure les targetes que ja existeixen a quatre seccions. <b>Cap dada nova i cap gràfic
-      nou</b>: és reordenar. Les vistes per departament es queden com a pestanyes de darrere.</p>
-    <p class="q">Dues hores · només arrossegar</p></div>
-  <div class="pas"><span class="n">PAS 3</span><h4>Posar la franja de capçalera</h4>
-    <p>Les sis targetes de dalt amb les <b>Trend</b> i <b>Progress</b> que Metabase ja porta.
-      No cal res a mida.</p>
-    <p class="q">Mitja jornada · Metabase estàndard</p></div>
-  <div class="pas"><span class="n">PAS 4</span><h4>Repintar les targetes</h4>
-    <p>Treure la barra anual de l'eix mensual, pintar la desviació a la barra i amagar els
-      mesos no tancats. Es pot fer bloc a bloc.</p>
-    <p class="q">Per fases · un departament cada cop</p></div>
+  <div class="pas"><span class="n">STEP 1</span><h4>Fix the contradictions</h4>
+    <p>Decide what &ldquo;Yearly Actual&rdquo; means, apply it to every card, and correct the
+      inverted directions and the duplicates.</p>
+    <p class="q">Half a day · no chart touched</p></div>
+  <div class="pas"><span class="n">STEP 2</span><h4>Regroup into four perspectives</h4>
+    <p>Move the cards that already exist into four sections. <b>No new data and no new
+      chart</b>: it is reordering. The per-department views stay as back tabs.</p>
+    <p class="q">Two hours · dragging only</p></div>
+  <div class="pas"><span class="n">STEP 3</span><h4>Build the header strip</h4>
+    <p>The six cards at the top with the <b>Trend</b> and <b>Progress</b> visualizations
+      Metabase already ships. Nothing custom.</p>
+    <p class="q">Half a day · stock Metabase</p></div>
+  <div class="pas"><span class="n">STEP 4</span><h4>Redraw the cards</h4>
+    <p>Take the yearly bar off the monthly axis, paint the variance onto the bar and hide the
+      months not yet closed. Can be done block by block.</p>
+    <p class="q">In phases · one department at a time</p></div>
 </div>
 
 <footer class="fi">
-  Maqueta de treball · dades llegides del dashboard Metabase «Relats BSC – Balance Score Card»,
-  captura del 7 d'octubre de 2026 (tancament de setembre).<br>
-  No és un informe: les xifres s'hi han transcrit per ensenyar el format, i a Sales Turnover
-  només tres mesos porten etiqueta llegible al PDF original.
+  Working mock-up · figures read from the "Relats BSC – Balance Score Card" Metabase
+  dashboard, 7 October 2026 capture (September close).<br>
+  This is not a report: the figures were transcribed to show the format, and on Sales
+  Turnover only three months carry a legible label on the source PDF.
 </footer>
 
 </div></body></html>""" % (
@@ -598,7 +598,7 @@ def render():
         "".join(targeta(k) for k in KPIS),
         b64("topkpi-original.png"), b64("ebit-original.png"),
         detall(next(k for k in KPIS if k["id"] == "ebit")),
-        fletxa("fa possible ↑").join(
+        fletxa("makes possible ↑").join(
             banda(pid, nom, mena, preg, cos, 4 - i, 4)
             for i, (pid, nom, mena, preg, cos) in enumerate(PERSPECTIVES)),
         "".join(troballa(t) for t in TROBALLES))
