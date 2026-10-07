@@ -587,7 +587,7 @@ def render():
 
 <footer class="fi">
   Maqueta de treball · dades llegides del dashboard Metabase «Relats BSC – Balance Score Card»,
-  captura de l'1 d'octubre de 2026 (tancament de setembre).<br>
+  captura del 7 d'octubre de 2026 (tancament de setembre).<br>
   No és un informe: les xifres s'hi han transcrit per ensenyar el format, i a Sales Turnover
   només tres mesos porten etiqueta llegible al PDF original.
 </footer>
