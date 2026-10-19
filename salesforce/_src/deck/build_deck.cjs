@@ -2,6 +2,7 @@
 // Built from the v3 training manual. Run: node build_deck.js
 const pptxgen = require("pptxgenjs");
 const path = require("path");
+const FIELDS = require("./fields.json");   // written by export_fields.py from camps.py
 const { applyTheme } = require("/root/.claude/skills/synced/cf2b46b3-1869-417f-98ad-f51e09166faf_dff9cd80-cc36-4c78-9d66-a32449d2d2d3/pptx/scripts/apply_theme.js");
 
 const OUT = path.join(__dirname, "..", "..", "Relats-Salesforce-RFQ-Quotes.pptx");
@@ -137,6 +138,62 @@ function steprow(s, o) {
     valign: "middle", margin: 0, isTextBox: true });
   s.addText(o.note, { x: M + 8.26, y: o.y, w: W - 2 * M - 8.42, h: o.h, fontSize: 10.5,
     color: C.text2, valign: "middle", margin: 0, isTextBox: true });
+}
+
+// --------------------------------------------------- the field appendix ---
+// What the `req` column of camps.py means, in words a reader can act on.
+const REQ = {
+  create:  ["Required to create", THEME.colors.accent4],
+  key:     ["Key field",          THEME.colors.accent1],
+  calc:    ["System fills it",    THEME.colors.accent6],
+  account: ["From the account",   THEME.colors.accent5],
+  "-":     ["",                   "9AA1A8"],
+};
+
+const COLW = [3.5, 1.9, 5.1, 1.56];        // Field · Type · Values · Must fill
+const HEAD = ["Field", "Type", "Values", "Must fill"];
+
+// One appendix slide: a native PowerPoint table, grouped by the manual's own
+// section headings. `groups` is [[section name, rows], …].
+function fieldslide(s, groups) {
+  let n = groups.length;                    // one header row per section
+  groups.forEach((g) => { n += g[1].length; });
+  // rowH is a floor, not a cap: a row is never shorter than its text plus the
+  // cell margins, so asking for less than that silently pushes the table past
+  // the footer. 8pt type with 0.5pt vertical margins bottoms out near 0.155".
+  const rowH = Math.min(0.2, 4.7 / (n + 1));
+
+  const rows = [HEAD.map((t) => ({
+    text: t,
+    options: { bold: true, color: "FFFFFF", fill: { color: THEME.colors.dk1 },
+               fontSize: 8, valign: "middle" },
+  }))];
+
+  groups.forEach(([sec, list]) => {
+    rows.push([{ text: sec.toUpperCase(), options: {
+      colspan: 4, bold: true, color: THEME.colors.accent1,
+      fill: { color: "EDE9E3" }, fontSize: 7.5, charSpacing: 1, valign: "middle" } }]);
+    list.forEach((f) => {
+      const [label, col] = REQ[f.req] || REQ["-"];
+      const base = { fontSize: 8, valign: "middle", color: THEME.colors.dk1 };
+      rows.push([
+        { text: f.name, options: { ...base, bold: true } },
+        { text: f.type, options: { ...base, color: THEME.colors.dk2 } },
+        { text: f.values, options: { ...base, color: THEME.colors.dk2, fontSize: 7.5 } },
+        { text: label, options: { ...base, color: col, bold: f.req !== "-",
+                                  fontSize: 7.5 } },
+      ]);
+    });
+  });
+
+  s.addTable(rows, {
+    x: M, y: 1.98, w: W - 2 * M, colW: COLW, rowH,
+    border: { type: "solid", color: "E4E0DA", pt: 0.5 },
+    // Integer points only. A fractional margin (0.5) makes pptxgenjs blow the
+    // cell padding out to inches, and every column collapses to one character
+    // per line — it renders, it validates, and it is unreadable.
+    margin: [1, 4, 1, 4], autoPage: false, fontFace: "+mn-lt",
+  });
 }
 
 // ============================================================== 1 · title ===
@@ -580,6 +637,80 @@ pres.addSection({ title: "Next steps" });
     { x: M, y: 6.45, w: W - 2 * M, h: 0.5, fontSize: 10, color: "6B737B", margin: 0,
       isTextBox: true });
 }
+
+// ====================================================== 11+ · the appendix ===
+pres.addSection({ title: "Appendix · every field" });
+{
+  const s = pres.addSlide({ masterName: "CLOSE_DARK",
+                            sectionTitle: "Appendix · every field" });
+  s.addText("Appendix · all 118 fields", { placeholder: "title" });
+  s.addText("Every field of the three objects, in the manual's own sections, with what " +
+            "makes each one mandatory.", { placeholder: "lede" });
+
+  const legend = [
+    ["Required to create", THEME.colors.accent4,
+     "Red asterisk on the New record form. The record will not save without it."],
+    ["Key field", THEME.colors.accent1,
+     "Blocks the stage change until it is filled. Shown in the Key Fields panel."],
+    ["System fills it", THEME.colors.accent6,
+     "Inherited from the RFQ, rolled up from the lines, or auto-numbered."],
+    ["From the account", THEME.colors.accent5,
+     "A read-only copy of the customer master, with an editable twin beside it."],
+  ];
+  const lw = (W - 2 * M - 3 * 0.22) / 4;
+  legend.forEach((l, i) => {
+    const x = M + i * (lw + 0.22);
+    s.addShape(pres.ShapeType.roundRect, { x, y: 2.9, w: lw, h: 1.72, rectRadius: 0.08,
+      fill: { color: "1F252B" }, line: { color: "2E363E", width: 0.75 },
+      objectName: "leg-" + i });
+    s.addShape(pres.ShapeType.roundRect, { x: x + 0.24, y: 3.14, w: 0.3, h: 0.1,
+      rectRadius: 0.05, fill: { color: l[1] }, line: { color: l[1], width: 0 },
+      objectName: "legbar-" + i });
+    s.addText(l[0], { x: x + 0.24, y: 3.34, w: lw - 0.48, h: 0.34, fontSize: 13.5,
+      bold: true, color: "FFFFFF", valign: "top", margin: 0, isTextBox: true });
+    s.addText(l[2], { x: x + 0.24, y: 3.74, w: lw - 0.48, h: 0.76, fontSize: 11,
+      color: "A8AEB4", valign: "top", margin: 0, isTextBox: true });
+  });
+
+  s.addText("A field with none of these marks is optional — nothing in the manual makes " +
+            "it mandatory. There are 84 of them, which is itself one of the open points.",
+    { x: M, y: 4.94, w: W - 2 * M, h: 0.4, fontSize: 12, color: "7A828A", margin: 0,
+      isTextBox: true });
+  s.addText("The same 118 rows come with this deck as a spreadsheet, where they can be " +
+            "sorted and filtered.",
+    { x: M, y: 6.45, w: W - 2 * M, h: 0.4, fontSize: 10, color: "6B737B", margin: 0,
+      isTextBox: true });
+}
+
+// Which sections share a slide. Balanced so no table runs past the footer.
+const PAGES = [
+  ["RFQ", [["RFQ", FIELDS.rfq]]],
+  ["Quote Line Item", [["Quote Line Item", FIELDS.line]]],
+  ["Quote · Quote Information", ["Quote Information"]],
+  ["Quote · project, timings and samples",
+   ["Project Information", "Timings", "Samples", "Approval KPIs"]],
+  ["Quote · checks and new materials",
+   ["Information to check", "New Materials - Bussines feasibility"]],
+  ["Quote · economic agreements",
+   ["Economic Agrements", "Prepared for"]],
+  ["Quote · feedback and the rest",
+   ["Feedback Info", "Additional Information", "Language and Conditions"]],
+];
+
+PAGES.forEach(([title, spec]) => {
+  const s = pres.addSlide({ masterName: "CONTENT",
+                            sectionTitle: "Appendix · every field" });
+  s.addText(title, { placeholder: "title" });
+
+  const groups = typeof spec[0] === "string"
+    ? spec.map((sec) => [sec, FIELDS.quote.filter((f) => f.sec === sec)])
+    : spec;
+  const n = groups.reduce((a, g) => a + g[1].length, 0);
+  s.addText(n + (n === 1 ? " field" : " fields") +
+            ", exactly as the manual labels them — typos included, because that is what " +
+            "shows on screen and in reports.", { placeholder: "lede" });
+  fieldslide(s, groups);
+});
 
 (async () => {
   await pres.writeFile({ fileName: OUT });
