@@ -1,0 +1,119 @@
+﻿Object;Section;Field;Type;Values;Must be filled?;What that means;Notes
+RFQ;RFQ Information;RFQ Name;Text;;Required;Red asterisk on the New record form — it will not save without it;Free text. The manual does not define a naming convention, but the examples suggest one is in use: «PSA eK9_Yazaki_PLA50 TA», «2309-0BJP (Contitech GR) Anhäge Nr. 6000107413».
+RFQ;RFQ Information;Principal Project;Lookup → RFQ;;Optional;Nothing in the manual makes it mandatory;Links this RFQ to a parent RFQ.
+RFQ;RFQ Information;Status;Picklist;Same stage list as the Quote;Required;Red asterisk on the New record form — it will not save without it;Note: the RFQ path shown on screen carries the same twelve stages as the Quote. The manual never says whether it follows the Quote automatically or has to be moved by hand.
+RFQ;RFQ Information;Close Date (EOP);Date;;Required;Red asterisk on the New record form — it will not save without it;End Of Production. The examples all use 31/12/2030, which looks like a placeholder rather than a real date.
+RFQ;RFQ Information;Probability (%);Number;;Optional;Nothing in the manual makes it mandatory;Note: the Quote already carries a probability in the stage name (25% / 50% / 75% / 90%). The manual never says which of the two drives the forecast.
+RFQ;RFQ Information;RFQ Currency;Picklist;EUR - Euro (default);Required;Red asterisk on the New record form — it will not save without it;Decisive: it sets the quote currency and limits which price books you will be able to see.
+RFQ;RFQ Information;Responsible;User;;Optional;Nothing in the manual makes it mandatory;Pre-filled with the current user.
+RFQ;RFQ Information;Account Name;Lookup → Account;;Required;Red asterisk on the New record form — it will not save without it;Must be the CHILD account, with the right Relats plant. The manual flags this twice.
+RFQ;RFQ Information;Lost Reason;Picklist;Same list as the Quote;Optional;Nothing in the manual makes it mandatory;
+Quote;Quote Information;Quote Name;Text;;Required;Red asterisk on the New record form — it will not save without it;The only field needed to create the quote. Everything else can be filled in later, step by step.
+Quote;Quote Information;Quote Number;Auto number;;Calculated;The system fills it: inherited, rolled up or auto-numbered;
+Quote;Quote Information;Annual Purchasing Value;Currency;;Calculated;The system fills it: inherited, rolled up or auto-numbered;Calculated on save from the lines.
+Quote;Quote Information;Account Name;Lookup → Account;;Calculated;The system fills it: inherited, rolled up or auto-numbered;Inherited from the RFQ.
+Quote;Quote Information;Owner ID;User;;Optional;Nothing in the manual makes it mandatory;The quote owner. Only the quote owner or the RFQ owner can submit for approval, and unlike the RFQ owner this one cannot be changed.
+Quote;Quote Information;RFQ Name;Lookup → RFQ;;Calculated;The system fills it: inherited, rolled up or auto-numbered;Inherited. In Relats one RFQ carries only one quote.
+Quote;Quote Information;RFQ Customer Reference;Text;;Optional;Nothing in the manual makes it mandatory;The customer's own reference for the enquiry.
+Quote;Quote Information;Application;Picklist;e.g. Drivetrain · Brakes wire harness;Key field;Blocks the move to a stage until it is filled;Key Field for VALORATION. Full picklist not shown in the manual.
+Quote;Quote Information;Selling plant;Text;e.g. Relats Caldes;Calculated;The system fills it: inherited, rolled up or auto-numbered;From the child account.
+Quote;Quote Information;Incoterm Account;Text;e.g. CPT;From account;Mirrored from the Account. Read only — the editable twin sits next to it;The Incoterm held on the account. Read only, for reference.
+Quote;Quote Information;Incoterm;Picklist;e.g. CPT;Optional;Nothing in the manual makes it mandatory;The one that applies to THIS quote. May differ from the account's.
+Quote;Quote Information;Incoterm Destination Account;Text;e.g. VIGNATE (Milano);From account;Mirrored from the Account. Read only — the editable twin sits next to it;Read only, for reference.
+Quote;Quote Information;Incoterm Location (city);Text;e.g. vignate;Optional;Nothing in the manual makes it mandatory;The one for this quote. Note: free text, so the same city will be spelled several ways. A picklist or a lookup would pay for itself in reporting.
+Quote;Quote Information;Payment term Account;Text;e.g. Bank transfer 60 days;From account;Mirrored from the Account. Read only — the editable twin sits next to it;Read only, for reference.
+Quote;Quote Information;Payment Terms;Picklist;e.g. Bank transfer 10 days;Optional;Nothing in the manual makes it mandatory;The one for this quote. Note: this is one of the fields that triggers approval when it departs from standard.
+Quote;Quote Information;Quote Currency;Picklist;EUR - Euro;Calculated;The system fills it: inherited, rolled up or auto-numbered;Comes from the RFQ currency.
+Quote;Quote Information;Platform;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Quote Information;Model car;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Quote Information;Propulsion Syst;Picklist;;Optional;Nothing in the manual makes it mandatory;Values not shown in the manual.
+Quote;Quote Information;Project type;Picklist;e.g. Organic Growth;Key field;Blocks the move to a stage until it is filled;Key Field for VALORATION. Has dependent picklists («View all dependencies»).
+Quote;Quote Information;Type Organic Growth;Picklist;e.g. New Project;Optional;Nothing in the manual makes it mandatory;Dependent on Project type.
+Quote;Quote Information;NOTES;Long text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Project Information;Sector;Picklist;Auto · (others not shown);Optional;Nothing in the manual makes it mandatory;Note: drives whether you fill the Auto fields or the Industrial ones, but the manual never says so explicitly.
+Quote;Project Information;OEM Auto;Picklist;e.g. General · Maserati · BMW;Key field;Blocks the move to a stage until it is filled;Key Field for VALORATION — the error message calls it «Project client (OEM)». Note: the label on the form is OEM Auto, the error says OEM. Same field.
+Quote;Project Information;Project IHS;Lookup;e.g. Project-IHS-General;Optional;Nothing in the manual makes it mandatory;Links to the IHS forecast project.
+Quote;Project Information;OEM Industrial;Text;;Optional;Nothing in the manual makes it mandatory;The Industrial counterpart of OEM Auto.
+Quote;Project Information;Industrial Project Name;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Project Information;Project number;Text / Number;e.g. 139;Key field;Blocks the move to a stage until it is filled;Key Field for VALORATION. It appears in the Key Fields panel and in the quote header, but it is NOT in any of the detail screenshots: the manual never shows where it lives on the page.
+Quote;Timings;Deadline to quote;Date;;Optional;Nothing in the manual makes it mandatory;When the customer needs the offer.
+Quote;Timings;SOP;Date;;Optional;Nothing in the manual makes it mandatory;Start Of Production.
+Quote;Timings;EOP;Date;e.g. 31/12/2030;Calculated;The system fills it: inherited, rolled up or auto-numbered;End Of Production. Mirrors the RFQ Close Date.
+Quote;Timings;Quotation Validity;Date;;Optional;Nothing in the manual makes it mandatory;Prints on the PDF as «Quote Validity».
+Quote;Information to check;Is any special Quality requirement?;Checkbox;;Optional;Nothing in the manual makes it mandatory;
+Quote;Information to check;Is any special Technical requirement?;Checkbox;;Optional;Nothing in the manual makes it mandatory;
+Quote;Information to check;Is any special Logistic requirement?;Checkbox;;Optional;Nothing in the manual makes it mandatory;
+Quote;Information to check;Is any special packaging requirement?;Checkbox;;Optional;Nothing in the manual makes it mandatory;
+Quote;Information to check;Special requirement detail;Text;;Optional;Nothing in the manual makes it mandatory;Note: one free-text box for four checkboxes. If two are ticked you cannot tell which detail belongs to which.
+Quote;Information to check;Cheked with Tecom if needed;Checkbox;;Optional;Nothing in the manual makes it mandatory;Label misspelled on the form («Cheked»). Tecom is the technical commercial team.
+Quote;Information to check;Tecom comments;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Information to check;Release;Picklist / Text;YES · (others not shown);Optional;Nothing in the manual makes it mandatory;Prints on the PDF.
+Quote;Information to check;Release comment;Text;;Optional;Nothing in the manual makes it mandatory;Prints on the PDF.
+Quote;Information to check;NDA available?;Checkbox;;Optional;Nothing in the manual makes it mandatory;
+Quote;Information to check;GTC Updated;Checkbox;;Optional;Nothing in the manual makes it mandatory;General Terms & Conditions.
+Quote;Information to check;Contract/LOI/Evidencia Nominacion;Picklist / Text;YES · (others not shown);Key field;Blocks the move to a stage until it is filled;Required to reach AWARDED, together with the document attached under Documents. Label mixes Spanish and English.
+Quote;Economic Agrements;Quick Savings;Checkbox;;Optional;Nothing in the manual makes it mandatory;Section label misspelled on the form («Agrements»).
+Quote;Economic Agrements;Quick saving amount;Currency;;Optional;Nothing in the manual makes it mandatory;
+Quote;Economic Agrements;Quick saving/bonus details;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Economic Agrements;Rappels;Percent;;Optional;Nothing in the manual makes it mandatory;
+Quote;Economic Agrements;Bonus;Text / Currency;;Optional;Nothing in the manual makes it mandatory;Triggers approval when set.
+Quote;Economic Agrements;Investment needed;Checkbox;;Optional;Nothing in the manual makes it mandatory;
+Quote;Economic Agrements;Investment;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Economic Agrements;LTA (Annual Discount);Percent;;Optional;Nothing in the manual makes it mandatory;Long Term Agreement. Triggers approval when set.
+Quote;Economic Agrements;LTA (Years);Number;;Optional;Nothing in the manual makes it mandatory;
+Quote;Economic Agrements;Comissions;Percent;;Optional;Nothing in the manual makes it mandatory;Label misspelled. Triggers approval when set.
+Quote;Economic Agrements;Comission to;Text;;Optional;Nothing in the manual makes it mandatory;Label misspelled.
+Quote;Economic Agrements;General Investment;Currency;;Optional;Nothing in the manual makes it mandatory;
+Quote;Economic Agrements;Specific Investment;Currency;;Optional;Nothing in the manual makes it mandatory;
+Quote;Economic Agrements;Payback Years;Number;;Optional;Nothing in the manual makes it mandatory;
+Quote;Economic Agrements;Pricebook Name;Lookup → Price Book;Relats plant–Customer number–Customer name;Calculated;The system fills it: inherited, rolled up or auto-numbered;One price book per quote, fixed before adding any line. Only the codes in it can be quoted.
+Quote;Samples;Sample requested / analisys;Checkbox;;Optional;Nothing in the manual makes it mandatory;Label misspelled.
+Quote;Samples;Positive Feedback if samples sent;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Samples;Sample code in SAP;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Feedback Info;Customer feedback;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Feedback Info;Price OK?;Text / Picklist;;Optional;Nothing in the manual makes it mandatory;
+Quote;Feedback Info;Status;Picklist;Approved · Closed Lost · …;Optional;Nothing in the manual makes it mandatory;Note: this mirrors the stage path. Having it inside «Feedback Info» is confusing — the stage is normally moved with «Mark as Current Status».
+Quote;Feedback Info;Lost reason;Picklist;Cancelled · Customer purchasing strategy · Declined to quote · Direct customer lost this opportunity · No capacity available · No meeting the technical specification · Other reason · Price · Time to market;Key field;Blocks the move to a stage until it is filled;Required to reach CLOSED LOST. This is the full list, as given in the manual.
+Quote;Feedback Info;Other lost reason;Text;;Optional;Nothing in the manual makes it mandatory;Required when Lost reason = «Other reason».
+Quote;Feedback Info;Lost reason comments;Text;;Optional;Nothing in the manual makes it mandatory;Note: the manual says to always record a comment here, and also to fill «Other lost reason» for Other. Two free-text boxes for nearly the same thing.
+Quote;Feedback Info;Action;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Feedback Info;Responsible name;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Feedback Info;Historical action plan;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;New Materials - Bussines feasibility;BF needed;Checkbox;;Optional;Nothing in the manual makes it mandatory;Section label misspelled («Bussines»).
+Quote;New Materials - Bussines feasibility;BF status;Picklist;--None-- · Pending · Approved · Refused;Optional;Nothing in the manual makes it mandatory;Full list, taken from the manual.
+Quote;New Materials - Bussines feasibility;Business Feasibility number;Text;;Optional;Nothing in the manual makes it mandatory;Filled while in WAITING BUSINESS FEASIBILITY.
+Quote;New Materials - Bussines feasibility;SAP PS nº link;URL / Text;;Optional;Nothing in the manual makes it mandatory;Link to the BF in SAP, so anyone on the account team can open it.
+Quote;Additional Information;Description;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Additional Information;Principal Project;Text / Lookup;;Optional;Nothing in the manual makes it mandatory;
+Quote;Additional Information;Competitor;Text;;Optional;Nothing in the manual makes it mandatory;Note: free text. If you want to report on who you lose against, this needs to be a picklist.
+Quote;Additional Information;Kick-off nº;Text;;Calculated;The system fills it: inherited, rolled up or auto-numbered;Filled when the KO is created automatically on AWARDED.
+Quote;Additional Information;KO Authorized;Checkbox;;Optional;Nothing in the manual makes it mandatory;
+Quote;Additional Information;Is in MTP?;Checkbox;;Optional;Nothing in the manual makes it mandatory;Mid Term Plan.
+Quote;Additional Information;Budget Year;Text / Number;;Optional;Nothing in the manual makes it mandatory;
+Quote;Additional Information;KO Capacity Information;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote;Approval KPIs;Minimum Pricebook;Lookup → Price Book;e.g. 01-04-Minimum price list;Optional;Nothing in the manual makes it mandatory;The control the whole approval hangs on. The quoted price is compared against this list. If there is no minimum price for a code, the manual states it counts as zero and any price passes.
+Quote;Prepared for;Contact Name;Text;;Optional;Nothing in the manual makes it mandatory;Prints on the PDF.
+Quote;Prepared for;Email;Email;;Optional;Nothing in the manual makes it mandatory;Prints on the PDF.
+Quote;Prepared for;Phone;Phone;;Optional;Nothing in the manual makes it mandatory;Prints on the PDF.
+Quote;Prepared for;Fax;Phone;;Optional;Nothing in the manual makes it mandatory;Prints on the PDF.
+Quote;Language and Conditions;Language;Picklist;English · (others not shown);Optional;Nothing in the manual makes it mandatory;Chosen before generating the PDF. It filters which Terms & Conditions versions you can pick.
+Quote;Language and Conditions;Terms and Conditions;Lookup;;Optional;Nothing in the manual makes it mandatory;Only versions available in the chosen language.
+Quote;Language and Conditions;Contact Person;Lookup → User;;Optional;Nothing in the manual makes it mandatory;The Relats contact printed as «Prepared by». If left empty, the quote owner is used.
+Quote Line Item;Product Information;Product;Lookup → Product;;Required;Red asterisk on the New record form — it will not save without it;Picked from the quote's price book. Required on the Add Products screen.
+Quote Line Item;Product Information;Product Family;Text;e.g. 022107;Calculated;The system fills it: inherited, rolled up or auto-numbered;
+Quote Line Item;Product Information;Diameter/ Size;Number;e.g. 25,00;Calculated;The system fills it: inherited, rolled up or auto-numbered;From the product record.
+Quote Line Item;Product Information;Length (mm);Number;e.g. 80;Calculated;The system fills it: inherited, rolled up or auto-numbered;From the product record.
+Quote Line Item;Product Information;Colour;Text;e.g. NE;Calculated;The system fills it: inherited, rolled up or auto-numbered;From the product record.
+Quote Line Item;Product Information;Customer PN;Text;;Optional;Nothing in the manual makes it mandatory;The customer's part number. Can be set on the Add Products screen.
+Quote Line Item;Product Information;M.O.Q;Number;;Optional;Nothing in the manual makes it mandatory;Minimum order quantity.
+Quote Line Item;Product Information;Packing Info;Text;;Optional;Nothing in the manual makes it mandatory;
+Quote Line Item;Product Information;Volume Units;Picklist;e.g. PCE;Calculated;The system fills it: inherited, rolled up or auto-numbered;
+Quote Line Item;Product Information;Total Years;Number;e.g. 1;Optional;Nothing in the manual makes it mandatory;
+Quote Line Item;Product Information;Price/Unit Quantity;Number;e.g. 1000;Optional;Nothing in the manual makes it mandatory;Informative: tells you the quantity the price refers to.
+Quote Line Item;Product Information;Payback Years;Number;;Optional;Nothing in the manual makes it mandatory;
+Quote Line Item;Price Information;List Price;Currency;e.g. EUR 1,00;Calculated;The system fills it: inherited, rolled up or auto-numbered;From the price book. In the standard price book every code created in Salesforce comes in at 1, so it can be quoted to anyone.
+Quote Line Item;Price Information;Quoted Price;Currency;e.g. EUR 50,00;Required;Red asterisk on the New record form — it will not save without it;Proposed from the price book, overwritten by the user. Required on the Add Products screen. This is what gets compared against the Minimum Pricebook.
+Quote Line Item;Price Information;Target Price;Currency;;Optional;Nothing in the manual makes it mandatory;The customer's target.
+Quote Line Item;Price Information;Annual Quantity;Number;e.g. 10.000,00;Required;Red asterisk on the New record form — it will not save without it;Required on the Add Products screen. Drives the Annual Purchasing Value.
+Quote Line Item;Price Information;Price Discount in running business;Percent / Currency;;Optional;Nothing in the manual makes it mandatory;
+Quote Line Item;Price Information;Total Amount;Currency;e.g. EUR 500,00;Calculated;The system fills it: inherited, rolled up or auto-numbered;
