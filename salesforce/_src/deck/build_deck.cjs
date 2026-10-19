@@ -110,6 +110,35 @@ function disc(s, x, y, d, txt, fill, col) {
     fontSize: d > 0.5 ? 14 : 11, bold: true, color: col, margin: 0, isTextBox: true });
 }
 
+// One step of the walkthrough: stage on the left, the fields to fill in the
+// middle, the one thing worth knowing on the right.
+//   gap:true   — the manual documents no field for this stage change (red)
+//   muted:true — nothing to fill here, and that is by design (grey)
+// Keeping the two apart matters: only the red ones are holes to close.
+function steprow(s, o) {
+  const tint = o.gap ? "FBEDEB" : o.muted ? "F0EEEB"
+             : o.part === "B" ? "EAF3EF" : "FFF1EB";
+  const edge = o.gap ? "E8BCB6" : o.muted ? "DAD5CE"
+             : o.part === "B" ? "BBD7CB" : "F8C9B4";
+  const key = o.gap ? THEME.colors.accent4
+                    : o.part === "B" ? THEME.colors.accent2 : THEME.colors.accent1;
+  card(s, { x: M, y: o.y, w: W - 2 * M, h: o.h, fill: C.background2,
+            flat: true, name: "step-" + o.n });
+  disc(s, M + 0.26, o.y + (o.h - 0.42) / 2, 0.42, String(o.n), key, "FFFFFF");
+  s.addText(o.stage, { x: M + 0.86, y: o.y, w: 2.62, h: o.h, fontSize: 12.5,
+    bold: true, color: C.text1, valign: "middle", margin: 0, isTextBox: true });
+  // the fields themselves, on a tinted strip
+  card(s, { x: M + 3.54, y: o.y + 0.1, w: 4.5, h: o.h - 0.2, fill: tint, line: edge,
+            flat: true, name: "fields-" + o.n });
+  const soft = o.gap || o.muted;
+  s.addText(o.fields, { x: M + 3.72, y: o.y + 0.1, w: 4.14, h: o.h - 0.2,
+    fontSize: o.small ? 10.5 : 11.5, bold: !soft, italic: !!soft,
+    color: o.gap ? THEME.colors.accent4 : o.muted ? "8A8178" : C.text1,
+    valign: "middle", margin: 0, isTextBox: true });
+  s.addText(o.note, { x: M + 8.26, y: o.y, w: W - 2 * M - 8.42, h: o.h, fontSize: 10.5,
+    color: C.text2, valign: "middle", margin: 0, isTextBox: true });
+}
+
 // ============================================================== 1 · title ===
 pres.addSection({ title: "Opening" });
 {
@@ -279,47 +308,104 @@ pres.addSection({ title: "What has to be filled" });
   });
 }
 
-// ========================================================= 5 · key fields ===
+// ============================ 5 · step by step, enquiry to approval (part A) ===
+pres.addSection({ title: "Step by step" });
 {
-  const s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "What has to be filled" });
-  s.addText("The gates, and the one that isn't documented", { placeholder: "title" });
-  s.addText("Key fields are what actually stops a quote moving. The manual writes them " +
-            "down for one stage out of twelve.", { placeholder: "lede" });
+  const s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "Step by step" });
+  s.addText("Step by step · from the enquiry to the approval", { placeholder: "title" });
+  s.addText("What has to be filled at each stage, in the order the manual fills it. " +
+            "Part A is where all the work is.", { placeholder: "lede" });
 
-  const gates = [
-    ["Valoration", ["Application", "Project type", "OEM Auto", "Project number"],
-     THEME.colors.accent1, "Documented in the manual"],
-    ["Awarded", ["Contract / LOI / evidence of nomination", "plus the document attached under Documents"],
-     THEME.colors.accent2, "Documented in the manual"],
-    ["Closed lost", ["Lost reason — one of nine values", "plus a comment, and the free text if “Other”"],
-     THEME.colors.accent6, "Documented in the manual"],
+  const A = [
+    [1, "Before the quote\nthe RFQ",
+     "RFQ Name · Account Name · RFQ Currency ·\nClose Date (EOP) · Status",
+     "Account Name must be the CHILD account with the right Relats plant. That and the " +
+     "currency decide the selling plant and which price books you will see — wrong here " +
+     "means starting over."],
+    [2, "NEW\ncreate the quote", "Quote Name",
+     "The only field the quote needs to exist. Everything else is filled in as you go."],
+    [3, "→ VALORATION\nthe one documented gate",
+     "Application · Project type ·\nOEM Auto · Project number",
+     "The four Key Fields. They sit in the Key Fields panel at the top of the quote and " +
+     "can be edited straight from there."],
+    [4, "VALORATION\nprice book, then lines",
+     "Pricebook Name, then per line:\nProduct · Quoted Price · Annual Quantity",
+     "One price book per quote, chosen before the first line — only its codes can be " +
+     "quoted. Customer PN, M.O.Q and packing info go on the same screen."],
+    [5, "→ IN APPROVAL PROCESS\nsubmit",
+     "nothing new to fill",
+     "But the DOA reads Annual Purchase Value, LTA, bonus, commissions and payment " +
+     "terms. Only the quote owner or the RFQ owner may submit."],
   ];
-  const gw = (W - 2 * M - 2 * 0.2) / 3;
-  gates.forEach((g, i) => {
-    const x = M + i * (gw + 0.2);
-    card(s, { x, y: 2.02, w: gw, h: 2.5, name: "gate-" + i });
-    s.addText(g[0], { x: x + 0.24, y: 2.18, w: gw - 0.48, h: 0.36, fontSize: 17, bold: true,
-      color: g[2], margin: 0, isTextBox: true });
-    s.addText(g[1].map((t, j) => ({ text: t, options: { bullet: true,
-      breakLine: j < g[1].length - 1, color: C.text1 } })),
-      { x: x + 0.24, y: 2.64, w: gw - 0.48, h: 1.3, fontSize: 12.5, valign: "top",
-        paraSpaceAfter: 6, margin: 0, isTextBox: true });
-    s.addText(g[3], { x: x + 0.24, y: 4.04, w: gw - 0.48, h: 0.3, fontSize: 10.5,
-      color: "9AA1A8", margin: 0, isTextBox: true });
+  let y = 2.0;
+  A.forEach((r) => {
+    steprow(s, { n: r[0], stage: r[1], fields: r[2], note: r[3],
+                 y, h: 0.72, part: "A", small: true, muted: r[0] === 5 });
+    y += 0.82;
   });
 
-  card(s, { x: M, y: 4.82, w: W - 2 * M, h: 1.2, fill: "FBEDEB", line: "E8BCB6",
-            name: "gap", flat: true });
-  disc(s, M + 0.3, 5.17, 0.5, "!", THEME.colors.accent4, "FFFFFF");
+  card(s, { x: M, y: y + 0.06, w: W - 2 * M, h: 0.6, fill: "FFF8F4", line: "F0D9CC",
+            flat: true, name: "detour" });
   s.addText([
-    { text: "The other nine stages have key fields too — they are simply not written down.\n",
-      options: { bold: true, fontSize: 14.5, color: C.text1 } },
-    { text: "People find them by hitting a red error. Reading them off the validation rules " +
-            "and adding them to the manual is half a day of work, and it is the single " +
-            "highest-return item in this review.",
-      options: { fontSize: 12.5, color: C.text2 } },
-  ], { x: M + 0.98, y: 4.9, w: W - 2 * M - 1.2, h: 1.04, valign: "middle", margin: 0,
-       isTextBox: true });
+    { text: "Optional detour · new material that needs a Business Feasibility.  ",
+      options: { bold: true, color: C.text1 } },
+    { text: "Add one line with the BF code, a quantity and an approximate price so the " +
+            "forecast carries an amount, then move to WAITING BUSINESS FEASIBILITY. Once " +
+            "approved: delete the BF line, create the real one, submit.",
+      options: { color: C.text2 } },
+  ], { x: M + 0.24, y: y + 0.06, w: W - 2 * M - 0.48, h: 0.6, fontSize: 10.5,
+       valign: "middle", margin: 0, isTextBox: true });
+
+  s.addNotes("Steps 1 to 4 are all documented. Step 5 is the first place the manual " +
+             "stops telling you what blocks you.");
+}
+
+// ============================== 6 · step by step, approval to close (part B) ===
+{
+  const s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "Step by step" });
+  s.addText("Step by step · from approved to closed", { placeholder: "title" });
+  s.addText("Past the approval the manual names the fields for AWARDED and CLOSED LOST. " +
+            "For the four ON GOING steps and RUNNING it names none.",
+    { placeholder: "lede" });
+
+  const B = [
+    [6, "APPROVED\ngenerate the PDF",
+     "Quote Language · Terms & Conditions ·\nContact Person", false,
+     "Only once approved. Contact Person prints as “Prepared by”; left empty, the quote " +
+     "owner is used. Each generation is kept as V1, V2… under Quote PDFs."],
+    [7, "QUOTED 25% →\nON GOING 50 / 75 / 90%",
+     "nothing documented", true,
+     "Four stage changes in a row, and the manual names no field for any of them. This is " +
+     "the bulk of the gap."],
+    [8, "→ AWARDED\nevidence is mandatory",
+     "Contract/LOI/Evidencia Nominacion\n+ the document attached under Documents", false,
+     "Marking AWARDED creates the Kick Off automatically. Reopening an awarded quote means " +
+     "telling operations through Chatter — the KO already exists."],
+    [9, "→ RUNNING",
+     "nothing documented", true,
+     "Moves when DACs confirm the orders have arrived. An end state."],
+    [10, "→ CLOSED LOST\nfrom any stage",
+     "Lost reason · a comment ·\nOther lost reason if “Other”", false,
+     "Nine lost reasons. Reporting on losses has to read both free-text boxes."],
+  ];
+  let y = 2.0;
+  B.forEach((r) => {
+    steprow(s, { n: r[0], stage: r[1], fields: r[2], note: r[4],
+                 y, h: 0.72, part: "B", small: true, gap: r[3] });
+    y += 0.8;
+  });
+
+  card(s, { x: M, y: y + 0.08, w: W - 2 * M, h: 0.78, fill: "FBEDEB", line: "E8BCB6",
+            flat: true, name: "gapnote" });
+  disc(s, M + 0.28, y + 0.23, 0.48, "!", THEME.colors.accent4, "FFFFFF");
+  s.addText([
+    { text: "These stages do have key fields — they are simply not written down.  ",
+      options: { bold: true, color: C.text1 } },
+    { text: "Reading them off the validation rules and adding them to this walkthrough is " +
+            "half a day of work, and it is the single highest-return item in the review.",
+      options: { color: C.text2 } },
+  ], { x: M + 0.94, y: y + 0.08, w: W - 2 * M - 1.16, h: 0.78, fontSize: 11.5,
+       valign: "middle", margin: 0, isTextBox: true });
 }
 
 // ====================================================== 6 · master data ===
